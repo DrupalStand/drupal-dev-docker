@@ -1,0 +1,61 @@
+version: '2'
+services:
+  cms:
+    build:
+      context: ./docker-src/cms
+    container_name: cms
+    mem_limit: 512M
+    ports:
+      - 8080:80
+    volumes:
+      - /var/www
+    env_file: environment
+    links:
+      - db
+      - memcache
+    networks:
+      - connector
+
+  db:
+    image: mysql:5.6
+    container_name: db
+    mem_limit: 512M
+    env_file: environment
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker-src/db/conf:/etc/mysql/conf.d
+      - database:/var/lib/mysql
+    networks:
+      - connector
+
+  memcache:
+    image: memcached:latest
+    container_name: memcached
+    mem_limit: 128M
+    environment:
+      - MEMCACHED_SERVER=memcached:11211
+    ports:
+      - 11211:11211
+    networks:
+      - connector
+
+  bg-sync:
+    image: cweagans/bg-sync:latest
+    container_name: bg-sync
+    volumes:
+      - .:/source
+    volumes_from:
+      - cms
+    environment:
+      - SYNC_DESTINATION=/var/www
+      - SYNC_MAX_INOTIFY_WATCHES=50000
+    privileged: true
+    networks:
+      - connector
+
+networks:
+  connector:
+
+volumes:
+  database: {}

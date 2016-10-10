@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+CMD="docker exec -it cms /var/www/vendor/bin/drush --root=/var/www/web $@"
+$CMD
