@@ -42,7 +42,8 @@ config-init:
 		echo "Config found. Processing setting uuid..."; \
 		cat ./config/system.site.yml | \
 		grep uuid | tail -c +7 | head -c 36 | \
-		./bin/drush $(DRUSH_ARGS) config-set -y system.site uuid - ;\
+		docker exec -i cms /var/www/vendor/bin/drush $(DRUSH_ARGS) \
+		config-set -y system.site uuid - ;\
 	else \
 		echo "Config is empty. Skipping uuid init..."; \
 	fi;
@@ -56,10 +57,10 @@ config-import:
 	fi;
 
 config-export:
-	./bin/drush $(DRUSH_ARGS) config-export sync --yes
+	-./bin/drush $(DRUSH_ARGS) config-export sync --yes
 
 config-validate:
-	./bin/drush $(DRUSH_ARGS) config-export sync --no
+	-./bin/drush $(DRUSH_ARGS) config-export sync --no
 
 config-refresh: config-init config-import
 
