@@ -32,7 +32,7 @@ composer-update:
 	composer update --ignore-platform-reqs --no-interaction --no-progress --prefer-dist
 
 drupal-upgrade:
-	composer update drupal/core --ignore-platform-reqs --no-interaction --no-progress --prefer-dist
+	composer update drupal/core --with-dependencies
 
 drupal-install:
 	-./bin/drush $(DRUSH_ARGS) site-install minimal -vv --account-name=admin --account-pass=admin --yes
