@@ -1,6 +1,3 @@
-# Default Drush arguments
-DRUSH_ARGS := --root=/var/www/web
-
 # This should always be the first target so that we know running make without any
 # arguments is going to be nondestructive. The @ is to silence the normal make
 # behavior of echo'ing commands before running them.
@@ -35,32 +32,33 @@ drupal-upgrade:
 	composer update drupal/core --with-dependencies
 
 drupal-install:
-	-./bin/drush $(DRUSH_ARGS) site-install minimal -vv --account-name=admin --account-pass=admin --yes
+	-./bin/drush --root=/var/www/web site-install minimal -vv --account-name=admin --account-pass=admin --yes
 
 config-init:
-	@if [ -e ./config/system.site.yml ]; then \
+	-@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Processing setting uuid..."; \
 		cat ./config/system.site.yml | \
 		grep uuid | tail -c +7 | head -c 36 | \
-		docker exec -i cms /var/www/vendor/bin/drush $(DRUSH_ARGS) \
-		config-set -y system.site uuid - ;\
+		docker exec -i cms sh -c "/var/www/vendor/bin/drush \
+		--root=/var/www/web config-set -y system.site uuid - ";\
 	else \
 		echo "Config is empty. Skipping uuid init..."; \
 	fi;
 
 config-import:
-	@if [ -e ./config/system.site.yml ]; then \
+	-@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Importing config..."; \
-		./bin/drush $(DRUSH_ARGS) config-import sync --yes ;\
+		./bin/drush config-import sync --yes ;\
+		./bin/drush config-import sync --yes ;\
 	else \
 		echo "Config is empty. Skipping import..."; \
 	fi;
 
 config-export:
-	-./bin/drush $(DRUSH_ARGS) config-export sync --yes
+	-./bin/drush config-export sync --yes
 
 config-validate:
-	-./bin/drush $(DRUSH_ARGS) config-export sync --no
+	-./bin/drush config-export sync --no
 
 config-refresh: config-init config-import
 
