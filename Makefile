@@ -8,6 +8,10 @@ init: salt composer-install docker-start init-drupal docker-status
 
 init-drupal: drupal-install config-init config-import clear-cache
 
+update: docker-stop composer-install docker-start config-import clear-cache
+
+safe-update: docker-stop composer-install docker-start
+
 docker-rebuild:
 	docker-compose build
 
