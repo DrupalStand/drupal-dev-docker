@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-CMD="docker exec -it cms /var/www/vendor/bin/drupal --root=/var/www/web $@"
-$CMD
+VAR=$@
+docker exec -it cms sh -c "/var/www/vendor/bin/drupal --root=/var/www/web $VAR"
