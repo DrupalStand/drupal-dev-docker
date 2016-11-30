@@ -41,6 +41,12 @@ make [command]
 ```
 
 * **`init-drupal`** Meta command to execute `drupal-install config-init config-import clear-cache`.
+* **`update`** Meta command to execute `docker-stop composer-install docker-start config-import clear-cache`.
+Use this command after a git pull has been performed to ensure that infrastructure 
+and configuration match the repository. This will destroy any uncommited Drupal configuration.
+* **`safe-update`** Meta command to execute `docker-stop composer-install docker-start`.
+Use this command after a git pull has been performed to ensure that infrastructure 
+matches the repository. This will not overwrite Drupal configuration.
 * **`docker-rebuild`** Rebuilds the docker containers from build files.
 * **`docker-status`** Prints the status of docker.
 * **`docker-start`** Brings up the docker environment and displays status.
@@ -80,7 +86,7 @@ volume is not deleted manually or with the "-v" option on `docker-compose down`.
 * This repository *does* track a composer.lock file meaning that versions of software 
 installed are the ones that match the lock file. Currently this repository tracks 
 the base installation provided by the [drupal-composer/drupal-project](https://github.com/drupal-composer/drupal-project) 
-with Drupal 8.1.10. You can upgrade with `make drupal-upgrade` or wait until this 
+with Drupal 8.2.1. You can upgrade with `make drupal-upgrade` or wait until this 
 repository is updated. Certain files such as those provided by the Drupal scaffolding 
 project may be subject to manipulation and may or may not upgrade cleanly.
 * The Drupal site installed by default is configured with the "minimal" profile 
@@ -98,11 +104,10 @@ with the `drush` and `drupal` installed by composer but from the inside of your 
 container so that they can access your environments running resources.
 
 If you want to do management while docker is not running (which is not recommended), 
-then you can use `/vendor/bin/drush` or `/vendor/bin/drupal`.
+then you can use `vendor/bin/drush` or `vendor/bin/drupal`.
 
 ## TODO
 
-* Upgrade to newly released Drupal 8.2.x.
 * Separate configuration from Drupal's settings.php file into local-based files.
 * Integrate the option for other Docker-based containers to assist with specific 
 tasks such as ElasticSearch.
