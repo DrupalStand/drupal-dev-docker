@@ -77,3 +77,15 @@ destroy:
 	rm -rf ./web/sites/default/files/*
 
 rebuild: destroy init
+
+code-fix:
+	vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+	-vendor/bin/phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
+	-vendor/bin/phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
+
+code-test:
+	vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+	vendor/bin/phpcs -n --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
+	vendor/bin/phpcs -n --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
+	vendor/bin/phpcs -n --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
+	vendor/bin/phpcs -n --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom

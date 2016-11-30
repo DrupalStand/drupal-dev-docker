@@ -71,6 +71,10 @@ if `config-init` has not been run first. Configuration should be in ./config.
 Drupal's files. Depending on configuration, this command may need to be executed as root.
 * **`rebuild`** Meta command to execute `destroy init`. Depending on configuration, 
 this command may need to be executed as root.
+* **`code-test`** Tests custom modules and themes against Drupal coding standards 
+and best practices using PHP CodeSniffer.
+* **`code-fix`** Automatically fixes some errors identified via `code-test` utilizing 
+functionality built into PHP CodeSniffer via PHP Code Beautifier and Fixer.
 
 ## Details
 
