@@ -100,6 +100,9 @@ which has absolutely zero configuration out of the box. If you do not import con
 the site will be setup with the "Stark" theme. The installation profile used can 
 be set in the Makefile under the `drupal-install` target, however, if you use any 
 configuration, it's recommended that you leave it "minimal".
+* This repository tracks a local development file. It is included automatically 
+if the file exists. If this code base is used in production, ensure that there 
+is a deployment process in place to remove this file before going live.
 
 ## Drush/Drupal Console
 
@@ -114,7 +117,6 @@ then you can use `vendor/bin/drush` or `vendor/bin/drupal`.
 
 ## TODO
 
-* Separate configuration from Drupal's settings.php file into local-based files.
 * Integrate the option for other Docker-based containers to assist with specific 
 tasks such as ElasticSearch.
 * Modify base PHP instance to expose xdebug so that users can utilize debugging 
