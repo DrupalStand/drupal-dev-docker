@@ -4,7 +4,7 @@
 faketarget:
 	@echo "Please specify a target. See README for available targets."
 
-init: salt composer-install docker-start init-drupal docker-status
+init: salt composer-install docker-start ready init-drupal docker-status
 
 init-drupal: drupal-install config-init config-import clear-cache
 
@@ -84,6 +84,10 @@ destroy:
 	sudo rm -rf ./vendor/*
 
 rebuild: destroy init
+
+ready:
+	@echo "Waiting for files to sync between host and Docker...";
+	@bash ./docker-src/cms/ready.sh;
 
 code-fix:
 	vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
