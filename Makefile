@@ -74,7 +74,14 @@ clear-cache:
 
 destroy:
 	docker-compose down -v
-	rm -rf ./web/sites/default/files/*
+	sudo rm -rf ./web/sites/default/files/*
+	sudo rm -rf ./web/core/*
+	sudo rm -rf ./web/libraries/*
+	sudo rm -rf ./web/modules/contrib/*
+	sudo rm -rf ./web/profiles/contrib/*
+	sudo rm -rf ./web/themes/contrib/*
+	sudo rm -rf ./drush/contrib/*
+	sudo rm -rf ./vendor/*
 
 rebuild: destroy init
 
