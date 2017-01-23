@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
-VAR=$@
-docker exec -it cms sh -c "/var/www/vendor/bin/drupal --root=/var/www/web $VAR"
+PARAMS=""
+
+for PARAM in "$@"
+do
+  PARAMS="${PARAMS} \"${PARAM}\""
+done
+docker exec -it cms sh -c "/var/www/vendor/bin/drupal --root=/var/www/web ${PARAMS}"
