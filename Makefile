@@ -39,7 +39,7 @@ drupal-install:
 	-./bin/drush --root=/var/www/web site-install minimal -vv --account-name=admin --account-pass=admin --yes
 
 config-init:
-	-@if [ -e ./config/system.site.yml ]; then \
+	@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Processing setting uuid..."; \
 		cat ./config/system.site.yml | \
 		grep uuid | tail -c +7 | head -c 36 | \
@@ -50,7 +50,7 @@ config-init:
 	fi;
 
 config-import:
-	-@if [ -e ./config/system.site.yml ]; then \
+	@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Importing config..."; \
 		./bin/drush config-import sync --yes ;\
 		./bin/drush config-import sync --yes ;\
@@ -59,10 +59,10 @@ config-import:
 	fi;
 
 config-export:
-	-./bin/drush config-export sync --yes
+	./bin/drush config-export sync --yes
 
 config-validate:
-	-./bin/drush config-export sync --no
+	./bin/drush config-export sync --no
 
 config-refresh: config-init config-import
 
@@ -70,7 +70,7 @@ salt:
 	cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1 > salt.txt
 
 clear-cache:
-	-./bin/drush cr
+	./bin/drush cr
 
 destroy:
 	docker-compose down -v
