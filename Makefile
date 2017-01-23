@@ -100,3 +100,11 @@ code-test:
 	vendor/bin/phpcs -n --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
 	vendor/bin/phpcs -n --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
 	vendor/bin/phpcs -n --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
+
+fix-permissions:
+	sudo chown $(USER) ./
+	sudo chmod u=rwx,g=rwxs,o=rx ./
+	sudo find ./ -not -path "web/sites/default/files*" -exec chown $(USER) {} \;
+	sudo find ./ -not -path "web/sites/default/files*" -exec chmod u=rwX,g=rwX,o=rX {} \;
+	sudo find ./ -type d -not -path "web/sites/default/files*" -exec chmod g+s {} \;
+	sudo chmod -R u=rwx,g=rwxs,o=rwx ./web/sites/default/files;

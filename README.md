@@ -75,6 +75,8 @@ this command may need to be executed as root.
 and best practices using PHP CodeSniffer.
 * **`code-fix`** Automatically fixes some errors identified via `code-test` utilizing 
 functionality built into PHP CodeSniffer via PHP Code Beautifier and Fixer.
+* **`fix-permissions`** Sets appropriate permissions in the working directory ensuring
+that the current user is able to edit files.
 
 ## Details
 
