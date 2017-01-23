@@ -71,10 +71,14 @@ if `config-init` has not been run first. Configuration should be in ./config.
 Drupal's files. Depending on configuration, this command may need to be executed as root.
 * **`rebuild`** Meta command to execute `destroy init`. Depending on configuration, 
 this command may need to be executed as root.
-* **`code-test`** Tests custom modules and themes against Drupal coding standards 
+* **`lint`** Tests custom modules and themes against PHP Parallel Lint.
+* **`sniff`** Tests custom modules and themes against Drupal coding standards 
 and best practices using PHP CodeSniffer.
+* **`code-test`** Meta command to execute `lint sniff`.
 * **`code-fix`** Automatically fixes some errors identified via `code-test` utilizing 
 functionality built into PHP CodeSniffer via PHP Code Beautifier and Fixer.
+* **`fix-permissions`** Sets appropriate permissions in the working directory ensuring
+that the current user is able to edit files.
 
 ## Details
 
@@ -90,7 +94,7 @@ volume is not deleted manually or with the "-v" option on `docker-compose down`.
 * This repository *does* track a composer.lock file meaning that versions of software 
 installed are the ones that match the lock file. Currently this repository tracks 
 the base installation provided by the [drupal-composer/drupal-project](https://github.com/drupal-composer/drupal-project) 
-with Drupal 8.2.1. You can upgrade with `make drupal-upgrade` or wait until this 
+with Drupal 8.2.5. You can upgrade with `make drupal-upgrade` or wait until this 
 repository is updated. Certain files such as those provided by the Drupal scaffolding 
 project may be subject to manipulation and may or may not upgrade cleanly.
 * The Drupal site installed by default is configured with the "minimal" profile 
@@ -98,6 +102,9 @@ which has absolutely zero configuration out of the box. If you do not import con
 the site will be setup with the "Stark" theme. The installation profile used can 
 be set in the Makefile under the `drupal-install` target, however, if you use any 
 configuration, it's recommended that you leave it "minimal".
+* This repository tracks a local development file. It is included automatically 
+if the file exists. If this code base is used in production, ensure that there 
+is a deployment process in place to remove this file before going live.
 
 ## Drush/Drupal Console
 
@@ -112,7 +119,6 @@ then you can use `vendor/bin/drush` or `vendor/bin/drupal`.
 
 ## TODO
 
-* Separate configuration from Drupal's settings.php file into local-based files.
 * Integrate the option for other Docker-based containers to assist with specific 
 tasks such as ElasticSearch.
 * Modify base PHP instance to expose xdebug so that users can utilize debugging 

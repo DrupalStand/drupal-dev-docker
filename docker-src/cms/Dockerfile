@@ -27,4 +27,6 @@ RUN echo 'export PATH="$PATH:/root/.composer/vendor/bin"' >> $HOME/.bashrc
 # Set timezone.
 RUN echo "date.timezone = \"$PHP_TIMEZONE\"" > /usr/local/etc/php/conf.d/timezone.ini
 
+RUN a2enmod rewrite
+
 RUN [ -e /etc/apache2/sites-enabled/000-default.conf ] && sed -i -e "s/\/var\/www\/html/\/var\/www\/web/" /etc/apache2/sites-enabled/000-default.conf || sed -i -e "s/\/var\/www\/html/\/var\/www\/web/" /etc/apache2/apache2.conf
