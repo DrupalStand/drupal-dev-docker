@@ -89,17 +89,21 @@ ready:
 	@echo "Waiting for files to sync between host and Docker...";
 	@bash ./docker-src/cms/ready.sh;
 
+lint:
+	./vendor/bin/parallel-lint -e php,module,inc,install,test,profile,theme ./web/modules/custom ./web/themes/custom
+
+sniff:
+	./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+	./vendor/bin/phpcs -n --standard=Drupal,DrupalPractice \
+		--extensions=php,module,inc,install,test,profile,theme,info \
+		--ignore=*/node_modules/* web/modules/custom web/themes/custom
+
+code-test: lint sniff
+
 code-fix:
 	vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
 	-vendor/bin/phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
 	-vendor/bin/phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
-
-code-test:
-	vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
-	vendor/bin/phpcs -n --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
-	vendor/bin/phpcs -n --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
-	vendor/bin/phpcs -n --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
-	vendor/bin/phpcs -n --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
 
 fix-permissions:
 	sudo chown $(USER) ./
