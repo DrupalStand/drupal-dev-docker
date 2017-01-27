@@ -44,7 +44,7 @@ make [command]
 * **`update`** Meta command to execute `docker-stop composer-install docker-start config-import clear-cache`.
 Use this command after a git pull has been performed to ensure that infrastructure 
 and configuration match the repository. This will destroy any uncommited Drupal configuration.
-* **`safe-update`** Meta command to execute `docker-stop composer-install docker-start`.
+* **`safe-update`** Meta command to execute `docker-stop composer-install docker-start clear-cache`.
 Use this command after a git pull has been performed to ensure that infrastructure 
 matches the repository. This will not overwrite Drupal configuration.
 * **`docker-rebuild`** Rebuilds the docker containers from build files.
