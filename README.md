@@ -117,6 +117,225 @@ container so that they can access your environments running resources.
 If you want to do management while docker is not running (which is not recommended), 
 then you can use `vendor/bin/drush` or `vendor/bin/drupal`.
 
+## Development Workflow
+
+This environment contains most tools needed to perform day-to-day development 
+activities, but some steps and make targets might be vague. These are some of the 
+common use cases and how the environment can be used to satisfy them.
+
+### Initialization
+
+To begin work, clone the repository. Once the repository is cloned and the 
+prerequisites are met (composer and docker installed locally), a single command 
+can be used to initialize the environment:
+
+1. `make init`
+
+The environment will go through many steps and should leave you with a working 
+Drupal installation. You should be able to access the site at [http://localhost:8080](http://localhost:8080).
+
+### Destruction
+
+If an environment becomes unstable, or you wish to start again with a fresh 
+environment straight from your code base, consider destroying the environment. 
+A destroy will erase all content in your local site, so be sure there are no 
+configuration items or content assets you wish to preserve.
+
+1. `make destroy`
+
+The destruction command will ask you to confirm your password to ensure it has 
+proper permissions to remove all files. Once performed, the environment can be 
+setup again with the initialization step.
+
+### Rebuild
+
+If you wish to do a destroy and an initialization in the same command, a command 
+exists to merge these steps together:
+
+1. `make rebuild`
+
+This will perform the actions of `make destoy` followed by `make init`.
+
+### Stopping/Starting An Environment
+
+Environments can be stopped and frozen for later use. This can be useful if 
+resources need to be opened up. Stopping an environment will not destroy any of 
+the content or configuration in the environment.
+
+1. `make docker-stop`
+
+In a similar fashion, the environment can be restarted:
+
+1. `make docker-start`
+
+Once the environment has started, the site should again be reachable. These 
+commands will be rarely used in day-to-day development.
+
+### Installing A Composer Library
+
+Composer is used to manage all PHP packages tracked by the environment. It is 
+used for libraries as well as other PHP packages. By default, installed composer 
+packages install to the `/vendor` directory. Special packages (such as Drupal 
+modules) may be installed to different directories. These directories are not 
+tracked in git and should not be added to your SCM.
+
+This is an example adding [PHP Code Sniffer](https://packagist.org/packages/squizlabs/php_codesniffer) 
+to your environment.
+
+1. `composer require squizlabs/php_codesniffer`
+2. `git add composer.json composer.lock`
+3. `git commit -m "Added PHP_CodeSniffer to environment."`
+
+Note that the files downloaded by Composer and placed in `/vendor` are not 
+tracked. The composer.json and composer.lock files contain enough information 
+for other environments to obtain the same code the next time their environments 
+are built.
+
+### Installing A Drupal Module
+
+Composer is also used to install Drupal modules, themes, profiles, and 
+libraries. The end directory for these packages varies depending on the type 
+of package being required, however, like the `/vendor` directory, these 
+directories are ignored in git and should not be added to your SCM.
+
+This is an example adding [Webform](https://www.drupal.org/project/webform) to 
+your environment and activating it.
+
+1. `composer require drupal/webform`
+2. `bin/drush en webform`
+3. `make config-export`
+4. `git add composer.json composer.lock config/core.extension.yml`
+5. `git commit -m "Added Drupal Webform to environment."`
+
+These steps are similar to a normal composer package, but the environment needs 
+to be aware that Drupal has a module to enable. After it's installed, it is 
+enabled using drush. After it has been enabled, Drupal's configuration is 
+exported. In this example, there was no configuration of the module after the 
+installation, but be mindful that there might be additional configuration files 
+to add after a module has been enabled. Lastly, this configuration, along with the 
+composer.json and composer.lock files, are added to the code management.
+
+### Creating Custom Code
+
+If a custom module or theme is needed, the Drupal Console will help facilitate 
+creating the boilerplate for these items. The [manual for Drupal Console](https://hechoendrupal.gitbooks.io/drupal-console/content/en/index.html) 
+can be helpful during these steps. The console can also be used to create 
+boilerplate for existing modules and plugins.
+
+This is an example creating a module called "Example Module":
+
+1. `bin/drupal generate:module --module "Example Module"`
+   * The Drupal Console will confirm a few bits of information
+2. `git add web/modules/custom/example_module`
+3. `git commit -m "Created a new module, Example Module"`
+
+The code that comes out of this generation will be owned by the root user which 
+often means it will not be editable. Consider running the `make fix-permissions` 
+command after creation to rectify this.
+
+### Exporting Configuration
+
+Drupal ships with an extensive configuration tracking interface known as 
+[CMI](http://drupal8cmi.org/). Configuration for almost everything can be 
+exported and is tracked in flat yaml files stored in `/config`. The environment 
+will automatically import these configuration files during a `make init` or 
+`make update` target.
+
+It is important to validate that the configuration exported is the configuration 
+that you were expecting to export:
+
+1. `make config-validate`
+
+This command will list out all of the configuration files inside the `/config` 
+directory that are different than configuration in Drupal. If the configuration 
+that is listed reflects the changes you have made, then it is safe to export the 
+configuration and commit the results.
+
+This is an example changing the theme of the site:
+
+1. `bin/drush config-set system.theme default bartik`
+2. `make config-validate`
+   * Ensure that the output of this contains only related configuration.
+3. `make config-export`
+4. `git add /config`
+5. `git commit -m "Set Bartik theme as default."`
+
+In this example, the configuration modified was done from drush, but almost all 
+configuration done in the interface will also be tracked this way. Keep the 
+configuration commits simple and often otherwise the quantity of files can 
+become very large very quickly.
+
+Note that all configuration that does not match what is in the `/config` 
+directory will be exported. This does not mean that all of it needs to be 
+committed. In the example above, the `/config` directory is blanket added to git 
+but this might not always be the case. Take care to only commit what is 
+nescessary to the work at hand.
+
+The cleanest and most effective way to modify configuration for the site is to 
+commit each configuration change as it is performed:
+
+1. Make a single change (or related set of changes) to Drupal
+2. Validate and export configuration
+3. Add and commit exported configuration to SCM
+4. Repeat for other changes
+
+### Updating Code
+
+When working with a team, upstream code will often be newer than local code. In 
+order to keep the environment up to date, there are a few commands to facilitate 
+this depending on the situation and the current state of the environment.
+
+If an environmnet has no uncommitted configuration or code changes in it, the 
+`make update` command should be used:
+
+1. `git status`
+   * Ensure the environment is clean
+2. `git pull`
+3. `make update`
+
+This command will update the infrastructure, install/update packages, and reset 
+Drupal's configuration to the configuration tracked in code.
+
+If an environment has uncommitted work in it, caution should be taken when 
+updating to ensure there are no conflicts. The `make safe-update` command exists 
+for this purpose:
+
+1. `git pull`
+2. `make safe-update`
+
+This command will update the infrastructure and install/update packages, but 
+will not touch Drupal's configuration. This will help preserve any work 
+currently being done in the environment.
+
+When possible, update during a state of clean development. Between the two 
+commands, `make update` should be used more often.
+
+### Problems With Permissions
+
+The environment runs in two different fashions concurrently: locally and in 
+Docker containers. Due to the nature of Docker containers, most items created 
+inside these containers are owned by the user running the services inside the 
+container. This user is usually root.
+
+While this is good for ensuring very little has to be done inside the container, 
+it adds a challenge to modifying files that often sync between the container and
+the local environment. These could be files such as settings.php or files 
+touched by drush or Drupal Console.
+
+Permission errors will typically be encountered during two different common 
+operations:
+
+1. Editing files that were created inside the container
+2. Checking out code (changing branches or resetting files)
+
+If permission errors are ever encountered, they can be rectified by running a 
+single command:
+
+1. `make fix-permissions`
+
+If the environment contains a large amount of files, this command could take a 
+while, but when it's done, there should be no more problems.
+
 ## TODO
 
 * Integrate the option for other Docker-based containers to assist with specific 
