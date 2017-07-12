@@ -1,3 +1,10 @@
+# Grab environment information (OSX vs Linux)
+UNAME := $(shell uname)
+DOCKER_COMPOSE_FILE := docker-compose.yml
+ifeq ($(UNAME), Linux)
+	DOCKER_COMPOSE_FILE := docker-compose.linux.yml
+endif
+
 # This should always be the first target so that we know running make without any
 # arguments is going to be nondestructive. The @ is to silence the normal make
 # behavior of echo'ing commands before running them.
@@ -13,20 +20,20 @@ update: docker-stop composer-install docker-rebuild ready config-import clear-ca
 safe-update: docker-stop composer-install docker-rebuild ready clear-cache
 
 docker-rebuild:
-	docker-compose up -d --build
-	docker-compose ps
+	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
+	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
 	@sleep 10
 
 docker-status:
-	docker-compose ps
+	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
 
 docker-start:
-	docker-compose up -d
-	docker-compose ps
+	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d
+	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
 	@sleep 10
 
 docker-stop:
-	docker-compose down
+	docker-compose -f ${DOCKER_COMPOSE_FILE} down
 
 composer-install:
 	composer install --ignore-platform-reqs --no-interaction --no-progress
@@ -75,7 +82,7 @@ clear-cache:
 	./bin/drush cr
 
 destroy:
-	docker-compose down -v
+	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
 	sudo rm -rf ./web/sites/default/files/*
 	sudo rm -rf ./web/core/*
 	sudo rm -rf ./web/libraries/*
