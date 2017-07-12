@@ -1,5 +1,5 @@
 # php:5.6.29-apache
-FROM php:7.1
+FROM php:7.1-apache
 
 RUN apt-get update && apt-get install -y \
   vim \
@@ -29,7 +29,7 @@ RUN pecl install xdebug \
 
 RUN apt-get update \
   && apt-get install -y libmemcached11 libmemcachedutil2 build-essential libmemcached-dev libz-dev \
-  && pecl install memcached-2.2.0 \
+  && pecl install memcached \
   && echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
   && apt-get remove -y build-essential libmemcached-dev libz-dev \
   && apt-get autoremove -y \

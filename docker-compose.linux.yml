@@ -9,7 +9,7 @@ services:
       - 8080:80
       - 8443:443
     volumes:
-      - /var/www
+      - .:/var/www
     env_file: environment
     environment:
       - CONNECTBACK=on
