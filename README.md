@@ -30,7 +30,7 @@ This command will take a long time if this is the first time you're running it.
 
 The init command runs through almost all of the available individual commands and 
 will result in an environment ready to work with. The environment can be accessed via 
-http://localhost:8080. MySQL and memcached are also accessible on their default ports 
+https://localhost:8443. MySQL and memcached are also accessible on their default ports 
 (3306 and 11211, respectively).
 
 The Makefile contains many additional commands that can be individually executed 
@@ -132,7 +132,7 @@ can be used to initialize the environment:
 1. `make init`
 
 The environment will go through many steps and should leave you with a working 
-Drupal installation. You should be able to access the site at [http://localhost:8080](http://localhost:8080).
+Drupal installation. You should be able to access the site at [https://localhost:8443](https://localhost:8443).
 
 ### Destruction
 
@@ -340,5 +340,3 @@ while, but when it's done, there should be no more problems.
 
 * Integrate the option for other Docker-based containers to assist with specific 
 tasks such as ElasticSearch.
-* Modify base PHP instance to expose xdebug so that users can utilize debugging 
-software such as PHPStorm.
