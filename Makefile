@@ -45,7 +45,9 @@ drupal-upgrade:
 	composer update drupal/core --with-dependencies
 
 drupal-install:
-	-./bin/drush --root=/var/www/web site-install minimal -vv --account-name=admin --account-pass=admin --yes
+	./bin/drush --root=/var/www/web site-install minimal -vv --account-name=admin --account-pass=admin --yes \
+		install_configure_form.enable_update_status_module=NULL \
+		install_configure_form.enable_update_status_emails=NULL
 
 config-init:
 	@if [ -e ./config/system.site.yml ]; then \
