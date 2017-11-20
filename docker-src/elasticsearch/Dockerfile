@@ -8,6 +8,3 @@ RUN yum install nodejs npm --enablerepo=epel -y
 RUN npm install -g elasticdump
 
 EXPOSE 9200
-
-WORKDIR /usr/share/elasticsearch/data
-

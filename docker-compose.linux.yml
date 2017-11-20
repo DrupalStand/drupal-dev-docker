@@ -45,11 +45,13 @@ services:
     build:
       context: ./docker-src/elasticsearch
     container_name: elasticsearch
+    mem_limit: 2048M
     environment:
       - bootstrap.memory_lock:true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
     ports:
-      - 9300:9300
+      - 9200:9200
     networks:
       - connector
     volumes:
