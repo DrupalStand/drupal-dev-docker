@@ -16,9 +16,9 @@ services:
     links:
       - db
       - memcache
+      - elasticsearch
     networks:
       - connector
-
   db:
     image: mariadb:latest
     container_name: db
@@ -31,7 +31,6 @@ services:
       - database:/var/lib/mysql
     networks:
       - connector
-
   memcache:
     image: memcached:latest
     container_name: memcached
@@ -42,9 +41,23 @@ services:
       - 11211:11211
     networks:
       - connector
+  elasticsearch:
+    build:
+      context: ./docker-src/elasticsearch
+    container_name: elasticsearch
+    environment:
+      - bootstrap.memory_lock:true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9300:9300
+    networks:
+      - connector
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
 
 networks:
   connector:
 
 volumes:
   database: {}
+  elasticsearch: {}
