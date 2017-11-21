@@ -123,3 +123,9 @@ fix-permissions:
 	sudo find ./ -not -path "web/sites/default/files*" -exec chmod u=rwX,g=rwX,o=rX {} \;
 	sudo find ./ -type d -not -path "web/sites/default/files*" -exec chmod g+s {} \;
 	sudo chmod -R u=rwx,g=rwxs,o=rwx ./web/sites/default/files;
+
+## Usage:
+# Export: `make elasticdump ELASTIC_INPUT=http://localhost:9200/my-index ELASTIC_OUTPUT=./elasticdumps/my-index.json DUMPTYPE=data`
+# Import: `make elasticdump ELASTIC_INPUT=./elasticdumps/my-index.json ELASTIC_OUTPUT=http://localhost:9200/my-index DUMPTYPE=mapping`
+elasticdump:
+	docker exec -it elasticsearch elasticdump --input=${ELASTIC_INPUT} --output=${ELASTIC_OUTPUT} --type=${DUMPTYPE}

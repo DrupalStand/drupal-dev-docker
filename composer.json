@@ -24,7 +24,8 @@
         "drupal/console": "~1.0",
         "drupal/coder": "^8.2",
         "drupal/devel": "^1.0@RC",
-        "drupal/admin_toolbar": "^1.18"
+        "drupal/admin_toolbar": "^1.18",
+        "drupal/elasticsearch_connector": "^5.0@alpha"
     },
     "require-dev": {
         "behat/mink": "~1.7",
