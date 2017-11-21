@@ -353,6 +353,25 @@ When configuring the cluster, use the container name instead of an address.
 Server URL: elasticsearch:9200
 ```
 
+### Importing and Exporting ElasticSearch indicies
+
+The [elasticdump](https://www.npmjs.com/package/elasticdump) project is
+available as part of the ElasticSearch container. For ease of use, a Make target
+is available: `elasticdump`. To use it, you must specify a few arguments:
+
+```
+ELASTIC_INPUT: the index input
+ELASTIC_OUTPUT: the index output
+DUMPTYPE: the type of dump (analyzer, mapping, data)
+```
+
+For convenience, the `elasticdumps` directory at the root of the project is
+shared with the container.
+
+To utilize more complex features of `elasticdump`, exec into the ElasticSearch
+container: `docker exec -it elasticsearch /bin/bash` and run the `elasticdump`
+command there.
+
 ## TODO
 
 * Integrate the option for other Docker-based containers to assist with specific
