@@ -57,6 +57,7 @@ services:
       - connector
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
+      - ./elasticdumps:/usr/share/elasticsearch/elasticdumps
 
 networks:
   connector:
