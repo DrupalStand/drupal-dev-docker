@@ -9,7 +9,11 @@ endif
 # arguments is going to be nondestructive. The @ is to silence the normal make
 # behavior of echo'ing commands before running them.
 faketarget:
-	@echo "Please specify a target. See README for available targets."
+	@echo "Please specify a target. See README for information about targets."
+	@grep Makefile -oe '^[a-z-]*:' | \
+	 tr -d ':' | \
+	 grep -v 'fake' | \
+	 sed -e 's/^/\o033[32m->\o033[0m /'
 
 init: salt composer-install docker-start ready init-drupal docker-status
 
