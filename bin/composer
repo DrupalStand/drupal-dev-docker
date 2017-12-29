@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+PARAMS=""
+
+for PARAM in "$@"
+do
+  PARAMS="${PARAMS} \"${PARAM}\""
+done
+
+docker exec -it cms sh -c " /usr/local/bin/composer --working-dir=/var/www ${PARAMS}"

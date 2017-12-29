@@ -11,7 +11,7 @@ endif
 faketarget:
 	@echo "Please specify a target. See README for available targets."
 
-init: salt composer-install docker-start ready init-drupal docker-status
+init: salt docker-start ready composer-install init-drupal docker-status
 
 init-drupal: drupal-install config-init config-import clear-cache
 
@@ -36,13 +36,13 @@ docker-stop:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down
 
 composer-install:
-	composer install --ignore-platform-reqs --no-interaction --no-progress
+	./bin/composer install --ignore-platform-reqs --no-interaction --no-progress
 
 composer-update:
-	composer update --ignore-platform-reqs --no-interaction --no-progress --prefer-dist
+	./bin/composer update --ignore-platform-reqs --no-interaction --no-progress --prefer-dist
 
 drupal-upgrade:
-	composer update drupal/core --with-dependencies
+	./bin/composer update drupal/core --with-dependencies
 
 drupal-install:
 	./bin/drush --root=/var/www/web site-install minimal -vv --account-name=admin --account-pass=admin --yes \
