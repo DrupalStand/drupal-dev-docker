@@ -1,0 +1,22 @@
+{%
+  set classes = [
+  'paragraph',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  'icon-content-block'
+]
+%}
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      <div class="icon-content-block__icon">
+        {{ content.field_icon|render }}
+      </div>
+      <div class="icon-content-block__content">
+        <div class="icon-content-block__title">{{ content.field_title|render }}</div>
+        <div class="icon-content-block__summary">{{ content.field_summary|render }}</div>
+        <div class="icon-content-block__link">{{ content.field_link|render }}</div>
+      </div>
+    {% endblock %}
+  </div>
+{% endblock paragraph %}

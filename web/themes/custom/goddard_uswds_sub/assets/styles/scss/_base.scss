@@ -24,12 +24,12 @@ button:focus, button:active {
 
 .region-breadcrumb {
   border-bottom: 1px solid #ddd;
-  padding-bottom: 1.5rem;  
+  padding-bottom: 1.5rem;
   display: flex;
   #block-goddard-uswds-sub-breadcrumbs {
     .usa-breadcrumbs li:not(:last-child):after {
-      content: ' / ';   
-      color: #ddd;   
+      content: ' / ';
+      color: #ddd;
     }
     .usa-breadcrumbs {
       .usa-nav-secondary-links {
@@ -38,7 +38,7 @@ button:focus, button:active {
         }
       }
     }
-  }  
+  }
   #block-views-block-related-tags-block-1 {
     margin-left: auto;
     display: inline-flex;
@@ -78,7 +78,10 @@ button:focus, button:active {
     p {
       font-weight: 300;
       font-size: 1.9rem;
-      line-height: 3rem;      
+      line-height: 3rem;
+    }
+    p:first-child {
+      margin-top: 0;
     }
   }
 }

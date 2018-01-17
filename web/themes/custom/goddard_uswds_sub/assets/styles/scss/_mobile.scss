@@ -1,3 +1,4 @@
+// @todo: Refactor this file. Its a mess.
 /* END Agency Footer */
 
 @media screen and (min-width: 600px) {
@@ -20,71 +21,20 @@
 }
 
 @media screen and (min-width: 300px) and (max-width: 700px) {
-  
+
   header {
-    .usa-menu-btn {
-      position: fixed;
-      right: 0;
-      z-index: 2;
-    }
+
     .usa-banner {
       padding: 0;
     }
+
   }
-  
+
   .nasa-agency-title {
     margin-left: 0px;
   }
-  
-  .menu--utility-navigation {
-    width: 100%;
-  }
-  .utility-menu {
-    width: 100%;
-    ul {
-      padding: 0;
-      margin: 0 auto;
-      li {
-        float: left;
-        display: inline-block;
-      }
-    }
-  }
-  
-  .usa-nav-container {
-    .usa-menu-btn {
-      display: none;
-    }
-    .usa-grid-full {
-      .office-name-wrap {
-        width: 100%;
-        .office-name {
-          padding-right: 0;
-          padding-left: 3rem;
-          font-size: 3rem;
-          line-height: 4.5rem;
-        }
-      }       
-    }    
-    .usa-grid-full {
-      width: inherit;
-    }
-    .usa-nav {
-      float: inherit;
-      padding: 0;
-    }
-    div[role=navigation] {
-      width: unset;
-      ul {
-        display: block;
-      }
-      a {
-        padding: 10px;
-        border-radius: none;        
-      }
-    }
-  }
-  
+
+
   .view-calendar {
     .pager {
       width: 100%;
@@ -93,11 +43,11 @@
       float: right;
     }
   }
-  
+
   body.calendar .pager .pager__item--current, body.path-calendar .pager .pager__item--current {
     padding: 9px;
   }
-  
+
   .calendar-calendar {
     .month-view {
       .item {
@@ -111,5 +61,5 @@
       }
     }
   }
-  
+
 }

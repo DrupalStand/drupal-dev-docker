@@ -21,9 +21,9 @@ libraries-override:
     css:
       theme:
         assets/css/uswds.css: assets/css/uswds.css
-        assets/styles/css/goddard.css: assets/styles/css/goddard.css      
+        assets/styles/css/goddard.css: assets/styles/css/goddard.css
     js:
-      assets/js/uswds.min.js: assets/js/uswds.min.js    
+      assets/js/uswds.min.js: assets/js/uswds.min.js
 
 # Add the CSS to CKEditor, so that custom entries in "Style" will work.
 ckeditor_stylesheets:
@@ -43,7 +43,7 @@ regions:
   hero: 'Hero'
   content: 'Content'
   sub_area_left: 'Sub Area Left'
-  sub_area_right: 'Sub Area Right'  
+  sub_area_right: 'Sub Area Right'
   footer_menu: 'Footer Menu'
   footer: 'Primary Footer'
   footer_secondary: 'Secondary Footer'

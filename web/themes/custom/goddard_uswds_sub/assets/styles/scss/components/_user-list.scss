@@ -1,0 +1,79 @@
+// Placeholder class for quick and dirty styling. Do not extend outside file.
+// @todo: Apply classes to 'a' element in user-list__footer. We shouldn't style element selectors.
+%user-list__footer-link {
+  background: #1f58a0;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 1.5rem 8rem;
+  border-radius: 10rem;
+  margin: 0 auto;
+  display: table;
+
+  &:after {
+    font-family: FontAwesome;
+    content: "\f105";
+    padding-left: 1rem;
+  }
+
+}
+
+.user-list {
+  width: 100%;
+  float: left;
+}
+
+.user-list__title {
+
+}
+
+.user-list__summary {
+
+}
+
+.user-list__people {
+
+}
+
+.user-list__item {
+  float: left;
+  width: 100%;
+  border-bottom: 1px solid #dddddd;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.user-list__name {
+  padding-right: 5px;
+  @include respond-to(small) {
+    float: left;
+  }
+}
+
+.user-list__title {
+  font-style: italic;
+  @include respond-to(small) {
+    float: left;
+    clear: left;
+  }
+}
+
+.user-list__email {
+  @include respond-to(small) {
+    float: right;
+    text-align: right;
+  }
+}
+
+.user-list__footer {
+  width: 100%;
+  float: left;
+  margin-top: 35px;
+  margin-bottom: 30px;
+
+  a {
+    @extend %user-list__footer-link;
+  }
+
+}
+
+

@@ -1,3 +1,4 @@
+// @todo: Refactor this file. It is a mess.
 // Contact Page
 body.contact-us {
   .sub-section {
@@ -5,13 +6,13 @@ body.contact-us {
     .uswds-main-content-wrapper {
       margin-top: 3rem;
       padding-top: 3rem;
-      border-top: 1px solid #ddd;      
+      border-top: 1px solid #ddd;
     }
   }
   aside.region-sub-section-left {
     padding-right: 25px;
     padding-right: 50px;
-    border-right: 1px solid #ddd;    
+    border-right: 1px solid #ddd;
   }
   aside.region-sub-section-right {
     padding-left: 25px;
@@ -23,9 +24,9 @@ body.calendar-year {
   .year-view {
     border-radius: 11px;
     overflow: hidden;
-    box-shadow: 0px 0px 40px #c6c2c2;  
-    float: left;  
-    width: 100%;  
+    box-shadow: 0px 0px 40px #c6c2c2;
+    float: left;
+    width: 100%;
     .calendar-calendar {
       .month-view {
         border-radius: 0px;
@@ -33,7 +34,7 @@ body.calendar-year {
         box-shadow: none;
         float: left;
         width: 100%;
-        padding: 15px; 
+        padding: 15px;
         .mini.has-events {
           .day {
             background: #9FE3F8;
@@ -42,7 +43,7 @@ body.calendar-year {
               text-decoration: none;
             }
           }
-        }        
+        }
         .mini.today {
           background: none;
           .day {
@@ -52,31 +53,31 @@ body.calendar-year {
               text-decoration: none;
             }
           }
-        }   
-      }
-      .mini.has-events.today { 
-        .day {
-          background: #57a7bf;          
         }
-      }                    
-    }  
-  } 
+      }
+      .mini.has-events.today {
+        .day {
+          background: #57a7bf;
+        }
+      }
+    }
+  }
 }
 body.calendar, body.path-calendar {
   .calendar-calendar {
     .month-view {
       border-radius: 11px;
       overflow: hidden;
-      box-shadow: 0px 0px 40px #c6c2c2;  
-      float: left;  
-      width: 100%;           
+      box-shadow: 0px 0px 40px #c6c2c2;
+      float: left;
+      width: 100%;
     }
     .day-view {
       #single-day-container {
         border-radius: 11px;
-        box-shadow: 0px 0px 40px #c6c2c2;  
-        float: left;  
-        width: 100%;        
+        box-shadow: 0px 0px 40px #c6c2c2;
+        float: left;
+        width: 100%;
       }
       .single-day-footer {
         display: none;
@@ -89,7 +90,7 @@ body.calendar, body.path-calendar {
           margin-top: -24px;
           max-width: 120px;
           float: none;
-      }    
+      }
     }
     .week-view {
       table.full {
@@ -100,8 +101,8 @@ body.calendar, body.path-calendar {
         }
       }
       #single-day-container {
-        box-shadow: 0 0 40px #c6c2c2; 
-        border-radius: 11px;       
+        box-shadow: 0 0 40px #c6c2c2;
+        border-radius: 11px;
       }
       .single-day-footer {
         display: none;
@@ -113,8 +114,8 @@ body.calendar, body.path-calendar {
         z-index: 1;
         margin-top: -24px;
         max-width: 120px;
-        float: none;        
-      }   
+        float: none;
+      }
     }
     .days {
       color: #777;
@@ -165,8 +166,8 @@ body.calendar, body.path-calendar {
         border-left: 5px solid #008FFB;
         font-size: 1.5rem;
         margin: 10px;
-        padding: 10px;    
-        border-radius: 5px;    
+        padding: 10px;
+        border-radius: 5px;
         .contents, .cutoff{
           background: #9FE3F8 !important;
           a {
@@ -188,7 +189,7 @@ body.calendar, body.path-calendar {
           background: #0071bc;
           padding: 10px 20px;
           margin: 5px;
-          border-radius: 3px;       
+          border-radius: 3px;
           font-family: $poppins;
           font-size: 1.6rem;
           transition: .2 all;
@@ -240,14 +241,14 @@ body.calendar, body.path-calendar {
         transition: .2s all;
         &:hover {
           opacity: .7;
-        }   
+        }
       }
     }
     .pager__item--previous {
       float: left;
       a {
         &:before {
-          content: '❮';          
+          content: '❮';
         }
       }
     }
@@ -255,7 +256,7 @@ body.calendar, body.path-calendar {
       float: left;
       a {
         &:before {
-          content: '❯';            
+          content: '❯';
         }
       }
     }
@@ -269,7 +270,7 @@ body.calendar, body.path-calendar {
     background: #F4F4F4;
     border-radius: 5px;
     padding: 30px 15px;
-    font-size: 1.4rem; 
+    font-size: 1.4rem;
   }
   .views-field-field-event-date {
     padding-bottom: 10px;
@@ -283,7 +284,7 @@ body.calendar, body.path-calendar {
   }
 }
 
-// Missions View Page 
+// Missions View Page
 .view-display-id-page_1 {
     font-family: "Poppins", sans-serif;
   .views-row {
@@ -294,7 +295,7 @@ body.calendar, body.path-calendar {
     .created-on {
       text-transform: uppercase;
       font-size: 1.4rem;
-      font-weight: 300;      
+      font-weight: 300;
     }
     h3 {
       a {
@@ -307,6 +308,9 @@ body.calendar, body.path-calendar {
       font-size: 1.5rem;
       font-weight: 200;
     }
+    p:first-child {
+      margin-top: 0;
+    }
     .view-link {
       a {
         text-decoration: none;
@@ -314,6 +318,6 @@ body.calendar, body.path-calendar {
         color: #0054A4;
         font-size: 1.5rem;
       }
-    } 
+    }
   }
 }

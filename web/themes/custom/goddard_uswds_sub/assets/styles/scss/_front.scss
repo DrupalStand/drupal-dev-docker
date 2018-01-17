@@ -5,14 +5,14 @@
   // Custom blocks
   .custom-block, .block-views-blockcontent-recent-block-1 {
     margin-top: 2rem;
-    margin-bottom: 8rem;
+    margin-bottom: 3rem;
     h2 {
       margin-top: 10px;
     }
-  }  
+  }
   .region-sidebar-first {
     h2 {
-      padding: 2rem 0;
+      padding: 2rem 0 0;
     }
     .field--name-body {
       font-family: $poppins;
@@ -23,12 +23,15 @@
       margin-top: 1.5em;
       font-weight: 100;
       padding-right: 2rem;
-      font-size: 1.8rem;  
+      font-size: 1.8rem;
       a {
         text-decoration: none;
         font-weight: 500;
-        color: #1F58A0;        
-      }    
+        color: #1F58A0;
+      }
+    }
+    p:first-child {
+      margin-top: 0;
     }
   }
 }
