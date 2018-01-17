@@ -1,0 +1,24 @@
+uuid: 7cf0281e-a268-49da-ae47-6591e6cca847
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.icon_and_text_block
+    - field.field.block_content.icon_and_text_block.field_icon_and_text
+  module:
+    - entity_reference_revisions
+id: block_content.icon_and_text_block.default
+targetEntityType: block_content
+bundle: icon_and_text_block
+mode: default
+content:
+  field_icon_and_text:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden: {  }

@@ -1,0 +1,9 @@
+uuid: 6d392e7c-567a-496e-9859-c56545b19bd0
+langcode: en
+status: true
+dependencies: {  }
+id: text_block
+label: 'Text Block'
+icon_uuid: null
+description: 'This generates a title and a text area with a WYSIWYG editor.'
+behavior_plugins: {  }

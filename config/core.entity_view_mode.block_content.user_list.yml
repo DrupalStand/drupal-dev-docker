@@ -1,0 +1,10 @@
+uuid: 03a60192-d61d-4e77-918a-d8c958477cdb
+langcode: en
+status: true
+dependencies:
+  module:
+    - block_content
+id: block_content.user_list
+label: 'User List'
+targetEntityType: block_content
+cache: true

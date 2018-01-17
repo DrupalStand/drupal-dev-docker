@@ -1,0 +1,14 @@
+uuid: 76afb6f8-32e2-41ff-8295-814d2a733b4a
+langcode: en
+status: true
+dependencies: {  }
+name: mission_images
+label: 'Mission Images'
+effects:
+  84fd85da-1d5c-4e30-8ad3-5e58eaeaae45:
+    uuid: 84fd85da-1d5c-4e30-8ad3-5e58eaeaae45
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 420
+      height: 224

@@ -1,0 +1,163 @@
+/* NASA header */
+
+.usa-header-basic {
+  box-shadow: 0px 0px 50px #C5C5C5;
+  border-bottom: none;
+  z-index: 1;
+  position: relative;  
+  .usa-logo {
+    bottom: unset;
+    position: relative;
+  }  
+}
+
+.nasa-header-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  img {
+    float: left;
+    max-height: 80px;
+  }
+  .utility-menu {
+    margin-left: auto;
+    display: inline-flex;
+    .usa-search {
+      display: inline-flex;
+    }
+    // Search Field
+    #search-block-form {
+      border: 1px solid #ddd;
+      border-radius: 20px;  
+      overflow: hidden; 
+      margin-top: 1.3rem;
+      height: 4rem;
+      padding-top: 4px;
+      padding-right: 3px;
+      padding-left: 12px;
+      input[type=search] {
+        border: none;
+        font-family: $poppins;
+        &:focus {
+          outline: none;
+        }
+      }
+      input[type=submit] {
+        background-color: #fff;
+        background-image: url(../../../images/mag.png);
+        border: none;
+      }
+    }  
+  }  
+}
+
+.user-logged-in {
+  .utility-menu {
+    .usa-search {
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+.nasa-agency-title {
+  display: inline-block;
+  margin-left: 20px;
+  padding-top: 15px;
+  text-align: center;
+  color: #373737;
+  h4, h5 {
+    margin-top: 5px;
+    font-weight: 500;
+  }
+  h4 {
+    font-size: 1.9rem;
+  }
+}
+
+.nasa-header-menu ul {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.nasa-header-menu ul li {
+  list-style: none;
+  margin-right: 20px;
+}
+
+.nasa-header-menu a {
+  color: black;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+/* END NASA header */
+
+/* SITE header */
+.usa-navbar {
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+  max-width: none;
+  height: auto;
+  background-image: url('/themes/goddard_uswds_sub/images/banner.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-top: 10px;
+  padding: 0 20px;
+  .region.region-header {
+    width: 100%;
+  }  
+}
+
+.usa-nav-primary {
+  font-family: $poppins;
+  text-transform: uppercase;
+}  
+.usa-nav-primary > li > a {
+  font-weight: 500;
+}
+
+.usa-logo {
+  max-width: 40%;
+}
+
+.usa-logo-text {
+  font-size: 2.4em;
+  font-family: $poppins;
+}
+
+.usa-logo img {
+  display: none;
+}
+
+.usa-logo a {
+  color: white;
+}
+
+.usa-nav-container {
+  max-width: none !important;
+  padding-left: 0;
+  padding-right: 0;
+  .usa-nav {
+    float: none;
+  }
+  .usa-grid-full {
+    width: 100%;
+    margin: 0 auto;  
+    .office-name-wrap {
+      width: 50%;
+    }
+    .office-name {
+      padding-right: 3rem;
+      padding-left: 3rem;        
+      color: #FCEBA7;
+      margin-bottom: 1.5em;
+      margin-top: 1.5em;
+      font-size: 5rem;
+      line-height: 5.5rem;      
+    }
+  }
+}
+
+/* END SITE header */

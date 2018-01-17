@@ -1,0 +1,47 @@
+uuid: 71df1b75-61b5-46fc-abe2-95a5b3d748a6
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.user_list
+    - field.field.block_content.user_list.body
+    - field.field.block_content.user_list.field_button
+    - field.field.block_content.user_list.field_people
+  module:
+    - entity_reference_revisions
+    - link
+    - text
+id: block_content.user_list.default
+targetEntityType: block_content
+bundle: user_list
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_button:
+    weight: 3
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_people:
+    type: entity_reference_revisions_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden: {  }

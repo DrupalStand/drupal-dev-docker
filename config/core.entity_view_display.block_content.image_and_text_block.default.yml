@@ -1,0 +1,22 @@
+uuid: cef1ee59-ea54-4fbe-9792-fd476c1572b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.image_and_text_block
+    - field.field.block_content.image_and_text_block.body
+  module:
+    - text
+id: block_content.image_and_text_block.default
+targetEntityType: block_content
+bundle: image_and_text_block
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

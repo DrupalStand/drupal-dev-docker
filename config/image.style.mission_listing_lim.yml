@@ -1,0 +1,14 @@
+uuid: 6e93594f-51af-495d-87a0-243d6bd9be8c
+langcode: en
+status: true
+dependencies: {  }
+name: mission_listing_lim
+label: 'Mission Listing Images'
+effects:
+  0aff6262-68df-4320-a83a-b5ff39da021a:
+    uuid: 0aff6262-68df-4320-a83a-b5ff39da021a
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 320
+      height: 215

@@ -1,0 +1,29 @@
+uuid: 1ebf3d02-fff1-4bb5-a9c0-94af1484e9f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - contact.form.contact_us
+  module:
+    - contact_block
+    - system
+  theme:
+    - goddard_uswds_sub
+id: contactblock
+theme: goddard_uswds_sub
+region: sub_area_left
+weight: -9
+provider: null
+plugin: contact_block
+settings:
+  id: contact_block
+  label: 'Contact block'
+  provider: contact_block
+  label_display: '0'
+  contact_form: contact_us
+visibility:
+  request_path:
+    id: request_path
+    pages: /contact-us
+    negate: false
+    context_mapping: {  }

@@ -1,0 +1,32 @@
+purge_on_cache_clear: true
+storage: profiler.file_storage
+exclude: "/contextual/*\r\n/toolbar/*\r\n/edit/*\r\n*.js\r\n*.css"
+ide_link: 'txmt://open?url=file://@file&line=@line'
+ide_link_remote: ''
+ide_link_local: ''
+active_toolbar_items:
+  assets: assets
+  blocks: blocks
+  cache: cache
+  config: config
+  database: database
+  devel: devel
+  events: events
+  drupal_extension: drupal_extension
+  forms: forms
+  php_config: php_config
+  performance_timing: performance_timing
+  request: request
+  theme: theme
+  time: time
+  user: user
+  views: views
+  http: '0'
+  mail: '0'
+  routing: '0'
+  services: '0'
+  state: '0'
+query_sort: source
+query_highlight: 5
+_core:
+  default_config_hash: w1Hg1sJmlqc38y_J-HQH8kLDLRH3wuEhx-Fkwz7m-SI

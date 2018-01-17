@@ -1,0 +1,62 @@
+/* BEGIN Agency Footer */
+
+.nasa-agency-footer {
+  background-color: #0C131C;
+  color: white;
+  padding: 60px 0;
+  font-size: 80%;
+}
+.nasa-agency-footer-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.footer-agency-id img {
+  margin-bottom: 10px;
+}
+
+.footer-agency-id p {
+  margin: 0;
+}
+
+.footer-agency-links ul {
+  padding-left: 0;
+}
+
+.footer-agency-links li {
+  list-style: none;
+  margin-right: 20px;
+}
+
+.footer-agency-links a {
+  color: white;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+footer {
+  nav {
+    .menu {
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      width: 100%;
+      list-style-type: none;
+      color: #fff;
+      a {
+        font-family: $poppins;
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      li {
+        display: block;
+        flex: 0 1 auto; 
+        padding: 0 2rem;       
+      }
+    }
+  }
+}

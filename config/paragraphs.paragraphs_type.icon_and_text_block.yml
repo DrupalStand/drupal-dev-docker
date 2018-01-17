@@ -1,0 +1,9 @@
+uuid: 549eba0e-8153-4438-84cd-4fcd57c053a5
+langcode: en
+status: true
+dependencies: {  }
+id: icon_and_text_block
+label: 'Icon and Text Block'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

@@ -1,0 +1,19 @@
+{
+  "name": "goddard-uswds-sub",
+  "version": "1.0.0",
+  "scripts": {
+    "prebuild:css": "node-sass --include-path scss sass/uswds.scss css/uswds.css",
+    "build:css": "postcss --use autoprefixer -b 'last 2 versions' < css/uswds.css | postcss --use cssnano --map -o css/uswds.min.css",
+    "build": "npm run build:css",
+    "build:watch": "watch 'npm run build' sass"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.1",
+    "cssnano": "^3.10.0",
+    "node-sass": "^4.5.3",
+    "postcss": "^6.0.2",
+    "postcss-cli": "^4.1.0",
+    "uswds": "^1.3.0",
+    "watch": "^1.0.2"
+  }
+}

@@ -1,0 +1,78 @@
+<header class="{{ header_classes }}" id="header" role="banner">
+
+  <div class="nasa-header-menu">
+    <a href="https://www.nasa.gov">
+      <img src="/themes/goddard_uswds_sub/images/nasa-logo-sm.png" alt="Nasa logo" />
+    </a>
+
+    <button class="usa-menu-btn">{{ 'Menu'|t }}</button>
+
+    <div class="nasa-agency-title">
+      <h5 class="all-caps">National Aeronautics and Space Administration</h5>
+      <h4>{{ center_name }}</h4>
+    </div>
+    
+    {% if page.header_top %}
+    <div class="utility-menu">
+      {{ page.header_top }}
+    </div>
+    {% endif %} 
+       
+  </div>
+
+  {% if page.header_top or government_banner %}
+  <section class="usa-banner">
+
+    {{ government_banner }}
+
+  </section>
+  {% endif %}
+
+  {% if header_basic %}
+  <div class="usa-nav-container">
+  {% endif %}
+
+  <div class="usa-navbar">
+    <div class="usa-grid-full">
+      <div class="office-name-wrap">
+        {% if office_name %}
+          <h1 class="office-name">{{ office_name }}</h1>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="usa-overlay"></div>
+  <div class="usa-nav usa-grid-full" role="navigation">
+    <div class="usa-nav-inner">
+
+      <button class="usa-nav-close">
+        <img src="{{ active_theme_path }}/assets/img/close.svg" alt="close" />
+      </button>
+
+      {% if page.mobile_menu %}
+      <div class="usa-nav-mobile">
+        {{ page.mobile_menu }}
+      </div>
+      {% endif %}
+
+      {% if page.mobile_menu %}
+      <div class="usa-nav-desktop">
+      {% endif %}
+
+      {% if page.primary_menu %}
+        {{ page.primary_menu }}
+      {% endif %}
+
+      {% if page.mobile_menu %}
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  {% if header_basic %}
+  </div>
+  {% endif %}
+
+</header>

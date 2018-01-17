@@ -1,0 +1,49 @@
+name: Goddard Subtheme of USWDS
+type: theme
+description: 'A subtheme of USWDS.'
+core: 8.x
+base theme: uswds
+
+libraries:
+  - goddard_uswds_sub/goddard
+  - goddard_uswds_sub/slick
+
+# The USWDS css and js needs to be available at the following paths, either by
+# configuring your Sass to output it there, or by manually downloading and
+# extracting this: https://github.com/18F/web-design-standards/releases/download/v1.3.0/uswds-1.3.0.zip
+# If you choose a Sass workflow over the manual download, you can get set up
+# quickly with these commands, run in this folder:
+#   npm install
+#   cp -r node_modules/uswds/dist assets
+#   npm run build
+libraries-override:
+  uswds/uswds:
+    css:
+      theme:
+        assets/css/uswds.css: assets/css/uswds.css
+        assets/styles/css/goddard.css: assets/styles/css/goddard.css      
+    js:
+      assets/js/uswds.min.js: assets/js/uswds.min.js    
+
+# Add the CSS to CKEditor, so that custom entries in "Style" will work.
+ckeditor_stylesheets:
+  - css/uswds.css
+
+regions:
+  header_top: 'Above Header'
+  header: 'Header'
+  primary_menu: 'Primary Menu'
+  secondary_menu: 'Secondary Menu'
+  mobile_menu: 'Mobile Menu'
+  sidebar_first: 'First sidebar'
+  sidebar_second: 'Second sidebar'
+  breadcrumb: 'Breadcrumb'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  hero: 'Hero'
+  content: 'Content'
+  sub_area_left: 'Sub Area Left'
+  sub_area_right: 'Sub Area Right'  
+  footer_menu: 'Footer Menu'
+  footer: 'Primary Footer'
+  footer_secondary: 'Secondary Footer'

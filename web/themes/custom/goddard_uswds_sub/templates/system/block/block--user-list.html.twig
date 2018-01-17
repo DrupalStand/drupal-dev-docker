@@ -1,0 +1,21 @@
+{{kint(content)}}
+<div class="user-list-block">
+  <div{{ attributes }}>
+  
+    {{ title_prefix }}
+    {% if label %}
+      <h2{{ title_attributes }}>{{ label }}</h2>
+    {% endif %}
+    {{ title_suffix }}
+    
+    {{ content.body }}
+    
+    <div class="user-list-field">
+      {{ content.field_people }} 
+    </div>
+    
+    {% if content.field_button %}
+      <div class="button-wrap"> {{ content.field_button }}</div>
+    {% endif %}
+  </div>
+</div>  

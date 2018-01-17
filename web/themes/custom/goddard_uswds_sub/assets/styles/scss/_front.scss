@@ -1,0 +1,34 @@
+.front {
+  .uswds-middle-section {
+    background: #F4F4F4;
+  }
+  // Custom blocks
+  .custom-block, .block-views-blockcontent-recent-block-1 {
+    margin-top: 2rem;
+    margin-bottom: 8rem;
+    h2 {
+      margin-top: 10px;
+    }
+  }  
+  .region-sidebar-first {
+    h2 {
+      padding: 2rem 0;
+    }
+    .field--name-body {
+      font-family: $poppins;
+    }
+    p {
+      line-height: 1.7;
+      margin-bottom: 1.5em;
+      margin-top: 1.5em;
+      font-weight: 100;
+      padding-right: 2rem;
+      font-size: 1.8rem;  
+      a {
+        text-decoration: none;
+        font-weight: 500;
+        color: #1F58A0;        
+      }    
+    }
+  }
+}

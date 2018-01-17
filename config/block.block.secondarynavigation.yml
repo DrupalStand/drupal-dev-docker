@@ -1,0 +1,33 @@
+uuid: 42684471-cc9b-4fb0-945b-e6fce5bdd492
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.secondary-navigation
+  module:
+    - node
+    - system
+  theme:
+    - goddard_uswds_sub
+id: secondarynavigation
+theme: goddard_uswds_sub
+region: sidebar_first
+weight: -9
+provider: null
+plugin: 'system_menu_block:secondary-navigation'
+settings:
+  id: 'system_menu_block:secondary-navigation'
+  label: 'Secondary Navigation'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 1
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      article: article
+      missions: missions
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

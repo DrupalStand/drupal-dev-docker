@@ -1,0 +1,22 @@
+uuid: 82c6c0a3-8268-4229-acf5-3be652f19102
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - goddard_uswds_sub
+_core:
+  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+id: goddard_uswds_sub_messages
+theme: goddard_uswds_sub
+region: highlighted
+weight: 0
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

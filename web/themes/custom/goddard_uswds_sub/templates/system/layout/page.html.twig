@@ -1,0 +1,84 @@
+{#
+/**
+ * @file
+ * USWDS theme implementation to display a single page.
+ */
+#}
+
+{% include directory ~ '/templates/inc/header.html.twig' %}
+
+{% if page.hero %}
+<section>
+{{ page.hero }}
+</section>
+{% endif %}
+
+<section class="usa-section uswds-middle-section {{ main_classes }}">
+  <div class="usa-grid">
+    <div class="usa-width-full">
+      {% if page.help|render|trim %}
+      <div class="usa-alert usa-alert-info">
+        <div class="usa-alert-body">
+          <p class="usa-alert-text">
+            {{ page.help }}
+          </p>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <div class="uswds-main-content-wrapper {% if edge_to_edge == false %}usa-grid{% endif %}">
+    <a id="main-content" tabindex="-1"></a>
+
+    <div class="region-content {{ content_class }}">
+      {{ page.content }}
+    </div>
+
+    {% if page.sidebar_center %}
+      <aside class="region-sidebar-first usa-width-one-third">      
+        {{ page.sidebar_first }}
+      </aside>
+    {% else %}
+      <aside class="region-sidebar-first usa-width-one-half">      
+        {{ page.sidebar_first }}
+      </aside>
+    {% endif %}
+
+    {% if page.sidebar_center %}
+      <aside class="region-sidebar-center usa-width-one-third">
+        {{ page.sidebar_center }}
+      </aside>
+    {% endif %}
+
+    {% if page.sidebar_center %}
+      <aside class="region-sidebar-second usa-width-one-third">      
+        {{ page.sidebar_second }}
+      </aside>
+    {% else %}
+      <aside class="region-sidebar-second usa-width-one-half">
+        {{ page.sidebar_second }}
+      </aside>
+    {% endif %}
+
+  </div>
+</section>
+<section class="usa-section sub-section{{ main_classes }}">
+  <div class="uswds-main-content-wrapper {% if edge_to_edge == false %}usa-grid{% endif %}">
+    {% if page.sub_area_left %}
+      <aside class="region-sub-section-left usa-width-one-half">
+        {{ page.sub_area_left }}
+      </aside>
+    {% endif %}
+
+    {% if page.sub_area_right %}
+      <aside class="region-sub-section-right usa-width-one-half">
+        {{ page.sub_area_right }}
+      </aside>
+    {% endif %} 
+  </div>  
+</section>  
+
+
+{% include directory ~ '/templates/inc/footer.html.twig' %}

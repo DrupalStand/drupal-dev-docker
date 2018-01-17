@@ -1,0 +1,319 @@
+// Contact Page
+body.contact-us {
+  .sub-section {
+    padding-top: 0;
+    .uswds-main-content-wrapper {
+      margin-top: 3rem;
+      padding-top: 3rem;
+      border-top: 1px solid #ddd;      
+    }
+  }
+  aside.region-sub-section-left {
+    padding-right: 25px;
+    padding-right: 50px;
+    border-right: 1px solid #ddd;    
+  }
+  aside.region-sub-section-right {
+    padding-left: 25px;
+  }
+}
+
+// Calendar Page
+body.calendar-year {
+  .year-view {
+    border-radius: 11px;
+    overflow: hidden;
+    box-shadow: 0px 0px 40px #c6c2c2;  
+    float: left;  
+    width: 100%;  
+    .calendar-calendar {
+      .month-view {
+        border-radius: 0px;
+        overflow: hidden;
+        box-shadow: none;
+        float: left;
+        width: 100%;
+        padding: 15px; 
+        .mini.has-events {
+          .day {
+            background: #9FE3F8;
+            a {
+              color: #000;
+              text-decoration: none;
+            }
+          }
+        }        
+        .mini.today {
+          background: none;
+          .day {
+            background: #000;
+            a {
+              color: #fff;
+              text-decoration: none;
+            }
+          }
+        }   
+      }
+      .mini.has-events.today { 
+        .day {
+          background: #57a7bf;          
+        }
+      }                    
+    }  
+  } 
+}
+body.calendar, body.path-calendar {
+  .calendar-calendar {
+    .month-view {
+      border-radius: 11px;
+      overflow: hidden;
+      box-shadow: 0px 0px 40px #c6c2c2;  
+      float: left;  
+      width: 100%;           
+    }
+    .day-view {
+      #single-day-container {
+        border-radius: 11px;
+        box-shadow: 0px 0px 40px #c6c2c2;  
+        float: left;  
+        width: 100%;        
+      }
+      .single-day-footer {
+        display: none;
+      }
+      div.single-day .view-item {
+          width: 100%;
+          background: none;
+          text-align: left;
+          z-index: 1;
+          margin-top: -24px;
+          max-width: 120px;
+          float: none;
+      }    
+    }
+    .week-view {
+      table.full {
+        overflow: hidden;
+        .calendar-agenda-hour, .calendar-day-holder {
+          background: none;
+          border: none;
+        }
+      }
+      #single-day-container {
+        box-shadow: 0 0 40px #c6c2c2; 
+        border-radius: 11px;       
+      }
+      .single-day-footer {
+        display: none;
+      }
+      div.single-day .view-item {
+        width: 100%;
+        background: none;
+        text-align: left;
+        z-index: 1;
+        margin-top: -24px;
+        max-width: 120px;
+        float: none;        
+      }   
+    }
+    .days {
+      color: #777;
+      font-weight: 600;
+      border: none;
+      background: #fff;
+      padding: 15px 0;
+      text-transform: uppercase;
+    }
+    .past {
+      color: #777;
+    }
+    .month-view .full tr.single-day .no-entry, .month-view .full tr.single-day .no-entry .inner {
+      height: 100px !important;
+    }
+    .month-view .full td.single-day div.monthview, .week-view .full td.single-day div.weekview, .day-view .full td.single-day div.dayview {
+      background: #9FE3F8;
+      color: #000;
+      border-left: 5px solid #008FFB;
+      font-size: 1.5rem;
+      margin: 10px;
+      padding: 10px;
+      a {
+        color: #000;
+      }
+    }
+    .month-view .full tr td.today, .month-view .full tr.odd td.today, .month-view .full tr.even td.today {
+      border: none;
+      .month.day {
+        background: #000;
+        color: #fff;
+        padding-bottom: 2px;
+        border-radius: 5px;
+        a {
+          color: #fff;
+        }
+      }
+    }
+    #single-day-container {
+      visibility: visible !important;
+      height: 500px !important;
+      width: 100%;
+    }
+    .single-day {
+      .weekview {
+        background: #9FE3F8 !important;
+        color: #000;
+        border-left: 5px solid #008FFB;
+        font-size: 1.5rem;
+        margin: 10px;
+        padding: 10px;    
+        border-radius: 5px;    
+        .contents, .cutoff{
+          background: #9FE3F8 !important;
+          a {
+            background: #9FE3F8 !important;
+          }
+        }
+      }
+    }
+  }
+  .cal-menu {
+    float: right;
+    ul {
+      list-style-type: none;
+      li {
+        display: inline-block;
+        a {
+          text-decoration: none;
+          color: #fff;
+          background: #0071bc;
+          padding: 10px 20px;
+          margin: 5px;
+          border-radius: 3px;       
+          font-family: $poppins;
+          font-size: 1.6rem;
+          transition: .2 all;
+          &:hover {
+            opacity: .7;
+          }
+        }
+      }
+    }
+  }
+  .view-header {
+    h3 {
+      float: left;
+    }
+  }
+  .pager {
+    float: left;
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      li {
+        display: inline-block;
+        a {
+          span {
+            display: none;
+          }
+        }
+      }
+    }
+    .pager__item--current {
+      padding: 10px 25px;
+      font-weight: bold;
+      font-size: 3rem;
+      margin: 0;
+      font-family: $poppins;
+    }
+    .pager__item--previous, .pager__item--next {
+      float: left;
+      font-size: 3rem;
+      margin: 0;
+      a {
+        padding: .5rem;
+        display: block;
+        margin: .6rem;
+        color: #666;
+        text-decoration: none;
+        border-radius: 10px;
+        transition: .2s all;
+        &:hover {
+          opacity: .7;
+        }   
+      }
+    }
+    .pager__item--previous {
+      float: left;
+      a {
+        &:before {
+          content: '❮';          
+        }
+      }
+    }
+    .pager__item--next {
+      float: left;
+      a {
+        &:before {
+          content: '❯';            
+        }
+      }
+    }
+  }
+}
+
+.page-node-type-event {
+// Event date block on the individual events node
+  #block-views-block-event-date-block-block-1 {
+    font-family: $poppins;
+    background: #F4F4F4;
+    border-radius: 5px;
+    padding: 30px 15px;
+    font-size: 1.4rem; 
+  }
+  .views-field-field-event-date {
+    padding-bottom: 10px;
+  }
+  .uswds-main-content-wrapper {
+    h1 {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+    }
+  }
+}
+
+// Missions View Page 
+.view-display-id-page_1 {
+    font-family: "Poppins", sans-serif;
+  .views-row {
+    float: left;
+    padding-bottom: 45px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 45px;
+    .created-on {
+      text-transform: uppercase;
+      font-size: 1.4rem;
+      font-weight: 300;      
+    }
+    h3 {
+      a {
+        text-decoration: none;
+        color: #000;
+        font-size: 2.5rem;
+      }
+    }
+    p {
+      font-size: 1.5rem;
+      font-weight: 200;
+    }
+    .view-link {
+      a {
+        text-decoration: none;
+        font-weight: 500;
+        color: #0054A4;
+        font-size: 1.5rem;
+      }
+    } 
+  }
+}

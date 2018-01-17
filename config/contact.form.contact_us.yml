@@ -1,0 +1,21 @@
+uuid: 5f6e92e8-78ff-4f52-a61e-4d49f0062d87
+langcode: en
+status: true
+dependencies:
+  module:
+    - contact_storage
+third_party_settings:
+  contact_storage:
+    submit_text: Submit
+    show_preview: false
+    disabled_form_message: 'This contact form has been disabled.'
+    maximum_submissions_user: 0
+    page_autoreply_format: plain_text
+id: contact_us
+label: 'Contact Us'
+recipients:
+  - jason.glisson@gmail.com
+reply: ''
+weight: 0
+message: 'Thank you for your submission.'
+redirect: ''

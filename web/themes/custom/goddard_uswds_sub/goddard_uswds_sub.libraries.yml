@@ -1,0 +1,20 @@
+goddard:
+  version: 1.0.0
+  css:
+    theme:
+      assets/styles/css/goddard.css: {}
+  js:
+    assets/js/goddard.js: {}
+  dependencies:
+    - core/jquery     
+      
+slick:
+  version: 1.8
+  css:
+    theme: 
+      assets/styles/css/slick.css: {}
+      assets/styles/css/slick-theme.css: {}      
+  js:
+    assets/js/slick.js: { scope: footer }
+  dependencies:
+    - core/jquery    

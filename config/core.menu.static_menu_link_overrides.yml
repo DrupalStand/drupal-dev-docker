@@ -1,0 +1,69 @@
+definitions:
+  block__admin_display:
+    weight: -63
+    parent: 'menu_link_content:fb51c186-2b9c-42c2-9b25-029054c5a003'
+    menu_name: admin
+    enabled: true
+    expanded: false
+  entity__comment_type__collection:
+    weight: -61
+    menu_name: admin
+    parent: system.admin_structure
+    expanded: false
+    enabled: true
+  entity__contact_form__collection:
+    weight: -60
+    menu_name: admin
+    parent: system.admin_structure
+    expanded: false
+    enabled: true
+  entity__node_type__collection:
+    weight: -59
+    menu_name: admin
+    parent: system.admin_structure
+    expanded: false
+    enabled: true
+  field_ui__display_mode:
+    weight: -58
+    menu_name: admin
+    parent: system.admin_structure
+    expanded: false
+    enabled: true
+  entity__menu__collection:
+    weight: -57
+    menu_name: admin
+    parent: system.admin_structure
+    expanded: false
+    enabled: true
+  entity__paragraphs_type__collection:
+    weight: -56
+    menu_name: admin
+    parent: system.admin_structure
+    expanded: false
+    enabled: true
+  entity__taxonomy_vocabulary__collection:
+    weight: -55
+    menu_name: admin
+    parent: system.admin_structure
+    expanded: false
+    enabled: true
+  entity__view__collection:
+    weight: -54
+    menu_name: admin
+    parent: system.admin_structure
+    expanded: false
+    enabled: true
+  contact__site_page:
+    enabled: true
+    menu_name: footer
+    parent: ''
+    expanded: false
+    weight: 0
+  standard__front_page:
+    weight: -50
+    menu_name: main
+    parent: ''
+    expanded: false
+    enabled: true
+_core:
+  default_config_hash: jdY7AU0tU-QsjmiOw3W8vwpYMb-By--_MSFgbqKUTYM

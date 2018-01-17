@@ -1,0 +1,8 @@
+uuid: 9c2e1463-9314-49ce-8c8e-19002e51a624
+langcode: en
+status: true
+dependencies: {  }
+id: user_list
+label: 'User List'
+revision: 0
+description: 'This is a repeating list of users. Can be used as an author list, contact list, or a general office employee list.'

@@ -1,0 +1,39 @@
+uuid: 7da8fd08-c79c-4488-ae27-a9465798f172
+langcode: en
+status: false
+dependencies:
+  config:
+    - block_content.type.user_list
+    - core.entity_view_mode.block_content.user_list
+    - field.field.block_content.user_list.body
+    - field.field.block_content.user_list.field_button
+    - field.field.block_content.user_list.field_people
+  module:
+    - link
+    - text
+id: block_content.user_list.user_list
+targetEntityType: block_content
+bundle: user_list
+mode: user_list
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_button:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden:
+  field_people: true

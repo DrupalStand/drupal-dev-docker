@@ -1,0 +1,83 @@
+// Utility Menu
+.nasa-header-menu {
+  .utility-menu {
+    margin-left: auto;
+    .menu--utility-navigation {
+      display: inline-flex;
+      .menu {
+        text-transform: uppercase;
+        padding-top: 2rem;
+        a {
+          color: #656565;    
+          font-family: $poppins;
+          font-weight: 700;
+          font-size: 1.3rem;
+          letter-spacing: .12rem;               
+        }
+      }
+    }  
+  }  
+}
+
+// Main Menu
+.usa-nav-container {
+  div[role=navigation] {
+    padding: 1.25rem;
+    ul {
+      display: flex;
+      align-items: stretch; /* Default */
+      justify-content: space-between;
+      width: 100%;       
+    }
+    li {
+      display: block;
+      flex: 0 1 auto;
+    }
+    a {
+      padding: 5px 12px;
+      border-radius: 5px;       
+      &:hover {
+        background: #000;
+        color: #fff;  
+        text-shadow: 1px 0px 0 #fff;
+      }
+      span {
+        border-bottom: none;
+        padding-bottom: 0;
+      }         
+    }
+  }  
+}
+
+// Primary Sidebar Menu
+.usa-sidenav-list { 
+  background: #F4F4F4;
+  border-radius: 5px;
+  padding: 30px 15px;
+  > li {
+    border: none;   
+  }
+  a {
+    font-family: $poppins;
+    font-size: 1.5rem;
+    padding: 1.25rem 1rem 1.25rem 1.8rem; 
+    &:hover {
+      background: url('/themes/goddard_uswds_sub/images/delta.png');
+      background-repeat: no-repeat;
+      background-color: none;
+      background-size: inherit;
+      background-position: 5px 20px;
+      color: #000;
+      text-shadow: 0.07rem 0 0 #000;
+    }
+  }     
+}
+
+// Homepage Block styles
+.front {
+  .block-views {
+    margin-top: 2rem;
+    margin-bottom: 8rem;
+    float: left;
+  }
+}

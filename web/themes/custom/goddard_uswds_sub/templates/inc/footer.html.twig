@@ -1,0 +1,56 @@
+<footer class="{{ footer_classes }}" role="contentinfo">
+
+  {% if display_footer_primary %}
+  <div class="usa-footer-primary-section">
+    <div class="usa-grid">
+
+      {% if footer_slim and (phone or email) %}
+      <div class="usa-width-one-third">
+
+        {% if phone %}
+        <div class="usa-footer-primary-content usa-footer-contact_info">
+          <p><a href="tel:{{ phone }}">{{ phone }}</a></p>
+        </div>
+        {% endif %}
+
+        {% if email %}
+        <div class="usa-footer-primary-content usa-footer-contact_info">
+          <p><a href="mailto:{{ email }}">{{ email }}</a></p>
+        </div>
+        {% endif %}
+
+      </div>
+      {% endif %}
+
+      {% if page.footer %}
+      <div class="usa-grid">
+        {{ page.footer }}
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="nasa-agency-footer">
+    <div class="usa-grid-full nasa-agency-footer-container">
+      <div class="footer-agency-id usa-width-one-fourth">
+        <a href="https://www.nasa.gov">
+          <img src="/themes/goddard_uswds_sub/images/nasa-logo-sm.png" alt="Nasa logo" />
+        </a>
+        <div class="footer-info">
+          <div>{{ footer_info_line_one }}</div>
+          <div>{{ footer_info_line_two }}</div>
+          <div>{{ footer_info_line_three }}</div>                    
+        </div>
+      </div>
+
+      <nav class="usa-footer-nav {{ footer_menu_width }}">
+         
+          {{ page.footer_secondary }}
+
+      </nav>
+    </div>
+  </div>
+
+</footer>

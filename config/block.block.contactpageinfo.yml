@@ -1,0 +1,31 @@
+uuid: 35734720-0e1f-4051-9aa9-0af024e07158
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:baf0c7d8-860c-464f-9297-c7daa97468f3'
+  module:
+    - block_content
+    - system
+  theme:
+    - goddard_uswds_sub
+id: contactpageinfo
+theme: goddard_uswds_sub
+region: sub_area_right
+weight: 0
+provider: null
+plugin: 'block_content:baf0c7d8-860c-464f-9297-c7daa97468f3'
+settings:
+  id: 'block_content:baf0c7d8-860c-464f-9297-c7daa97468f3'
+  label: 'Contact Page Info'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: /contact-us
+    negate: false
+    context_mapping: {  }

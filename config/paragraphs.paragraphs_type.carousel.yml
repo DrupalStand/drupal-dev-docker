@@ -1,0 +1,9 @@
+uuid: 220fd6bf-17de-4cc5-95c6-faae8237ea8a
+langcode: en
+status: true
+dependencies: {  }
+id: carousel
+label: Carousel
+icon_uuid: null
+description: 'This is a paragraph type for the carousel custom block type.'
+behavior_plugins: {  }

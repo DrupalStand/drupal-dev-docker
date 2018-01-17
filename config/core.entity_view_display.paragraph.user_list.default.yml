@@ -1,0 +1,38 @@
+uuid: c6d44669-c448-43cf-bbd1-79a98e2283c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.user_list.field_email_address
+    - field.field.paragraph.user_list.field_name
+    - field.field.paragraph.user_list.field_title_or_position
+    - paragraphs.paragraphs_type.user_list
+id: paragraph.user_list.default
+targetEntityType: paragraph
+bundle: user_list
+mode: default
+content:
+  field_email_address:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: email_mailto
+    region: content
+  field_name:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_title_or_position:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

@@ -1,0 +1,246 @@
+// User list block
+.user-list-block {
+  width: 100%;
+  float: left;  
+  .paragraph--type--user-list{
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #ddd;  
+    padding: 20px 0; 
+  }
+  .user-list-field {
+    .field__item {
+      article {
+        padding: 20px 0;
+      }    
+    }
+  }
+  .field__item {
+    .field--name-field-first-name, .field--name-field-name {
+      float: left;
+      padding-right: 5px;
+      width: 70%;
+    }  
+    .field--name-field-email-address, .field--name-field-title-or-position {
+      width: 50%;
+    }
+    .field--name-field-title-or-position {
+      float: left;
+    }
+    .field--name-field-email-address {
+      text-align: right;
+      float: right;
+    }
+  }
+  .button-wrap {
+    width: 100%;
+    float: left;    
+    margin-top: 35px;
+    a {
+      background: #1F58A0;
+      color: #fff;
+      text-decoration: none;
+      padding: 1.5rem 8rem;
+      border-radius: 10rem;
+      margin: 0 auto;
+      display: table;
+      &:after {
+        font-family: FontAwesome;
+        content: "\f105";
+        padding-left: 1rem;
+      }
+    }
+  }
+}
+
+// Icon and Text Block
+.icon-text-block {
+  font-family: $poppins;
+  .paragraph--type--icon-and-text-block {
+    .field--type-image {
+      float: left;
+      height: 200px;
+    }
+    .field--name-field-title {
+      float: right;
+      font-weight: bold;
+      text-align: left;
+      width: 85%;
+    }
+    .field--name-field-summary {
+      float: right;
+      text-align: left;
+      width: 85%;
+      p {
+        margin: 10px 0;
+        line-height: 2.5rem;        
+      }
+    }
+    .field--type-link {
+      float: right;
+      text-align: left;
+      width: 85%;
+      a {
+        text-decoration: none;
+        font-weight: 500;
+        color: #1F58A0;
+      }
+    }
+  }
+}
+
+// Carousel BLock
+.carousel-block {
+  box-shadow: 0px 0px 35px #ddd;
+  font-family: $poppins;
+  .carousel-slide {
+    .carousel-image {
+      width: 100%;
+      height: 290px;
+    }
+    .carousel-slide-text {
+      padding: 10px 30px 80px;
+    }
+    .carousel-link {
+      a {
+        text-decoration: none;
+        font-weight: 500;
+        color: #1F58A0;      
+      }
+    }   
+  }
+  .slick-prev:before, .slick-next:before {
+    color: #fff;
+    text-shadow: 0px 0px 3px #000;
+  }
+  .slick-next {
+    right: 27px;
+    z-index: 2;
+    top: 22%;
+    &:before {
+      content: '❯';
+      font-size: 6rem;
+    }
+  }
+  .slick-prev {
+    left: 20px;
+    z-index: 2;
+    top: 22%;
+    &:before {
+      content: '❮';
+      font-size: 6rem;
+    }
+  }  
+  .slick-dots {
+    bottom: 17px;
+    li {
+      margin: 0;
+      button {
+        background-color: none;
+        &:before {
+          font-size: 12px;
+          color: #005AA1;
+        }
+        &:focus {
+          outline: 0;
+        }
+        &:hover {
+          background: none;
+        }
+      }  
+    }
+    li.slick-active {
+      button {
+        &:before {
+          color: #005AA1;        
+        }
+        &:focus {
+          outline: 0;
+        }        
+      }  
+    } 
+  }  
+}
+
+// Contact Form
+.contact-message-contact-us-form {
+  label {
+    font-family: $poppins;
+    font-weight: 400;
+    padding-bottom: 5px;    
+  }
+  input.form-text, input.form-email, textarea.form-textarea {
+    border: 1px solid #c6c6c6;
+    border-radius: 5px;    
+  }
+  .usa-input-required:after {
+    display: none;
+  }
+}
+
+// Date/Location block for events
+.block-views-blockevent-date-block-block-1 {
+  time {
+    padding-left: 10px;
+  }
+  .views-field-nothing {
+    float: left;
+    padding-left: 3px;    
+  }
+  .views-field-field-event-building, .views-field-field-additional-location-inform, .views-field-field-event-location-additional-name, .views-field-field-event-location-address-line1, .views-field-field-event-location-address-line2, .views-field-field-event-location-locality, .views-field-field-event-location-administrative-area, .views-field-field-event-location-postal-code, .views-field-field-event-location-sorting-code {
+    padding-left: 25px;
+  }
+  .view-footer {
+    padding-left: 23px;
+  }
+}
+
+// Upcoming Events
+#block-views-block-upcoming-events-upcoming-events {
+  float: left;
+  margin: 20px 0;
+ .views-row {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    padding: 0px 0px 20px 0;
+    a, a:visited {
+      font-weight: bold;
+      text-decoration: none;
+      color: #0071bc;
+      &:hover {
+        text-decoration: underline;
+      }
+    }    
+  }  
+  .view-footer {
+    margin-top: 35px;
+    float: left;
+    width: 100%;    
+    a {
+      background: #1F58A0;
+      color: #fff;
+      text-decoration: none;
+      padding: 1.5rem 8rem;
+      border-radius: 10rem;
+      margin: 0 auto;
+      display: table;      
+    }
+  }  
+}
+
+// Recent Content
+#block-views-block-content-recent-block-1 {
+ .views-row {
+    border-bottom: 1px solid #ddd;
+    padding: 20px 0;
+    a, a:visited {
+      font-weight: bold;
+      text-decoration: none;
+      color: #0071bc;
+      &:hover {
+        text-decoration: underline;
+      }
+    }    
+  }  
+}

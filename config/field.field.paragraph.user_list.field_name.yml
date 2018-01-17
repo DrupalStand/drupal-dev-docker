@@ -1,0 +1,19 @@
+uuid: 31bf7371-25c1-4220-a81d-1ecf37b98212
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_name
+    - paragraphs.paragraphs_type.user_list
+id: paragraph.user_list.field_name
+field_name: field_name
+entity_type: paragraph
+bundle: user_list
+label: Name
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

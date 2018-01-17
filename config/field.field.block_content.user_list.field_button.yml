@@ -1,0 +1,23 @@
+uuid: 60a80ede-781f-4f68-9d0c-ef88e108efff
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.user_list
+    - field.storage.block_content.field_button
+  module:
+    - link
+id: block_content.user_list.field_button
+field_name: field_button
+entity_type: block_content
+bundle: user_list
+label: Button
+description: 'Create a button to link to somewhere else. Leave empty to hide the button.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 2
+field_type: link

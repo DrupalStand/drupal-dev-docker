@@ -1,0 +1,51 @@
+{#
+/**
+ * @file
+ * USWDS theme implementation to display a single page.
+ */
+#}
+
+{% include directory ~ '/templates/inc/header.html.twig' %}
+
+{% if page.hero %}
+<section>
+{{ page.hero }}
+</section>
+{% endif %}
+
+<section class="usa-section uswds-middle-section {{ main_classes }}">
+  <div class="usa-grid">
+    <div class="usa-width-full">
+      {% if page.help|render|trim %}
+      <div class="usa-alert usa-alert-info">
+        <div class="usa-alert-body">
+          <p class="usa-alert-text">
+            {{ page.help }}
+          </p>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <div class="uswds-main-content-wrapper {% if edge_to_edge == false %}usa-grid{% endif %}">
+    <a id="main-content" tabindex="-1"></a>
+    
+    <h1>{{ page['#title']}}</h1>
+    
+    {% if page.sidebar_first %}
+    <aside class="region-sidebar-first usa-width-one-third">
+      {{ page.sidebar_first }}
+    </aside>
+    {% endif %}
+
+    <div class="region-content usa-width-two-thirds">
+<!--       {{ kint(page.content) }} -->
+      {{ page.content.goddard_uswds_sub_content }}
+    </div>
+
+  </div>
+</section>
+
+{% include directory ~ '/templates/inc/footer.html.twig' %}

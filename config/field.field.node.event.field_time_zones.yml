@@ -1,0 +1,21 @@
+uuid: 9aa4a5f9-0f26-407d-8084-9cab9a787404
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_time_zones
+    - node.type.event
+  module:
+    - options
+id: node.event.field_time_zones
+field_name: field_time_zones
+entity_type: node
+bundle: event
+label: 'Time Zone'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

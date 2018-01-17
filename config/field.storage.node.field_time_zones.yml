@@ -1,0 +1,39 @@
+uuid: 1f5db105-804f-4de0-9088-9f0d8cf10f3b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_time_zones
+field_name: field_time_zones
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: EST
+      label: 'Eastern Standard Time'
+    -
+      value: CST
+      label: 'Central Standard Time'
+    -
+      value: MST
+      label: 'Mountain Standard Time'
+    -
+      value: PST
+      label: 'Pacific Standard Time'
+    -
+      value: AKST
+      label: 'Alaska Standard Time'
+    -
+      value: HAST
+      label: 'Hawaii-Aleutian Standard Time'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
