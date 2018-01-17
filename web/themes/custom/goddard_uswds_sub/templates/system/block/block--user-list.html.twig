@@ -1,21 +1,20 @@
-{{kint(content)}}
-<div class="user-list-block">
+<div class="user-list">
   <div{{ attributes }}>
-  
+
     {{ title_prefix }}
     {% if label %}
       <h2{{ title_attributes }}>{{ label }}</h2>
     {% endif %}
     {{ title_suffix }}
-    
+
     {{ content.body }}
-    
-    <div class="user-list-field">
-      {{ content.field_people }} 
+
+    <div class="user-list__people">
+      {{ content.field_people }}
     </div>
-    
+
     {% if content.field_button %}
-      <div class="button-wrap"> {{ content.field_button }}</div>
+      <div class="user-list__footer"> {{ content.field_button }}</div>
     {% endif %}
   </div>
-</div>  
+</div>

@@ -1,0 +1,9 @@
+{% block paragraph %}
+  {% block content %}
+    <div class="user-list__item">
+      <div class="user-list__name">{{ content.field_name|render }}</div>
+      <div class="user-list__title">{{ content.field_title_or_position|render }}</div>
+      <div class="user-list__email">{{ content.field_email_address|render }}</div>
+    </div>
+  {% endblock %}
+{% endblock paragraph %}

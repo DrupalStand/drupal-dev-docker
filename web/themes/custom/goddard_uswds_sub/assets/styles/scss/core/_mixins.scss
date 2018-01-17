@@ -1,0 +1,22 @@
+// respond-to()
+//
+// Wrapper for easier media queries
+//
+// @requires {variable} name
+//
+// @param {String} $name          - Value in $breakpoints map.
+//
+// @throws No value found for `$breakpoint`. Please make sure it is defined in `$breakpoints` map.
+//
+// @return {String} - A media query wrapping the content added.
+//
+@mixin respond-to($name) {
+  @if map-has-key($breakpoints, $name) {
+    // Prints a media query based on the value.
+    @media screen and (min-width: map-get($breakpoints, $name)) {
+      @content;
+    }
+  } @else {
+    @warn 'Unfortunately, no value could be retrieved from `#{$breakpoints}`. ' + 'Please make sure it is defined in `$breakpoints` map.';
+  }
+}
