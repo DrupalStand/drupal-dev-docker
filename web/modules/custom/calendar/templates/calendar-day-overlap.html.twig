@@ -1,0 +1,126 @@
+{#
+/**
+ * @file
+ * Template to display a view as a calendar day, grouped by time with overlapping items
+ *
+ * @see template_preprocess_calendar_day.
+ *
+ * rows: The rendered data for this day.
+ * rows['date'] - the date for this day, formatted as YYYY-MM-DD.
+ * rows['datebox'] - the formatted datebox for this day.
+ * rows['empty'] - empty text for this day, if no items were found.
+ * rows['all_day'] - an array of formatted all day items.
+ * rows['items'] - an array of timed items for the day.
+ * rows['items'][time_period]['hour'] - the formatted hour for a time period.
+ * rows['items'][time_period]['ampm'] - the formatted ampm value, if any for a time period.
+ * rows['items'][time_period][$column]['values'] - An array of formatted
+ *   items for a time period and field column.
+ *
+ * view: The view.
+ * columns: an array of column names.
+ * min_date_formatted: The minimum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ * max_date_formatted: The maximum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ *
+ * The width of the columns is dynamically set using <col></col>
+ * based on the number of columns presented. The values passed in will
+ * work to set the 'hour' column to 10% and split the remaining columns
+ * evenly over the remaining 90% of the table.
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="calendar-calendar"><div class="day-view">
+{# // Multi-day and all day events are not supported because Dates don't have end values
+<div id="multi-day-container">
+  <table class="full">
+    <tbody>
+      <tr class="holder">
+        <td class="calendar-time-holder"></td>
+        <td class="calendar-day-holder"></td>
+      </tr>
+      <tr>
+        <td class="{{ agenda_hour_class }} first">
+           <span class="calendar-hour">{% trans %}All day{% endtrans %}</span>
+        </td>
+        <td class="calendar-agenda-items multi-day last">
+          {% for column in columns %}
+          <div class="calendar">
+            <div class="inner">
+              {% if rows['all_day'] is not empty and rows['all_day'][column] is not empty %}
+                {{ rows['all_day'][column] }}
+              {% else %}
+                &nbsp;
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="header-body-divider">&nbsp;</div>
+#}
+<div id="single-day-container">
+  <table class="full">
+    <tbody>
+      <tr class="holder">
+        <td class="calendar-time-holder"></td>
+        <td class="calendar-day-holder"></td>
+      </tr>
+      <tr>
+        <td class="first">
+          {% set is_first = true %}
+          {% for time_cnt, hour in rows['items'] %}
+            {% if time_cnt == 0 %}
+              {% set class = 'first' %}
+            {% elseif time_cnt == start_times|length - 1 %}
+              {% set class = 'last' %}
+            {% else %}
+              {% set class = '' %}
+            {% endif %}
+            <div class="{{ class }} calendar-agenda-hour">
+              <span class="calendar-hour">{{ hour.hour }}</span><span class="calendar-ampm">{{ hour.ampm }}</span>
+            </div>
+          {% endfor %}
+        </td>
+        <td class="last">
+          {% for time_cnt, hour in rows['items'] %}
+            {% if time_cnt == 0 %}
+              {% set class = 'first' %}
+            {% elseif time_cnt == start_times|length - 1 %}
+              {% set class = 'last' %}
+            {% else %}
+              {% set class = '' %}
+            {% endif %}
+
+            {% for column in columns %}
+              <div class="{{ class }} calendar-agenda-items single-day">
+                <div class="half-hour">&nbsp;</div>
+                {% if is_first and hour['values'][column] %}
+                  <div class="calendar item-wrapper first_item">
+                  {% set is_first = true %}
+                {% else %}
+                  <div class="calendar item-wrapper">
+                {% endif %}
+                  <div class="inner">
+                    {% if hour['values'] is not empty and hour['values'][column] is not empty %}
+                      {% for item in hour['values'][column] %}
+                        {{ item }}
+                      {% endfor %}
+                    {% else %}
+                      &nbsp;
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endfor %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="single-day-footer">&nbsp;</div>
+</div></div>

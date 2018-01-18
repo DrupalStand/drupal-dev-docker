@@ -1,0 +1,18 @@
+***************
+*** 81,86 ****
+  
+      // Size the single day view
+        function calendar_resizeViewport() {
+        // Size of the browser window
+          var viewportHeight = window.innerHeight ? window.innerHeight : $(window).height();
+          var top = $('#single-day-container').offset().top;
+--- 81,89 ----
+  
+      // Size the single day view
+        function calendar_resizeViewport() {
++         // BUG: This code doesn't work, and always sets the height to zero.
++         return;
++ 
+        // Size of the browser window
+          var viewportHeight = window.innerHeight ? window.innerHeight : $(window).height();
+          var top = $('#single-day-container').offset().top;

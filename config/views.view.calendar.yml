@@ -428,7 +428,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
+          empty: true
           tokenize: false
           content:
             value: "<div class=\"cal-menu\">\n<ul>\n<li class=\"cal-month\"><a href=\"/calendar\">Month</a></li>\n<li class=\"cal-week\"><a href=\"/calendar/week\">Week</a></li>\n<li class=\"cal-day\"><a href=\"/calendar/day\">Day</a></li>\n<li class=\"cal-year\"><a href=\"/calendar/year\">Year</a></li>\n</ul>\n</div>"

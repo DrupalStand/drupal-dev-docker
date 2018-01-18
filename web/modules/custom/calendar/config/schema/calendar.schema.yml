@@ -1,0 +1,10 @@
+# Schema for the configuration files of the Calendar module.
+
+calendar.settings:
+  type: mapping
+  label: 'Calendar settings'
+  mapping:
+    track_date:
+      type: integer
+    add_colorbox:
+      type: integer

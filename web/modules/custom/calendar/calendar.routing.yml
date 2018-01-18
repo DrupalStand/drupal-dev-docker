@@ -1,0 +1,15 @@
+calendar.admin_index:
+  path: '/admin/config/date'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Calendar'
+  requirements:
+    _permission: 'access administration pages'
+
+calendar.admin_form:
+  path: '/admin/config/date/calendar'
+  defaults:
+    _form: '\Drupal\calendar\Form\CalendarSettingsForm'
+    _title: 'Calendar administration'
+  requirements:
+    _permission: 'administer calendar settings'
