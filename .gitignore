@@ -17,3 +17,6 @@ html
 
 # Ignore Drupal's salt file
 salt.txt
+
+# Ignore DS_Store from MacOS
+*.DS_Store
