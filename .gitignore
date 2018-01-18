@@ -20,3 +20,6 @@ salt.txt
 
 # Ignore DS_Store from MacOS
 *.DS_Store
+
+# Ignore changes to docker-compose
+*docker-compose.yml

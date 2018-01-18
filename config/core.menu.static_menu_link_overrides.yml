@@ -1,54 +1,54 @@
 definitions:
   block__admin_display:
-    weight: -63
-    parent: 'menu_link_content:fb51c186-2b9c-42c2-9b25-029054c5a003'
+    parent: system.admin_structure
     menu_name: admin
     enabled: true
     expanded: false
+    weight: -63
   entity__comment_type__collection:
-    weight: -61
+    weight: -62
     menu_name: admin
     parent: system.admin_structure
     expanded: false
     enabled: true
   entity__contact_form__collection:
-    weight: -60
+    weight: -61
     menu_name: admin
     parent: system.admin_structure
     expanded: false
     enabled: true
   entity__node_type__collection:
-    weight: -59
+    weight: -60
     menu_name: admin
     parent: system.admin_structure
     expanded: false
     enabled: true
   field_ui__display_mode:
-    weight: -58
+    weight: -59
     menu_name: admin
     parent: system.admin_structure
     expanded: false
     enabled: true
   entity__menu__collection:
-    weight: -57
+    weight: -58
     menu_name: admin
     parent: system.admin_structure
     expanded: false
     enabled: true
   entity__paragraphs_type__collection:
-    weight: -56
+    weight: -57
     menu_name: admin
     parent: system.admin_structure
     expanded: false
     enabled: true
   entity__taxonomy_vocabulary__collection:
-    weight: -55
+    weight: -56
     menu_name: admin
     parent: system.admin_structure
     expanded: false
     enabled: true
   entity__view__collection:
-    weight: -54
+    weight: -55
     menu_name: admin
     parent: system.admin_structure
     expanded: false

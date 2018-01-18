@@ -120,7 +120,44 @@
   font-weight: 500;
 }
 
-
+.view {
+  .pager {
+    display: inline-block;
+    text-align: center;
+    width: 100%;    
+  }
+  .pager__items {
+    .pager__item {
+      text-align: center;
+      margin: 5px;
+      padding: 4px 10px;
+      border-radius: 5px;
+      a {
+        color: #b1b1b1;
+        &:visited {
+          color: #b1b1b1;
+        }
+      }
+    }
+    .pager__item.is-active {
+      background: #001D4D;
+      padding: 4px 5px 1px 7px;
+      a {
+        color: #fff;
+        margin: 5px;
+      }
+    }
+    .pager__item--first, .pager__item--previous, .pager__item--next, .pager__item--last {
+      font-weight: 600;
+      a {
+        color: #0054A4;
+        &:visited {
+          color: #0054A4;
+        }
+      }
+    }
+  }
+}
 //.usa-nav-container {
 //  .usa-menu-btn {
 //    display: none;
