@@ -1,0 +1,35 @@
+{#
+/**
+ * @file
+ * Template to display a stripe legend for a calendar view.
+ *
+ * Available variables:
+ * - headers: the header labels
+ * - rows: an associative array holding all rows, each row defines:
+ *   - label: the label of the entity of the current row
+ *   - stripe: the hex code of the color
+ *
+ * @see template_preprocess_calendar_stripe_legend()
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="calendar calendar-legend">
+  <table>
+    <thead>
+      <tr>
+        {% for header in headers %}
+          <td class="calendar-legend">{{ header.label }}</td>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+        <tr>
+          <td>{{ row.label }}</td>
+          <td><div style="background-color:{{ row.stripe }};color:{{ row.stripe }};" class="calendar-legend" title="Key: {{ row.label }}">{{ row.stripe }} &nbsp;</div></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

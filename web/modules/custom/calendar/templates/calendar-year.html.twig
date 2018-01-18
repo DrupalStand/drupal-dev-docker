@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Template to display a view as a calendar year.
+ * 
+ * @see template_preprocess_calendar_year.
+ *
+ * $view: The view.
+ * $months: An array with a formatted month calendar for each month of the year.
+ * $min_date_formatted: The minimum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ * $max_date_formatted: The maximum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ * 
+ */
+#}
+
+<div class="calendar-calendar"><div class="year-view">
+<table {% if mini %} class="mini"{% endif %}>
+  <tbody>
+    <tr><td>{{ months[1] }}</td><td>{{ months[2] }}</td><td>{{ months[3] }}</td></tr>
+    <tr><td>{{ months[4] }}</td><td>{{ months[5] }}</td><td>{{ months[6] }}</td></tr>
+    <tr><td>{{ months[7] }}</td><td>{{ months[8] }}</td><td>{{ months[9] }}</td></tr>
+    <tr><td>{{ months[10] }}</td><td>{{ months[11] }}</td><td>{{ months[12] }}</td></tr>
+  </tbody>
+</table>
+</div></div>

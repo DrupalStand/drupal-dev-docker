@@ -1,0 +1,60 @@
+***************
+*** 14,20 ****
+    float: none;
+    margin: 0px;
+    width: 100%;
+-   margin-top: -24px;
+  }
+  
+  .calendar-calendar td .inner div,
+--- 14,19 ----
+    float: none;
+    margin: 0px;
+    width: 100%;
+  }
+  
+  .calendar-calendar td .inner div,
+***************
+*** 163,168 ****
+  .calendar-calendar .day-view .full div.calendar-agenda-items  {
+    height: 47px;
+    border-top: 1px solid #cccccc;
+  }
+  
+  .calendar-calendar .week-view .full .calendar-agenda-hour {
+--- 162,169 ----
+  .calendar-calendar .day-view .full div.calendar-agenda-items  {
+    height: 47px;
+    border-top: 1px solid #cccccc;
++   clear: both;
++   width: 100%;
+  }
+  
+  .calendar-calendar .week-view .full .calendar-agenda-hour {
+***************
+*** 252,262 ****
+  
+  .calendar-calendar .week-view div.single-day .view-item,
+  .calendar-calendar .day-view div.single-day .view-item {
+-   position: absolute;
+    width: 100%;
+    background: none;
+    text-align: left;
+    z-index: 1;
+  }
+  
+  .calendar-calendar .week-view div.single-day .half-hour,
+--- 253,265 ----
+  
+  .calendar-calendar .week-view div.single-day .view-item,
+  .calendar-calendar .day-view div.single-day .view-item {
+    width: 100%;
+    background: none;
+    text-align: left;
+    z-index: 1;
++   margin-top: -24px;
++   max-width: 120px;
++   float: left;
+  }
+  
+  .calendar-calendar .week-view div.single-day .half-hour,

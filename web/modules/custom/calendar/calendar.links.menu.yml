@@ -1,0 +1,9 @@
+calendar.admin_index:
+  title: 'Calendar'
+  parent: system.admin_config
+  route_name: calendar.admin_index
+
+calendar.admin_form:
+  title: 'Calendar administration'
+  parent: calendar.admin_index
+  route_name: calendar.admin_form
