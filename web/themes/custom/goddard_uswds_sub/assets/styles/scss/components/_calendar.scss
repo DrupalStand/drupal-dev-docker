@@ -84,6 +84,10 @@
       width: auto;
       order: 2;
     }
+    @include respond-to(medium) {
+      padding-top: 0;
+      margin-bottom: 30px;
+    }
   }
 
   .pager__item--previous,
@@ -126,7 +130,9 @@
 }
 
 // Year View
+// ----------------------------------------------------------------------------
 .calendar-calendar .year-view {
+  box-shadow: 0 0 40px #c6c2c2;
 
   & > table > tbody > tr {
     display: inline;
@@ -153,4 +159,205 @@
     display: flex;
   }
 
+}
+
+.calendar-calendar .year-view td:nth-child(-n + 3) .month-view .date-nav-wrapper {
+  margin-top: 0;
+}
+
+.calendar-calendar .year-view .month-view {
+  box-shadow: none;
+}
+
+.calendar-calendar .year-view .month-view .year.day {
+  padding: 0;
+  a {
+    background-color: #0071bc;
+    color: #ffffff;
+    display: block;
+    border-radius: 2px;
+  }
+}
+
+// Month View
+// ----------------------------------------------------------------------------
+.calendar-calendar .month-view {
+  box-shadow: 0 0 40px #c6c2c2;
+  * {
+    border-color: #dfdfdf !important;
+  }
+}
+
+// Header
+.calendar-calendar .month-view th.days {
+  font-size: 1.5rem;
+  font-family: $poppins;
+  border: none;
+  background-color: #ffffff;
+  padding: 15px;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+.calendar-calendar .month-view .full td:nth-child(7n) {
+  border-right: none;
+}
+
+.calendar-calendar .month-view .full td:first-child,
+.calendar-calendar .month-view .full td:nth-child(8n) {
+  border-left: none;
+}
+
+.calendar-calendar .month-view .full tr:last-child > td {
+  border-bottom: none;
+}
+
+.calendar-calendar .month-view .full tr.single-day .no-entry,
+.calendar-calendar .month-view .full tr.single-day .no-entry .inner {
+  height: 100px !important;
+}
+
+// Out of month day calendar striping
+.calendar-calendar .month-view .full td.date-box.empty {
+  //background: repeating-linear-gradient(180deg, #ccc, #ccc 30px, #dbdbdb 30px, #dbdbdb 60px);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0), #f4f4f4;
+  background-size: 34px auto;
+}
+
+.calendar-calendar .month-view .full td.single-day.empty {
+  background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0), #f4f4f4;
+  background-size: 11px auto;
+}
+
+// Numbers in individual day squares
+.calendar-calendar .month-view .full td .inner div.day {
+  font-family: $poppins;
+  color: #777;
+}
+
+.calendar-calendar .month-view .full td.date-box.empty .inner div.day {
+  color: #9f9f9f;
+}
+
+
+
+// Week View
+// ----------------------------------------------------------------------------
+.calendar-calendar .week-view table.full .calendar-agenda-hour,
+.calendar-calendar .week-view table.full .calendar-day-holder {
+  background: none;
+  border: none;
+}
+
+.calendar-calendar .week-view {
+  box-shadow: 0 0 40px #c6c2c2;
+  border-radius: 11px;
+  overflow: hidden;
+}
+
+.calendar-calendar .week-view .single-day-footer {
+  display: none;
+}
+
+.calendar-calendar .week-view .single-day .view-item {
+  width: 100%;
+  background: none;
+  text-align: left;
+  z-index: 1;
+  margin-top: -24px;
+  max-width: 120px;
+  float: none;
+}
+
+.calendar-calendar .week-view .full .days {
+  color: #777;
+  font-weight: 600;
+  border: none;
+  background: #ffffff;
+  padding: 15px 0;
+  text-transform: uppercase;
+}
+
+// Day View
+.calendar-calendar .day-view #single-day-container {
+  box-shadow: 0 0 40px #c6c2c2;
+  border-radius: 11px;
+  overflow: hidden;
+}
+
+// General
+// ----------------------------------------------------------------------------
+.calendar-calendar .month-view .full tr.single-day .no-entry .past {
+  color: #777777;
+}
+.month-view .full td.single-day div.monthview, .week-view .full td.single-day div.weekview, .day-view .full td.single-day div.dayview {
+  background: #9FE3F8;
+  color: #000;
+  border-left: 5px solid #008FFB;
+  font-size: 1.5rem;
+  margin: 10px;
+  padding: 10px;
+
+  a {
+    color: #000;
+  }
+
+}
+
+// Events in individual day squares maybe? I have no idea what the following does:
+
+.calendar-calendar .month-view .full td.single-day div.monthview,
+.calendar-calendar .week-view .full td.single-day div.weekview {
+  background: #9fe3f8;
+  color: #000000;
+  border-left: 5px solid #008ffb;
+  font-size: 1.5rem;
+  margin: 10px;
+  padding: 10px;
+
+  a {
+    color: #000000;
+  }
+
+}
+
+.calendar-calendar .day-view div.single-day .view-item {
+  width: 100%;
+  background: none;
+  text-align: left;
+  z-index: 1;
+  margin-top: -24px;
+  max-width: 120px;
+  float: none;
+}
+
+.calendar-calendar .week-view div.single-day .view-item {
+  width: 100%;
+  background: none;
+  text-align: left;
+  z-index: 1;
+  margin-top: -24px;
+  max-width: 120px;
+  float: none;
+}
+
+.calendar-calendar .single-day .weekview {
+  background: #9fe3f8 !important;
+  color: #000000 !important;
+  border-left: 5px solid #008ffb !important;
+  font-size: 1.5rem;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+
+  .contents,
+  .cutoff {
+    background: #9fe3f8 !important;
+
+    a {
+      background: #9fe3f8 !important;
+      color: #000000;
+    }
+
+  }
 }
