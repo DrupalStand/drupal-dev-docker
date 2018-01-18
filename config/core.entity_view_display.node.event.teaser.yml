@@ -25,4 +25,9 @@ content:
   links:
     weight: 100
     region: content
-hidden: {  }
+hidden:
+  field_additional_location_inform: true
+  field_event_building: true
+  field_event_date: true
+  field_event_location: true
+  field_time_zones: true
