@@ -1,0 +1,156 @@
+// Calendar Menu / Filters
+.cal-menu {
+  @include respond-to(medium) {
+    float: right;
+    margin-bottom: 30px;
+  }
+
+  ul {
+    padding-left: 0;
+    margin: 0 auto;
+    list-style: none;
+    text-align: center;
+  }
+
+  li {
+    display: block;
+    margin-bottom: 15px;
+    @include respond-to(small) {
+      display: inline-block;
+    }
+  }
+
+  li a {
+    display: block;
+    text-decoration: none;
+    color: #ffffff;
+    background: #0071bc;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 3px;
+    font-family: $poppins;
+    font-size: 1.6rem;
+    transition: .2s all;
+    @include respond-to(small) {
+      display: initial;
+    }
+
+    &:hover,
+    &:focus {
+      opacity: .7;
+    }
+
+  }
+
+}
+
+// Calendar Pager
+.view-calendar .pager {
+
+  ul {
+    display: flex;
+    padding-left: 0;
+    margin: 0 auto;
+    list-style: none;
+    flex-wrap: wrap;
+    @include respond-to(small) {
+      justify-content: space-between;
+    }
+    @include respond-to(medium) {
+      width: 100%;
+      margin-top: 30px;
+    }
+  }
+
+  .pager__item {
+    @include respond-to(small) {
+      flex: 1;
+    }
+    @include respond-to(medium) {
+      flex: auto;
+    }
+  }
+
+  .pager__item--current {
+    order: 1;
+    width: 100%;
+    text-align: center;
+    padding: 10px 25px;
+    font-weight: bold;
+    font-size: 3rem;
+    margin: 0;
+    font-family: $poppins;
+    @include respond-to(small) {
+      width: auto;
+      order: 2;
+    }
+  }
+
+  .pager__item--previous,
+  .pager__item--next {
+    width: 49%;
+    font-size: 2rem;
+    @include respond-to(small) {
+      width: auto;
+    }
+
+    a {
+      display: block;
+      padding: .5rem;
+      margin: .6rem;
+      color: #666666;
+      text-decoration: none;
+      transition: .2s all;
+    }
+
+    a:hover,
+    a:focus {
+      opacity: .7;
+    }
+
+  }
+
+  .pager__item--previous {
+    order: 2;
+    text-align: left;
+    @include respond-to(small) {
+      order: 1;
+    }
+  }
+
+  .pager__item--next {
+    order: 3;
+    text-align: right;
+  }
+
+}
+
+// Year View
+.calendar-calendar .year-view {
+
+  & > table > tbody > tr {
+    display: inline;
+  }
+
+  & > table > tbody > tr > td {
+    display: inline-block;
+    width: 100%;
+    //flex-basis: 32%;
+    //width: auto;
+    @include respond-to(xsmall) {
+      width: 49%;
+    }
+    @include respond-to(medium) {
+      width: 33.333333%;
+    }
+  }
+
+  .month-view {
+    display: block;
+  }
+
+  .month-view tr {
+    display: flex;
+  }
+
+}
