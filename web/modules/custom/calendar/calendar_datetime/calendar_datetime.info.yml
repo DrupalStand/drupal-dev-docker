@@ -1,0 +1,5 @@
+name: Calendar Datetime
+type: module
+description: Provides a calendar specific date time.
+core: 8.x
+package: Date/Time

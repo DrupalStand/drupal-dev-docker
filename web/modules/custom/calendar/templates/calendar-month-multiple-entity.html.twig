@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Template to display a summary of the days items as a calendar month entity.
+ *
+ * Available variables:
+ *
+ * @see template_preprocess_calendar_month_multiple_entity.
+ *
+ * @ingroup themeable
+ */
+#}
+1
+<div class="view-item view-item-{{ view.name }}>">
+  <div class="calendar monthview" id="{{ curday }}">
+    {% for id in ids %}
+      {% if view.styleInfo.maxItemsStyle is not 'more' %}
+        - <!-- theme('calendar_stripe_stripe', $id); ?>-->
+      {% endif %}
+    {% endfor %}
+    <div class="view-item">
+      {% if view.styleInfo.maxItemsStyle is not 'more' %}
+      <div class="multiple-events">
+        <!--<?php // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// print l(t('Click to see all @count events', ['@count' => $count]), $link)
+?>-->multiple-events
+      </div>
+    </div>
+  {% else %}
+    <!--<div class="calendar-more"><?php // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// print l(t('more'), $link)
+?></div>-->calendar-more
+    {% endif %}
+  </div>
+</div>

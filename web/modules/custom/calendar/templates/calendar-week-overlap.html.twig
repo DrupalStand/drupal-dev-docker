@@ -1,0 +1,184 @@
+<?php
+/**
+ * @file
+ * Template to display a view as a calendar week with overlapping items
+ * 
+ * @see template_preprocess_calendar_week.
+ *
+ * $day_names: An array of the day of week names for the table header.
+ * $rows: The rendered data for this week.
+ * 
+ * For each day of the week, you have:
+ * $rows['date'] - the date for this day, formatted as YYYY-MM-DD.
+ * $rows['datebox'] - the formatted datebox for this day.
+ * $rows['empty'] - empty text for this day, if no items were found.
+ * $rows['all_day'] - an array of formatted all day items.
+ * $rows['items'] - an array of timed items for the day.
+ * $rows['items'][$time_period]['hour'] - the formatted hour for a time period.
+ * $rows['items'][$time_period]['ampm'] - the formatted ampm value, if any for a time period.
+ * $rows['items'][$time_period]['values'] - An array of formatted items for a time period.
+ * 
+ * $view: The view.
+ * $min_date_formatted: The minimum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ * $max_date_formatted: The maximum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ * 
+ */
+?>
+<div class="calendar-calendar"><div class="week-view">
+  <div id="header-container">
+  <table class="full">
+  <tbody>
+    <tr class="holder"><td class="calendar-time-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder margin-right"></td></tr>
+    <tr>
+      <th class="calendar-agenda-hour">&nbsp;</th>
+      {% for cell in day_names %}
+        <th class="{{ cell.class }}" id="{{ cell.header_id }}">
+          {{ cell.data }}
+        </th>
+      {% endfor %}
+      <th class="calendar-day-holder margin-right"></th>
+    </tr>
+  </tbody>
+  </table>
+  </div>
+    {# Multi-day and all day events are not supported because dates don't have end values yes
+  <div id="multi-day-container">
+  <table class="full">
+  <tbody>
+  <tr class="holder"><td class="calendar-time-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td></tr>
+    {% for i in 0..multiday_rows %}
+      {% set row_class = 'all-day' %}
+      {% set row_class_extra = '' %}
+      {% if loop.first %}{% set row_class_extra = 'first' %}{% endif %}
+      {% if loop.last %}{% set row_class_extra = 'last' %}{% endif %}
+
+      <tr class="{{ row_class }} {{ row_class_extra }}">
+        {% if loop.index0 == 0 and (by_hour_count > 0 or start_times is not empty) %}
+        <td class="{{ agenda_hour_class }}" rowspan="{{ multiday_rows }}">
+          <span class="calendar-hour">{% trans with {'context': 'datetime'} %}All day{% endtrans %}</span>
+        </td>
+        {% endif %}
+
+        {% for j in 0..7 %}
+          {% set cell = all_day[j][i] %}
+          {% if cell is not empty and cell.filled and cell['wday'] == j %}
+            {% for position in colpos..cell['wday'] %}
+              {% set col_class = "calendar-agenda-items multi-day"%}
+              {% set col_class_extra = '' %}
+              {% if loop.first %}{% set col_class_extra = 'first' %}{% endif %}
+              {% if loop.last %}{% set col_class_extra = 'last' %}{% endif %}
+
+              <td class="{{ col_class }} {{ col_class_extra }}"><div class="inner">&nbsp;</div></td>
+            {% endfor %}
+
+            <td colspan="{{ cell['colspan'] }}" class="{{ col_class }}">
+              <div class="inner">
+                {{ cell.entry }}
+              </div>
+            </td>
+            {% set colpos = colpos + cell['colspan'] %}
+          {% endif %}
+        {% endfor %}
+
+        {% for k in colpos..7 %}
+          {% set col_class = "calendar-agenda-items multi-day no-entry" %}
+          {% set col_class_extra = '' %}
+          {% if loop.first %}{% set col_class_extra = 'first' %}{% endif %}
+          {% if loop.last %}{% set col_class_extra = 'last' %}{% endif %}
+          <td class="{{ col_class }} {{ col_class_extra }}"><div class="inner">&nbsp;</div></td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+
+    {% if multiday_rows == 0 %}
+      <tr>
+        <td class="{{ agenda_hour_class }}">
+          <span class="calendar-hour">{% trans with {'context': 'datetime'} %}All day{% endtrans %}</span>
+        </td>
+        {% for j in 0..7 %}
+          {% set col_class = "calendar-agenda-items multi-day no-entry" %}
+          {% set col_class_extra = '' %}
+          {% if loop.first %}{% set col_class_extra = 'first' %}{% endif %}
+          {% if loop.last %}{% set col_class_extra = 'last' %}{% endif %}
+          <td class="{{ col_class }} {{ col_class_extra }}"><div class="inner">&nbsp;</div></td>
+        {% endfor %}
+      </tr>
+    {% endif %}
+
+    <tr class="expand">
+      <td class="{{ agenda_hour_class }}">
+        <span class="calendar-hour">&nbsp;</span>
+      </td>
+
+      {% for j in 0..7 %}
+        {% set col_class = "calendar-agenda-items multi-day no-entry" %}
+        {% set col_class_extra = '' %}
+        {% if loop.first %}{% set col_class_extra = 'first' %}{% endif %}
+        {% if loop.last %}{% set col_class_extra = 'last' %}{% endif %}
+        <td class="{{ col_class }} {{ col_class_extra }}"><div class="inner">&nbsp;</div></td>
+      {% endfor %}
+      <td class="{{ col_class }}"><div class="inner">&nbsp;</div></td>
+     </tr>
+  </thead> 
+  </table>
+  </div>
+  <div class="header-body-divider">&nbsp;</div>
+  #}
+  <div id="single-day-container">
+    <table class="full">
+      <tbody>
+        <tr class="holder"><td class="calendar-time-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td><td class="calendar-day-holder"></td></tr>
+        <tr>
+          {% for i in 0..7 %}
+            {% if loop.first %}
+              <td class="first">
+            {% elseif loop.index0 == 7 %}
+              <td class="last" headers="{{ header_ids[loop.index0 - 1] }}">
+            {% else %}
+              <td headers="{{ header_ids[loop.index0 - 1] }}">
+            {% endif %}
+
+            {% for time_cnt, start_time in start_times %}
+              {% if time_cnt == 0 %}
+                {% set class = 'first' %}
+              {% elseif time_cnt == start_times|length - 1 %}
+                {% set class = 'last' %}
+              {% else %}
+                {% set class = '' %}
+              {% endif %}
+
+              {% if loop.parent.loop.first %}
+                {% set time = items[start_time] %}
+                <div class="{{ class }} calendar-agenda-hour">
+                  <span class="calendar-hour">{{ time.hour }}</span><span class="calendar-ampm">{{ time.ampm }}</span>
+                </div>
+              {% else %}
+                <div class="{{ class }} calendar-agenda-items single-day">
+                <div class="half-hour">&nbsp;</div>
+                  <div class="calendar item-wrapper">
+                    <div class="inner">
+                      {#{% if items[start_time]['values'] is not empty %}{{ dump(items[start_time]['values']) }}{% endif %}#}
+                      {% if items[start_time]['values'][loop.parent.loop.index0 - 1] %}
+                        {% for item in items[start_time]['values'][loop.parent.loop.index0 - 1] %}
+                          {% if item['is_first'] %}
+                            <div class="item {{ item.class }} first_item">
+                          {% else %}
+                            <div class="item {{ item.class }}">
+                          {% endif %}
+                              {{ item.entry }}
+                            </div>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+              {% endfor %}
+            </td>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="single-day-footer">&nbsp;</div>
+</div></div>

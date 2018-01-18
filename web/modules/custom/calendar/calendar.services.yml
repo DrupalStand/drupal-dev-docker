@@ -1,0 +1,6 @@
+services:
+  calendar.twig.extension:
+    class: Drupal\calendar\Template\TwigExtension
+    arguments: ['@renderer']
+    tags:
+      - { name: twig.extension, priority: 100 }
