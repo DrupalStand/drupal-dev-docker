@@ -52,7 +52,14 @@ class CalendarValidator extends ArgumentValidatorPluginBase {
   public function validateArgument($arg) {
     if (isset($this->argument_wrapper) && $this->argument_wrapper->validateValue($arg)) {
       $date = $this->argument_wrapper->createDateTime();
-      $time = strtotime($date->format($this->options['replacement_format']));
+      // Adds 'January' to year to get correct header on Year calendars
+      // to avoid problem defined on third note at
+      // http://www.php.net/manual/en/datetime.formats.date.php
+      $january = '';
+      if($this->options['replacement_format'] === 'Y') {
+        $january = 'January';
+      }
+      $time = strtotime($january . $date->format($this->options['replacement_format']));
 
       // Override title for substitutions
       // @see \Drupal\views\Plugin\views\argument\ArgumentPluginBase::getTitle
