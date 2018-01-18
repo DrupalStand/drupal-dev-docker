@@ -1,0 +1,9 @@
+name: Mobomo Calendar
+type: module
+description: 'Provides a Views plugin to display views containing dates as Calendars. Based on the dev version of the Calendar module.'
+dependencies:
+  - calendar_datetime
+  - views
+  - views_templates
+package: Date/Time
+core: 8.x
