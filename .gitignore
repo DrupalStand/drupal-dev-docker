@@ -23,3 +23,6 @@ salt.txt
 
 # Ignore changes to docker-compose
 *docker-compose.yml
+
+# Ignore compiled styles
+web/themes/custom/goddard_uswds_sub/assets/styles/css/goddard.css
