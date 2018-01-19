@@ -3,6 +3,9 @@
 function goddard_uswds_sub_preprocess_page(&$variables) {
   $variables['center_name'] = theme_get_setting('center_name');
   $variables['office_name'] = theme_get_setting('office_name');
+  $variables['footer_info_line_one'] = theme_get_setting('footer_info_line_one');
+  $variables['footer_info_line_two'] = theme_get_setting('footer_info_line_two');  
+  $variables['footer_info_line_three'] = theme_get_setting('footer_info_line_three');   
 }
 
 function goddard_uswds_sub_form_search_block_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
@@ -12,6 +15,9 @@ function goddard_uswds_sub_form_search_block_form_alter(&$form, \Drupal\Core\For
 function goddard_uswds_sub_preprocess_html(&$variables) {
   $variables['center_name'] = theme_get_setting('center_name');
   $variables['office_name'] = theme_get_setting('office_name');
+  $variables['footer_info_line_one'] = theme_get_setting('footer_info_line_one');
+  $variables['footer_info_line_two'] = theme_get_setting('footer_info_line_two');  
+  $variables['footer_info_line_three'] = theme_get_setting('footer_info_line_three');  
   $variables['is_front'] = \Drupal::service('path.matcher')->isFrontPage();
 
   $request = \Drupal::request();
