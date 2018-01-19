@@ -40,7 +40,9 @@
         "drupal/file_mdm_font": "^1.1",
         "drupal/fontawesome": "^1.3",
         "drupal/image_effects": "^2.0",
-        "drupal/twig_field_value": "^1.1"
+        "drupal/twig_field_value": "^1.1",
+        "doctrine/common": ">=2.5 <2.8",
+        "drupal/captcha": "^1.0@beta"
     },
     "require-dev": {
         "behat/mink": "~1.7",
