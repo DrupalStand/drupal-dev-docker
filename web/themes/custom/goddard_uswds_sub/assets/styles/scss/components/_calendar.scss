@@ -218,16 +218,15 @@
 }
 
 // Out of month day calendar striping
-.calendar-calendar .month-view .full td.date-box.empty {
-  //background: repeating-linear-gradient(180deg, #ccc, #ccc 30px, #dbdbdb 30px, #dbdbdb 60px);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0), #f4f4f4;
-  background-size: 34px auto;
-}
-
-.calendar-calendar .month-view .full td.single-day.empty {
-  background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0), #f4f4f4;
-  background-size: 11px auto;
-}
+//.calendar-calendar .month-view .full td.date-box.empty {
+//  background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0), #f4f4f4;
+//  background-size: 34px auto;
+//}
+//
+//.calendar-calendar .month-view .full td.single-day.empty {
+//  background: linear-gradient(180deg, rgba(255,255,255,1) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0), #f4f4f4;
+//  background-size: 11px auto;
+//}
 
 // Numbers in individual day squares
 .calendar-calendar .month-view .full td .inner div.day {
