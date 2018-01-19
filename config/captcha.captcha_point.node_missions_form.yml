@@ -1,0 +1,7 @@
+uuid: 114c4bbd-339c-4cfa-96bf-0011a5c880bd
+langcode: en
+status: false
+dependencies: {  }
+formId: node_missions_form
+captchaType: default
+label: null
