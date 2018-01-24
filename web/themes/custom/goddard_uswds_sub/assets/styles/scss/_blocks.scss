@@ -97,6 +97,9 @@
     .carousel-image {
       width: 100%;
       height: 290px;
+      background-repeat: no-repeat;
+      background-size: cover;  
+      background-position: center center;    
     }
     .carousel-slide-text {
       padding: 10px 30px 80px;
