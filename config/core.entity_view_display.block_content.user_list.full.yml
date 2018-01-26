@@ -9,6 +9,7 @@ dependencies:
     - field.field.block_content.user_list.field_button
     - field.field.block_content.user_list.field_people
   module:
+    - entity_reference_revisions
     - link
     - text
 id: block_content.user_list.full
@@ -35,5 +36,13 @@ content:
     third_party_settings: {  }
     type: link
     region: content
-hidden:
-  field_people: true
+  field_people:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+hidden: {  }

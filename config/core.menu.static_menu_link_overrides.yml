@@ -54,11 +54,11 @@ definitions:
     expanded: false
     enabled: true
   contact__site_page:
-    enabled: true
     menu_name: footer
     parent: ''
-    expanded: false
     weight: 0
+    expanded: false
+    enabled: false
   standard__front_page:
     weight: -50
     menu_name: main

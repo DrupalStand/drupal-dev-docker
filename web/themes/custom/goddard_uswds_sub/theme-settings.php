@@ -36,14 +36,12 @@ function goddard_uswds_sub_form_system_theme_settings_alter(&$form, \Drupal\Core
     '#type'          => 'textfield',
     '#title'         => t('Footer Info Line 1'),
     '#default_value' => theme_get_setting('footer_info_line_one'),
-    '#format' => 'full_html',
   );
 
   $form['footer_text']['footer_info_line_two'] = array(
     '#type'          => 'textfield',
     '#title'         => t('Footer Info Line 2'),
     '#default_value' => theme_get_setting('footer_info_line_two'),
-    '#format' => 'full_html',
   );
   
   $form['footer_text']['footer_info_line_three'] = array(
@@ -51,14 +49,13 @@ function goddard_uswds_sub_form_system_theme_settings_alter(&$form, \Drupal\Core
     '#title'         => t('Footer Info Line 3'),
     '#default_value' => theme_get_setting('footer_info_line_three'),
     '#description'   => t("This text appears just below the NASA logo in the footer."),
-    '#format' => 'full_html',
   );  
 
   // Theme Settings style.
   unset($form['theme_settings']); 
   
   // Header style.
-  //unset($form['header_style_fieldset']);
+  unset($form['header_style_fieldset']);
 
   // Footer style.
   unset($form['footer_style_fieldset']);

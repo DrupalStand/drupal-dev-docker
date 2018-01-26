@@ -14,7 +14,7 @@ third_party_settings:
 id: contact_us
 label: 'Contact Us'
 recipients:
-  - jason.glisson@gmail.com
+  - nasatest@nasa.gov
 reply: ''
 weight: 0
 message: 'Thank you for your submission.'
