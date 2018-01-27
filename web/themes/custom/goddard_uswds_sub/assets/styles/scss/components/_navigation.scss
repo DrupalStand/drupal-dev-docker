@@ -1,4 +1,8 @@
 .usa-nav-container {
+  @include respond-to(medium) {
+    padding-left: 0;
+    padding-right: 0;
+  }
   @include respond-to(large) {
     max-width: none;
   }
@@ -28,7 +32,6 @@
   }
 
   .usa-grid-full {
-    //width: inherit; // Bad
     @include respond-to(large) {
       width: 100%;
     }
@@ -42,23 +45,15 @@
 
     ul {
       @include respond-to(large) {
-        //display: flex;
-        //align-items: stretch; /* Default */
-        //justify-content: space-between;
+        // display: flex;
+        // align-items: stretch; /* Default */
+        // justify-content: space-between;
         width: 100%;
-      }
-    }
-
-    li {
-      @include respond-to(large) {
-        //display: block;
-        //flex: 0 1 auto;
       }
     }
 
     a {
       @include respond-to(large) {
-        //padding: 5px 12px;
         border-radius: 5px;
       }
 
@@ -90,9 +85,11 @@
   background-size: cover;
   margin-top: 10px;
   padding: 0 20px;
+
   .region.region-header {
     width: 100%;
   }
+
 }
 
 .usa-menu-btn {
@@ -112,20 +109,28 @@
 }
 
 .usa-nav-primary {
-  font-family: $poppins;
+  font-family: $sans-serif;
   text-transform: uppercase;
+  @include respond-to(medium-large) {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .usa-nav-primary > li > a {
   font-weight: 500;
   padding: 1.3rem 1.5rem;
+  @include respond-to(medium-large) {
+    text-align: center;
+  }
 }
 
+// @todo: This doesn't belong in this file.
 .view {
   .pager {
     display: inline-block;
     text-align: center;
-    width: 100%;    
+    width: 100%;
   }
   .pager__items {
     .pager__item {
@@ -159,6 +164,8 @@
     }
   }
 }
+
+
 //.usa-nav-container {
 //  .usa-menu-btn {
 //    display: none;

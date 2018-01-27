@@ -1,11 +1,12 @@
 /* Fonts */
 @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900');
 $poppins: 'Poppins', sans-serif;
+$sans-serif: $poppins;
 
 /* Headings */
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $poppins;
+  font-family: $sans-serif;
   margin-top: 1.0em;
 }
 
