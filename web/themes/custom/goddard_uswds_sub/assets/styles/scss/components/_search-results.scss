@@ -1,0 +1,21 @@
+.search-results {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.search-results__title {
+  margin-bottom: 5px;
+}
+
+.search-results__subtitle {
+  font-size: 22px;
+  margin-bottom: 75px;
+}
+
+// This is the worst thing, but there's no way to hook into the search results title.
+// Here we hide it so we can print it out and manage it ourselves in search-results.html.twig.
+.search-results__wrapper .block-system-main-block > h2 {
+  display: none;
+}
