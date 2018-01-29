@@ -289,9 +289,17 @@
 .calendar-list {
   .view-display-id-page_1 {
     .views-row {
-      float: none;
-      padding: 15px 0;
-      margin: 15px 0;
+      display: inline-block;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      width: 100%;
+      .views-field-title {
+        margin: 0;
+        a {
+          text-decoration: underline;
+          color: inherit;
+        }
+      }
     }      
   }
 }
