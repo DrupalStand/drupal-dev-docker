@@ -13,12 +13,18 @@
   text-align: center;
 }
 
-.footer-agency-id img {
-  margin-bottom: 10px;
-}
-
 .footer-agency-id p {
   margin: 0;
+}
+
+.footer-agency-id > a,
+.footer-info {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.footer-info {
+  margin-left: 10px;
 }
 
 .footer-agency-links ul {
@@ -37,7 +43,7 @@
   text-decoration: none;
 }
 
-footer {
+footer.usa-footer {
   nav {
     .menu {
       display: flex;
