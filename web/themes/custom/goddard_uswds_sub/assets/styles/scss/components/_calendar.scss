@@ -284,6 +284,18 @@
   overflow: hidden;
 }
 
+// List View
+// ----------------------------------------------------------------------------
+.calendar-list {
+  .view-display-id-page_1 {
+    .views-row {
+      float: none;
+      padding: 15px 0;
+      margin: 15px 0;
+    }      
+  }
+}
+
 // General
 // ----------------------------------------------------------------------------
 .calendar-calendar .month-view .full tr.single-day .no-entry .past {

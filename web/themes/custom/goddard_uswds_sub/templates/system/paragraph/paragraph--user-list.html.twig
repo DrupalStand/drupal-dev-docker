@@ -1,6 +1,5 @@
 {% block paragraph %}
   {% block content %}
-  {{ kint(content) }}
     <div class="user-list__item">
       <div class="user-list__name">{{ content.field_name|render }}</div>
       <div class="user-list__title">{{ content.field_title_or_position|render }}</div>
