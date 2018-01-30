@@ -111,7 +111,7 @@ display:
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
-          element_wrapper_type: h4
+          element_wrapper_type: h3
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
@@ -337,8 +337,7 @@ display:
           granularity: minute
           plugin_id: datetime
       title: 'Upcoming Events'
-      header: {  }
-      footer:
+      header:
         area:
           id: area
           table: views
@@ -346,17 +345,36 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: false
+          empty: true
           tokenize: false
           content:
-            value: ''
+            value: "<div class=\"cal-menu\">\n<ul>\n<li class=\"cal-month\"><a href=\"/calendar\">Month</a></li>\n<li class=\"cal-week\"><a href=\"/calendar/week\">Week</a></li>\n<li class=\"cal-day\"><a href=\"/calendar/day\">Day</a></li>\n<li class=\"cal-year\"><a href=\"/calendar/year\">Year</a></li>\n<li class=\"cal-list\"><a href=\"/calendar/list\">List</a></li>\n</ul>\n</div>"
             format: full_html
           plugin_id: text
+      footer: {  }
       empty: {  }
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
       css_class: upcoming-events
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_event_date'
+        - 'config:field.storage.node.field_time_zones'
+  page_1:
+    display_plugin: page
+    id: page_1
+    display_title: Page
+    position: 2
+    display_options:
+      display_extenders: {  }
+      path: calendar/list
     cache_metadata:
       max-age: -1
       contexts:

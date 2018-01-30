@@ -286,15 +286,31 @@
 
 // List View
 // ----------------------------------------------------------------------------
-.calendar-list {
-  .view-display-id-page_1 {
-    .views-row {
-      float: none;
-      padding: 15px 0;
-      margin: 15px 0;
-    }      
+.calendar-list .view-display-id-page_1 {
+
+  .view-content {
+    padding-top: 25px;
   }
-}
+    
+  .views-row {
+    display: inline-block;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    width: 100%;
+        
+    .views-field-title {
+      margin: 0;
+      
+      a {
+        text-decoration: underline;
+        color: inherit;
+      }
+      
+    }
+    
+  } 
+
+}   
 
 // General
 // ----------------------------------------------------------------------------
