@@ -21,6 +21,10 @@
   @include respond-to(large) {
     width: auto;
   }
+  .footer-logo {
+    width: 97px;
+    height: 80px;
+  }
 }
 
 .footer-agency-id p {
