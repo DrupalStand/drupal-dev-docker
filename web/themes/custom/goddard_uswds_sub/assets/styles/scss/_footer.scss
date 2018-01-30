@@ -13,21 +13,49 @@
   text-align: center;
 }
 
-.footer-agency-id img {
-  margin-bottom: 10px;
+.footer-agency-id {
+  margin-right: 0;
+  @include respond-to(small) {
+    width: 49%;
+  }
+  @include respond-to(large) {
+    width: auto;
+  }
 }
 
 .footer-agency-id p {
   margin: 0;
 }
 
+.footer-agency-id > a,
+.footer-info {
+  text-align: center;
+  display: block;
+  @include respond-to(small) {
+    text-align: left;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.footer-info {
+  margin-top: 10px;
+  @include respond-to(small) {
+    text-align: left;
+    margin-top: 0;
+  }
+  @include respond-to(large) {
+    margin-left: 10px;
+  }
+}
+
 .footer-agency-links ul {
-  padding-left: 0;
 }
 
 .footer-agency-links li {
+  display: block;
   list-style: none;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .footer-agency-links a {
@@ -37,26 +65,61 @@
   text-decoration: none;
 }
 
-footer {
+footer.usa-footer {
+
   nav {
+    @include respond-to(large) {
+      margin-left: 20px;
+    }
+
     .menu {
-      display: flex;
-      align-items: stretch;
-      justify-content: space-between;
+      //display: flex;
+      //align-items: stretch;
+      //justify-content: space-between;
+      display: block;
       width: 100%;
       list-style-type: none;
       color: #fff;
+      padding-left: 0;
+      @include respond-to(large) {
+        display: inline-block;
+      }
+
       a {
         font-family: $sans-serif;
         color: #fff;
         text-decoration: none;
         text-transform: uppercase;
       }
+
       li {
         display: block;
-        flex: 0 1 auto; 
-        padding: 0 2rem;       
+        //flex: 0 1 auto;
+        padding: 0 2rem;
+        text-align: center;
+        @include respond-to(small) {
+          text-align: left;
+        }
+        @include respond-to(large) {
+          display: inline-block;
+          padding: 0 1em;
+        }
+
+        &:first-child {
+          @include respond-to(large) {
+            padding-left: 0;
+          }
+        }
+
+        &:last-child {
+          @include respond-to(large) {
+            padding-right: 0;
+          }
+        }
       }
+
     }
+
   }
+
 }
