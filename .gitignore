@@ -22,4 +22,4 @@ salt.txt
 *.DS_Store
 
 # Ignore compiled styles
-web/themes/custom/goddard_uswds_sub/assets/styles/css/goddard.css
+# web/themes/custom/goddard_uswds_sub/assets/styles/css/goddard.css
