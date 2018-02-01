@@ -66,13 +66,19 @@
   padding-top: 15px;
   text-align: center;
   color: #373737;
+  @include respond-to(small) {
+    text-align: left;
+  }
+
   h4, h5 {
     margin-top: 5px;
     font-weight: 500;
   }
+
   h4 {
     font-size: 1.9rem;
   }
+
 }
 
 .nasa-header-menu ul {
