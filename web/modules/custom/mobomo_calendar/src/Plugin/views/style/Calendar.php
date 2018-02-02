@@ -412,11 +412,13 @@ class Calendar extends StylePluginBase {
     if ($groupby_times == 'custom' && $form_state->isValueEmpty(['style_options', 'groupby_times_custom'])) {
       $form_state->setErrorByName('groupby_times_custom', $this->t('Custom groupby times cannot be empty.'));
     }
-    if ((!$form_state->isValueEmpty(['style_options', 'theme_style']) && empty($groupby_times)) || !in_array($groupby_times, ['hour', 'half'])) {
+/*
+    if (!$form_state->isValueEmpty(['style_options', 'theme_style']) && (empty($groupby_times) || !in_array($groupby_times, ['hour', 'half']))) {      
       $form_state->setErrorByName('theme_style', $this->t('Overlapping items only work with hour or half hour groupby times.'));
     }
+*/
     if (!$form_state->isValueEmpty(['style_options', 'theme_style']) && !$form_state->isValueEmpty(['style_options', 'group_by_field'])) {
-      $form_state->setErrorByName('theme_style', $this->t('ou cannot use overlapping items and also try to group by a field value.'));
+      $form_state->setErrorByName('theme_style', $this->t('You cannot use overlapping items and also try to group by a field value.'));
     }
     if ($groupby_times != 'custom') {
       $form_state->setValue(['style_options', 'groupby_times_custom'], NULL);

@@ -66,6 +66,9 @@ display:
           groupby_field: ''
           multiday_theme: '1'
           multiday_hidden: {  }
+          granularity_links:
+            day: ''
+            week: ''
       row:
         type: calendar_row
         options:
@@ -286,12 +289,15 @@ display:
           with_weekno: '0'
           max_items: '0'
           max_items_behavior: more
-          groupby_times: hour
-          groupby_times_custom: null
+          groupby_times: custom
+          groupby_times_custom: '08:00:00,08:30:00,09:00:00,09:30:00,10:00:00,10:30:00,11:00:00,11:30:00,12:00:00,12:30:00,13:00:00,13:30:00,14:00:00,14:30:00,15:00:00,15:30:00,16:00:00,16:30:00,17:00:00,17:30:00,18:00:00,18:30:00,19:00:00,19:30:00,20:00:00'
           theme_style: '1'
           groupby_field: ''
           multiday_theme: '1'
           multiday_hidden: {  }
+          granularity_links:
+            day: ''
+            week: ''
       defaults:
         style: false
         row: false
@@ -474,9 +480,9 @@ display:
           max_items_behavior: more
           groupby_times: half
           groupby_times_custom: null
-          theme_style: '1'
+          theme_style: '2'
           groupby_field: ''
-          multiday_theme: '1'
+          multiday_theme: '0'
           multiday_hidden: {  }
           granularity_links:
             day: ''
