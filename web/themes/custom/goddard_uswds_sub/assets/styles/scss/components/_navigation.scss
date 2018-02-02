@@ -53,14 +53,15 @@
     }
 
     a {
-      @include respond-to(large) {
-        border-radius: 5px;
-      }
 
       &:hover {
         background: #000;
         color: #fff;
         text-shadow: 1px 0px 0 #fff;
+        @include respond-to(large) {
+          background: inherit;
+          color: #0071bc;
+        }
       }
 
       span {
