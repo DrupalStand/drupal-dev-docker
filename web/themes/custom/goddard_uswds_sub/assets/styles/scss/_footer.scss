@@ -3,7 +3,7 @@
 .nasa-agency-footer {
   background-color: #0C131C;
   color: white;
-  padding: 25px 0;
+  padding: 15px 0;
   font-size: 80%;
 }
 .nasa-agency-footer-container {
@@ -73,7 +73,7 @@ footer.usa-footer {
 
   nav {
     @include respond-to(large) {
-      margin-left: 20px;
+      margin-left: auto;
     }
 
     .menu {
@@ -85,9 +85,7 @@ footer.usa-footer {
       list-style-type: none;
       color: #fff;
       padding-left: 0;
-      @include respond-to(large) {
-        display: inline-block;
-      }
+      margin-bottom: 0;
 
       a {
         font-family: $sans-serif;
@@ -104,21 +102,21 @@ footer.usa-footer {
         @include respond-to(small) {
           text-align: left;
         }
-        @include respond-to(large) {
-          display: inline-block;
-          padding: 0 1em;
-        }
+        //@include respond-to(large) {
+        //  display: inline-block;
+        //  padding: 0 1em;
+        //}
 
         &:first-child {
-          @include respond-to(large) {
-            padding-left: 0;
-          }
+          //@include respond-to(large) {
+          //  padding-left: 0;
+          //}
         }
 
         &:last-child {
-          @include respond-to(large) {
-            padding-right: 0;
-          }
+          //@include respond-to(large) {
+          //  padding-right: 0;
+          //}
         }
       }
 
