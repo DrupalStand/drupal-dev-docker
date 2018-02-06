@@ -25,7 +25,6 @@
     max-height: 80px;
   }
   .utility-menu {
-    //margin-left: auto;
     display: inline-flex;
     .usa-search {
       display: inline-flex;
@@ -40,26 +39,36 @@
       padding-top: 4px;
       padding-right: 3px;
       padding-left: 12px;
+      @include respond-to(large) {
+        margin-top: 0;
+      }
+
       input[type=search] {
         border: none;
         font-family: $sans-serif;
+
         &:focus {
           outline: none;
         }
+
       }
+
       input[type=submit] {
         background-color: #fff;
         background-image: url(../../../images/mag.png);
         border: none;
       }
+
     }
+
   }
+
 }
 
 .user-logged-in {
   .utility-menu {
     .usa-search {
-      margin-top: 1.5rem;
+      margin-top: 0;
     }
   }
 }
@@ -75,8 +84,12 @@
   }
 
   h4, h5 {
-    margin-top: 5px;
+    margin-top: 0px;
     font-weight: 500;
+  }
+
+  h5 {
+    margin-bottom: 0;
   }
 
   h4 {
