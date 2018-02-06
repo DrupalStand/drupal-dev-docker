@@ -47,9 +47,6 @@
 
     ul {
       @include respond-to(large) {
-        // display: flex;
-        // align-items: stretch; /* Default */
-        // justify-content: space-between;
         width: 100%;
       }
     }
@@ -88,6 +85,9 @@
   background-size: cover;
   margin-top: 10px;
   padding: 0 20px;
+  @include respond-to(small) {
+    margin-top: 4px;
+  }
 
   .region.region-header {
     width: 100%;
