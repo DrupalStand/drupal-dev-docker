@@ -3,14 +3,8 @@
 
 @media screen and (min-width: 600px) {
 
-  .nasa-header-menu,
-  .nasa-agency-footer-container {
+  .nasa-header-menu {
     flex-direction: row;
-  }
-
-  .nasa-agency-title,
-  .nasa-agency-footer-container {
-    //text-align: left;
   }
 
   .nasa-header-menu ul li,

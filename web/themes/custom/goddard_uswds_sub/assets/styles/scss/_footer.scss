@@ -11,6 +11,11 @@
   align-items: center;
   flex-direction: column;
   text-align: center;
+  @include respond-to(small) {
+    flex-direction: row;
+    max-width: none;
+    padding: 0 20px;
+  }
 }
 
 .footer-agency-id {
