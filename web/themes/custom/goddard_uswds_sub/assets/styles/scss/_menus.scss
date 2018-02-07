@@ -47,8 +47,7 @@
 // Primary Sidebar Menu
 .usa-sidenav-list {
   background: #F4F4F4;
-  border-radius: 5px;
-  padding: 30px 15px;
+  padding: 0px 10px 15px;
   > li {
     border: none;
   }
@@ -57,7 +56,7 @@
     font-size: 1.5rem;
     padding: 1.25rem 1rem 1.25rem 1.8rem;
     &:hover {
-      background: url('/themes/goddard_uswds_sub/images/delta.png');
+      background: url('../../../images/delta.png');
       background-repeat: no-repeat;
       background-color: none;
       background-size: inherit;
@@ -66,7 +65,12 @@
       text-shadow: 0.07rem 0 0 #000;
     }
   }
+  &.page-title {
+    padding: 30px 28px;
+  }
 }
+
+
 
 // Homepage Block styles
 .front {
