@@ -17,3 +17,9 @@ html
 
 # Ignore Drupal's salt file
 salt.txt
+
+# Ignore DS_Store from MacOS
+*.DS_Store
+
+# Ignore compiled styles
+# web/themes/custom/goddard_uswds_sub/assets/styles/css/goddard.css

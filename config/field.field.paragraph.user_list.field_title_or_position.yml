@@ -1,0 +1,19 @@
+uuid: 0a1656c0-f6ee-438b-812f-23e88fb88aaa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title_or_position
+    - paragraphs.paragraphs_type.user_list
+id: paragraph.user_list.field_title_or_position
+field_name: field_title_or_position
+entity_type: paragraph
+bundle: user_list
+label: 'Title or Position'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,40 @@
+uuid: f166accd-cb1e-4a00-be94-439a4f495959
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.user_list
+    - field.storage.block_content.field_people
+    - paragraphs.paragraphs_type.user_list
+  module:
+    - entity_reference_revisions
+id: block_content.user_list.field_people
+field_name: field_people
+entity_type: block_content
+bundle: user_list
+label: People
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      user_list: user_list
+    target_bundles_drag_drop:
+      user_list:
+        enabled: true
+        weight: 5
+      carousel:
+        weight: 6
+        enabled: false
+      icon_and_text_block:
+        weight: 7
+        enabled: false
+      text_block:
+        weight: 8
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,19 @@
+uuid: bbff582d-b564-4baf-a03f-7504910cb7b3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_additional_location_inform
+    - node.type.event
+id: node.event.field_additional_location_inform
+field_name: field_additional_location_inform
+entity_type: node
+bundle: event
+label: 'Additional Location Information'
+description: 'Use this field to list the room or exact location for the event.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

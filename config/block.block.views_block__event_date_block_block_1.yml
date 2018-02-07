@@ -1,0 +1,33 @@
+uuid: dd991c03-2aa0-4189-a449-fa9784a8ad18
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.event_date_block
+  module:
+    - node
+    - views
+  theme:
+    - goddard_uswds_sub
+id: views_block__event_date_block_block_1
+theme: goddard_uswds_sub
+region: sidebar_first
+weight: -8
+provider: null
+plugin: 'views_block:event_date_block-block_1'
+settings:
+  id: 'views_block:event_date_block-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      event: event
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

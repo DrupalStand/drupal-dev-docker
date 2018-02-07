@@ -1,0 +1,29 @@
+uuid: 638a39e3-32e4-4e44-8723-7024e3baae1b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.missions.body
+    - node.type.missions
+  module:
+    - text
+    - user
+id: node.missions.teaser
+targetEntityType: node
+bundle: missions
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_image: true

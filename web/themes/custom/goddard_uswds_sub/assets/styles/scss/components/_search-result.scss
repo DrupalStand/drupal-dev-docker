@@ -1,0 +1,26 @@
+.search-result {
+  padding-top: 30px;
+  margin-bottom: 0;
+
+  &:first-child {
+    border-top: none;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+}
+
+.search-result__title {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.search-result__title-link {
+  text-decoration: none;
+}
+
+.search-result__url {
+  text-decoration: none;
+}

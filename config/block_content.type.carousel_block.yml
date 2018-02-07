@@ -1,0 +1,8 @@
+uuid: 29274743-0fcd-4fb4-b93a-22cf314037b2
+langcode: en
+status: true
+dependencies: {  }
+id: carousel_block
+label: 'Carousel Block'
+revision: 0
+description: 'This is a rotating block for images and content. You may also use it for images alone or for content alone.'

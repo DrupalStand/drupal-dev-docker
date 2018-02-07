@@ -1,0 +1,33 @@
+uuid: 15b2b121-4595-43fe-93a2-a1dfd0c5f95d
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.related_tags
+  module:
+    - node
+    - views
+  theme:
+    - goddard_uswds_sub
+id: views_block__related_tags_block_1
+theme: goddard_uswds_sub
+region: breadcrumb
+weight: 0
+provider: null
+plugin: 'views_block:related_tags-block_1'
+settings:
+  id: 'views_block:related_tags-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      article: article
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

@@ -1,0 +1,96 @@
+{#
+/**
+ * @file
+ * Template to display a view as a calendar day, grouped by time
+ * and optionally organized into columns by a field value.
+ *
+ * @see template_preprocess_calendar_day.
+ *
+ * - rows: The rendered data for this day.
+ * - rows['date'] - the date for this day, formatted as YYYY-MM-DD.
+ * - rows['datebox'] - the formatted datebox for this day.
+ * - rows['empty'] - empty text for this day, if no items were found.
+ * - rows['all_day'] - an array of formatted all day items.
+ * - rows['items'] - an array of timed items for the day.
+ * - rows['items'][$time_period]['hour'] - the formatted hour for a time period.
+ * - rows['items'][$time_period]['ampm'] - the formatted ampm value, if any for a time period.
+ * - rows['items'][$time_period][$column]['values'] - An array of formatted
+ *   items for a time period and field column.
+ *
+ * - view: The view.
+ * - columns: an array of column names.
+ * - min_date_formatted: The minimum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ * - max_date_formatted: The maximum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ *
+ * The width of the columns is dynamically set using <col></col>
+ * based on the number of columns presented. The values passed in will
+ * work to set the 'hour' column to 10% and split the remaining columns
+ * evenly over the remaining 90% of the table.
+ */
+#}
+<div class="calendar-calendar"><div class="day-view">
+<table class="full">
+  <col width="{{ first_column_width }}%"></col>
+  <thead>
+    {% for column in columns %}
+      <col width="{{ column_width }}%"></col>
+    {% endfor %}
+    <tr>
+      <th class="calendar-dayview-hour">
+        {% if by_hour_count > 0 %}
+          {% trans %}Time{% endtrans %}
+        {% endif %}
+      </th>
+      {% for column in columns %}
+        <th class="calendar-agenda-items">{{ column }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {# // All day and multi-day events not support in core DateTime module in Drupal 8
+    <tr>
+      <td class="{{ agenda_hour_class }}">
+         <span class="calendar-hour">
+           {% if by_hour_count > 0 %}
+             {% trans %}All day{% endtrans %}
+           {% endif %}
+         </span>
+       </td>
+      {% for column in columns %}
+       <td class="calendar-agenda-items multi-day">
+         <div class="calendar">
+           <div class="inner">
+             {% if rows['all_day'][column] is not empty %}
+               {{ rows['all_day'][column] }}
+             {% else %}
+               &nbsp;
+             {% endif %}
+           </div>
+         </div>
+       </td>
+      {% endfor %}
+    </tr>
+    #}
+    {% for hour in rows['items'] %}
+    <tr>
+      <td class="calendar-agenda-hour">
+        <span class="calendar-hour">{{ hour.hour }}</span><span class="calendar-ampm">{{ hour.ampm }}></span>
+      </td>
+      {% for column in columns %}
+        <td class="calendar-agenda-items single-day">
+          <div class="calendar">
+          <div class="inner">
+            {% if hour['values'][column] is not empty %}
+              {{ hour['values'][column] }}
+            {% else %}
+              &nbsp;
+            {% endif %}
+          </div>
+          </div>
+        </td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div></div>

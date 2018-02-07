@@ -1,0 +1,145 @@
+/* NASA header */
+
+.usa-header-basic {
+  box-shadow: 0px 0px 50px #C5C5C5;
+  border-bottom: none;
+  z-index: 1;
+  position: relative;
+  .usa-logo {
+    bottom: unset;
+    position: relative;
+  }
+}
+
+.nasa-header-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  @include respond-to(large) {
+    padding-top: 5px;
+    padding-bottom: 0;
+  }
+  img {
+    float: left;
+    max-height: 80px;
+  }
+  .utility-menu {
+    display: inline-flex;
+    .usa-search {
+      display: inline-flex;
+    }
+    // Search Field
+    #search-block-form {
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 1.3rem;
+      height: 4rem;
+      padding-top: 4px;
+      padding-right: 3px;
+      padding-left: 12px;
+      @include respond-to(large) {
+        margin-top: 0;
+      }
+
+      input[type=search] {
+        border: none;
+        font-family: $sans-serif;
+
+        &:focus {
+          outline: none;
+        }
+
+      }
+
+      input[type=submit] {
+        background-color: #fff;
+        background-image: url(../../../images/mag.png);
+        border: none;
+      }
+
+    }
+
+  }
+
+}
+
+.user-logged-in {
+  .utility-menu {
+    .usa-search {
+      margin-top: 0;
+    }
+  }
+}
+
+.nasa-agency-title {
+  display: inline-block;
+  margin-left: 20px;
+  padding-top: 15px;
+  text-align: center;
+  color: #373737;
+  @include respond-to(small) {
+    text-align: left;
+  }
+
+  h4, h5 {
+    margin-top: 0px;
+    font-weight: 500;
+  }
+
+  h5 {
+    margin-bottom: 0;
+  }
+
+  h4 {
+    font-size: 1.9rem;
+  }
+
+}
+
+.nasa-header-menu ul {
+  margin-left: 40px;
+  margin-right: 40px;
+  @include respond-to(small) {
+    margin-left: 0;
+  }
+  @include respond-to(medium) {
+    margin-left: 40px;
+  }
+}
+
+.nasa-header-menu ul li {
+  list-style: none;
+  margin-right: 20px;
+}
+
+.nasa-header-menu a {
+  color: black;
+  text-decoration: none;
+  font-weight: 800;
+}
+
+/* END NASA header */
+
+/* SITE header */
+
+.usa-logo {
+  max-width: 40%;
+}
+
+.usa-logo-text {
+  font-size: 2.4em;
+  font-family: $sans-serif;
+}
+
+.usa-logo img {
+  display: none;
+}
+
+.usa-logo a {
+  color: white;
+}
+
+
+/* END SITE header */

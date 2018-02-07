@@ -1,0 +1,35 @@
+uuid: c6177c41-dd11-4533-980d-482cc4845081
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.carousel_block
+    - field.field.block_content.carousel_block.field_carousel_slide
+  module:
+    - paragraphs
+id: block_content.carousel_block.default
+targetEntityType: block_content
+bundle: carousel_block
+mode: default
+content:
+  field_carousel_slide:
+    type: entity_reference_paragraphs
+    weight: 26
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: preview
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: carousel
+    third_party_settings: {  }
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

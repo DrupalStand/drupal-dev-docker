@@ -1,0 +1,28 @@
+{
+  "name": "goddard-uswds-sub",
+  "version": "1.0.0",
+  "scripts": {
+    "prebuild:css": "gulp sass",
+    "build:css": "postcss --use autoprefixer -b 'last 2 versions' < css/uswds.css | postcss --use cssnano --map -o css/uswds.min.css",
+    "build": "npm run build:css",
+    "build:watch": "watch 'npm run build' sass"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.2.5",
+    "cssnano": "^3.10.0",
+    "gulp": "^3.9.1",
+    "gulp-postcss": "^7.0.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-watch": "^5.0.0",
+    "node-sass": "^4.7.2",
+    "postcss": "^6.0.2",
+    "postcss-cli": "^4.1.0",
+    "uswds": "^1.4.4",
+    "watch": "^1.0.2"
+  },
+  "dependencies": {
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-sourcemaps": "^2.6.4"
+  }
+}

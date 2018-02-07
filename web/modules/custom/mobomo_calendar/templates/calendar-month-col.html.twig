@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Template to display a column.
+ *
+ * Available variables:
+ * - item: The item to render within a td element.
+ *
+ * @ingroup themeable
+ */
+#}
+
+<td
+  id="{{ item.id }}"
+  date-date="{{ item.date }}"
+  data-day-of-month="{{ item.day_of_month }}"
+  headers="{{ item.header_id }}"
+  class="{{ item.class }}"
+  colspan="{{ item.colspan }}"
+  rowspan="{{ item.rowspan }}">
+  <div class="inner">
+    {{ item.entry }}
+  </div>
+</td>

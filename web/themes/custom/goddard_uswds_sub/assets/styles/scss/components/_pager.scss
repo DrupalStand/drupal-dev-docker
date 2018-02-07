@@ -1,0 +1,43 @@
+.pager {
+  text-align: center;
+}
+
+.pager__items {
+
+  li.pager__item {
+    padding-left: .5em;
+    padding-right: .35em;
+
+    &.is-active {
+      border-radius: 4px;
+      background: #000000;
+      color: #ffffff;
+    }
+
+    & a {
+      color: #000000;
+    }
+
+    &.is-active a {
+      color: inherit;
+      font-weight: bold;
+    }
+
+    &.pager__item--next,
+    &.pager__item--previous {
+      font-weight: bold;
+    }
+
+    &.pager__item--next a,
+    &.pager__item--previous a {
+      color: #0e69be;
+    }
+
+    &.pager__item--first,
+    &.pager__item--last  {
+      display: none;
+    }
+
+  }
+
+}

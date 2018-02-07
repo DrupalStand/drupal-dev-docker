@@ -1,0 +1,22 @@
+uuid: adef2a6d-82eb-476b-89bf-c519b41959fa
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: missions
+label: Missions
+type: 'canonical_entities:node'
+pattern: '/missions/[node:title]'
+selection_criteria:
+  5d5a11c6-2026-4cc5-a4e1-66b71aaaad93:
+    id: node_type
+    bundles:
+      missions: missions
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 5d5a11c6-2026-4cc5-a4e1-66b71aaaad93
+selection_logic: and
+weight: -5
+relationships: {  }

@@ -1,0 +1,27 @@
+uuid: 8979e10b-2b83-4f6d-9a19-57b2875bd196
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - goddard_uswds_sub
+_core:
+  default_config_hash: 9EoWV2Lot6FVSr50t4hoKgiz1LIXYWNG-IIPYsWxBqo
+id: goddard_uswds_sub_content
+theme: goddard_uswds_sub
+region: content
+weight: -8
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  provider: system
+  label_display: '0'
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: true
+    context_mapping: {  }

@@ -1,0 +1,21 @@
+uuid: 75d765f0-16c1-4208-b675-4cf349fad0ff
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_summary
+    - paragraphs.paragraphs_type.icon_and_text_block
+  module:
+    - text
+id: paragraph.icon_and_text_block.field_summary
+field_name: field_summary
+entity_type: paragraph
+bundle: icon_and_text_block
+label: Summary
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

@@ -4,7 +4,7 @@ services:
     build:
       context: ./docker-src/cms
     container_name: cms
-    mem_limit: 512M
+    mem_limit: 1024M
     ports:
       - 8080:80
       - 8443:443
@@ -22,7 +22,7 @@ services:
   db:
     image: mariadb:latest
     container_name: db
-    mem_limit: 512M
+    mem_limit: 1024M
     env_file: environment
     ports:
       - 3306:3306

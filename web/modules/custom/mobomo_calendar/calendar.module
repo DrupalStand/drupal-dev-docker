@@ -1,0 +1,262 @@
+<?php
+
+/**
+ * @file
+ * This is the Calendar module for calendar filtering and display in views.
+ */
+
+use Drupal\Core\Url;
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\calendar\CalendarHelper;
+define('CALENDAR_SHOW_ALL', 0);
+define('CALENDAR_HIDE_ALL', -1);
+define('CALENDAR_EMPTY_STRIPE', '#ffffff');
+
+/**
+ * Implements hook_page_attachments().
+ */
+function calendar_page_attachments(array &$page) {
+  $page['#attached']['library'][] = 'calendar/calendar.theme';
+}
+
+/**
+ * Implements hook_date_default_argument_alter().
+ *
+ * Adjust the default date for a view based on the stored session value. This is
+ * used for current date tracking.
+ *
+ * @todo Is this still necessary?
+ */
+function calendar_date_default_argument_alter(&$argument, &$value) {
+  $user = \Drupal::currentUser();
+  $style_options = $argument->view->display_handler->get_option('style_options');
+  $tracking = \Drupal::config('calendar.settings')->get('calendar_track_date');
+  if (!empty($tracking) && ($tracking == 2 || !empty($user->uid))) {
+
+    // If this is a default date, i.e. we are visiting a new calendar display,
+    // set the default date for the display. See if we already have a session
+    // date to use. If so, use it. Otherwise the default is the current date.
+    if (!empty($_SESSION[$argument->view->name]['default_date'])) {
+      $default_date = $_SESSION[$argument->view->name]['default_date'];
+    }
+    else {
+      $default_date = date_now();
+      $_SESSION[$argument->view->name]['default_date'] = $default_date;
+    }
+    // Get the current date from the session.
+    $value = $default_date->format($argument->arg_format);
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function calendar_views_pre_render(ViewExecutable $view) {
+  _calendar_views_track_current_date($view);
+}
+
+
+
+/**
+ * Track the current date as the user moves from calendar display to calendar
+ * display.
+ *
+ * @param \Drupal\views\ViewExecutable $view
+ *
+ * @return \Drupal\views\Plugin\views\argument\ArgumentPluginBase
+ */
+function _calendar_views_track_current_date(ViewExecutable $view) {
+  $user = \Drupal::currentUser();
+
+  $tracking = \Drupal::config('calendar.settings')->get('calendar_track_date');
+  if (!empty($tracking) && ($tracking == 2 || !empty($user->uid))) {
+    foreach ($view->argument as $id => &$argument) {
+
+      // If this is not a default date, i.e. we have browsed to a new calendar
+      // period on a display we were already on, store the midpoint of the current
+      // view as the current date in a session.
+      if ($argument instanceof \Drupal\calendar\Plugin\views\argument\CalendarDate && empty($argument->is_default)) {
+        $date_range = $argument->date_handler->arg_range($argument->argument);
+        $session_date = $date_range[0];
+        $days = intval(($date_range[1]->format('U') - $date_range[0]->format('U')) / 3600 / 24 / 2);
+        date_modify($session_date, "+$days days");
+        $_SESSION[$view->name]['default_date'] = $session_date;
+      }
+    }
+  }
+}
+
+/**
+ * Implementation of hook_help().
+ */
+function calendar_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.calendar':
+      return '<p>' . t('View complete documentation at <a href=":link">Date and Calendar Documentation</a>.',
+      	[':link' => 'http://drupal.org/node/262062']) . '</p>';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function calendar_theme() {
+  return [
+    'calendar_mini' => [
+      'variables' => ['view' => NULL, 'options' => [], 'rows' => []],
+    ],
+    'calendar_month_multiple_entity' => [
+      'variables' => ['curday' => NULL, 'count' => NULL, 'view' => NULL, 'ids' => NULL],
+    ],
+    'calendar_datebox' => [
+      'variables' => ['date' => NULL, 'view' => NULL, 'items' => NULL, 'selected' => NULL],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_empty_day' => [
+      'variables' => ['curday' => NULL, 'view' => NULL],
+    ],
+    'calendar_month_col' => [
+      'variables' => ['item' => NULL],
+    ],
+    'calendar_month_row' => [
+      'variables' => ['inner' => NULL, 'class' => NULL, 'iehint' => NULL],
+    ],
+    'calendar_day' => [
+      'variables' => ['view' => NULL, 'options' => [], 'rows' => [],],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_month' => [
+      'variables' => ['view' => NULL, 'options' => [], 'rows' => []],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_stripe_legend' => [
+      'variables' => ['view_and_display_id' => NULL, 'title' => NULL],
+    ],
+    'calendar_item' => [
+      'variables' => ['view' => NULL, 'rendered_fields' => NULL, 'item' => NULL],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_week' => [
+      'variables' => ['view' => NULL, 'day_names' => [], 'rows' => [],],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_week_overlap' => [
+      'variables' => ['view' => NULL, 'day_names' => [], 'rows' => [],],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_day_overlap' => [
+      'variables' => ['view' => NULL, 'options' => [], 'rows' => [],],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_year' => [
+      'variables' => ['view' => NULL, 'rows' => [], 'options' => [], 'months' => [], 'mini' => FALSE,],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_header' => [
+      'variables' =>
+        [
+          'view' => NULL,
+          'options' => [],
+          'title' => '',
+          'empty' => FALSE,
+          'granularity' => NULL,
+        ],
+      'file' => 'calendar.theme.inc',
+    ],
+    'calendar_time_row_heading' => [
+      'variables' => [
+        'start_time' => NULL,
+        'next_start_time' => NULL,
+        'curday_date' => NULL
+      ],
+    ],
+    'calendar_pager' => [
+      'variables' => [
+        'parameters' => [],
+        'items' => [],
+        'exclude' => FALSE,
+      ],
+    ],
+
+  ];
+}
+
+/**
+ * Default settings array for calendar time grouping.
+ */
+function calendar_groupby_times($type = '') {
+  $times = [];
+  switch ($type) {
+    case 'hour':
+      for ($i = 0; $i <= 23; $i++) {
+        $times[] = \Drupal\Component\Datetime\DateTimePlus::datePad($i) . ':00:00';
+      }
+      break;
+    case 'half':
+      for ($i = 0; $i <= 23; $i++) {
+        $times[] = \Drupal\Component\Datetime\DateTimePlus::datePad($i) . ':00:00';
+        $times[] = \Drupal\Component\Datetime\DateTimePlus::datePad($i) . ':30:00';
+      }
+      break;
+    default:
+      break;
+  }
+  return $times;
+}
+
+/**
+ * Find the path for the calendar display that has a specific granularity.
+ *
+ * @param \Drupal\views\ViewExecutable $view
+ *   The current view.
+ * @param string $granularity
+ *   The granularity to find.
+ *
+ * @return string
+ *   The path for the specific granularity, or an empty string if none was
+ *   found.
+ *
+ * @deprecated use \Drupal\calendar\CalendarHelper::getURLForGranularity instead.
+ */
+function calendar_granularity_path(ViewExecutable &$view, $granularity) {
+  // @todo Find out what should happen here.
+  $paths = &drupal_static(__FUNCTION__, []);
+  $view_name = $view->id();
+  if (!array_key_exists($view_name, $paths) || (isset($paths[$view->id()]) && !(array_key_exists($granularity, $paths[$view->id()])))) {
+    $paths[$view_name][$granularity] = '';
+
+    foreach ($view->displayHandlers->getConfiguration() as $id => $display) {
+      // Check for !empty() in case the view is not fully formed or has displays that are marked to be deleted
+      // @todo handle deleted displays
+//      if (!empty($display->deleted) || empty($display->display_options['style_plugin']) || (isset($display->display_options['enabled']) && $display->display_options['enabled'] == FALSE)) {
+//        continue;
+//      }
+
+      if ($display['display_plugin'] != 'feed' && !empty($display['display_options']['path']) && !empty($display['display_options']['arguments'])) {
+
+        // Set to the default value, reset below if another value is found.
+        $type = 'month';
+        $argument = CalendarHelper::getDateArgumentHandler($view, $id);
+
+        if ($argument->getGranularity() == $granularity) {
+          $part_path =  $display['display_options']['path'];
+          $parts = explode('/', $part_path);
+          if (in_array('%', $parts)) {
+            $url = Url::fromRoute('<current>');
+            $current_path = $url->toString();
+            $current_parts = explode('/', $current_path);
+            foreach ($parts as $key => $part) {
+              if ($part == '%' && !empty($current_parts[$key])) {
+                $parts[$key] = $current_parts[$key];
+              }
+            }
+            $part_path = implode('/', $parts);
+          }
+          $paths[$view->id()][$granularity] = $part_path;
+        }
+      }
+    }
+  }
+  return $paths[$view->id()][$granularity];
+}

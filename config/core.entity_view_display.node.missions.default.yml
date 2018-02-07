@@ -1,0 +1,40 @@
+uuid: 16431c0b-4ce2-4301-b3c0-5a0569a9eaff
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.missions.body
+    - field.field.node.missions.field_image
+    - image.style.mission_images
+    - node.type.missions
+  module:
+    - image
+    - text
+    - user
+id: node.missions.default
+targetEntityType: node
+bundle: missions
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_image:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: mission_images
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

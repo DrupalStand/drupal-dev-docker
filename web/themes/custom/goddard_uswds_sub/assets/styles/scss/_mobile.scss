@@ -1,0 +1,31 @@
+// @todo: Refactor this file. Its a mess.
+/* END Agency Footer */
+
+@media screen and (min-width: 600px) {
+
+  .nasa-header-menu {
+    flex-direction: row;
+  }
+
+  .nasa-header-menu ul li,
+  .footer-agency-links li {
+    display: inline-block;
+  }
+
+}
+
+@media screen and (min-width: 300px) and (max-width: 700px) {
+
+  header {
+
+    .usa-banner {
+      padding: 0;
+    }
+
+  }
+
+  .nasa-agency-title {
+    margin-left: 0px;
+  }
+
+}

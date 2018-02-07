@@ -1,0 +1,17 @@
+{#
+/**
+ * @file
+ * Format an empty day on a calendar.
+ *
+ * Available variables:
+ * - curday: The current day to display.
+ * - view: The view.
+ *
+ * @ingroup themeable
+ */
+#}
+{% if view.dateInfo.calendarType != 'day' %}
+  <div class="calendar-empty">&nbsp;</div>
+{% else %}
+  <div class="calendar-dayview-empty">{% trans %}Empty day{% endtrans %}</div>
+{% endif %}

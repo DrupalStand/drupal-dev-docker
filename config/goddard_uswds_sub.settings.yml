@@ -1,0 +1,40 @@
+features:
+  node_user_picture: 1
+  comment_user_picture: 1
+  comment_user_verification: 1
+  favicon: 1
+logo:
+  use_default: 1
+favicon:
+  use_default: 1
+uswds_header_style: basic
+uswds_header_mega: 0
+uswds_search: 0
+uswds_government_banner: 0
+uswds_footer_style: big
+uswds_footer_agency: 0
+uswds_footer_agency_name: ''
+uswds_footer_agency_url: ''
+uswds_footer_agency_logo: ''
+uswds_contact_center: ''
+uswds_email: ''
+uswds_phone: ''
+uswds_facebook: ''
+uswds_twitter: ''
+uswds_youtube: ''
+uswds_rss: ''
+uswds_paragraphs_edge_to_edge: 0
+uswds_menu_accordion_duplicate_parent: 0
+uswds_menu_bypass:
+  primary_menu: 0
+  secondary_menu: 0
+  mobile_menu: 0
+  sidebar_first: 0
+  footer_menu: 0
+foo_example: ''
+center_name: 'Goddard Space Flight Center'
+office_name: 'Office of Technology and Innovation'
+footer_info: "National Aeronautics and Space Administration<br>\r\nPage Editor: Lynn Jenner\r\nNASA Official: Brian Dunbar"
+footer_info_line_one: 'National Aeronautics and Space Administration'
+footer_info_line_two: 'Page Editor: Lynn Jenner'
+footer_info_line_three: 'NASA Official: Brian Dunbar'

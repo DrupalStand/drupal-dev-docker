@@ -1,0 +1,8 @@
+uuid: 76c98906-aee3-43db-ba2a-46b262092720
+langcode: en
+status: true
+dependencies: {  }
+id: image_and_text_block
+label: 'Image and Text Block'
+revision: 0
+description: 'Displays an image to the left and text on the right.'

@@ -1,0 +1,29 @@
+uuid: ea970072-f8c3-4475-9f77-c9b5e53f7f86
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - goddard_uswds_sub
+_core:
+  default_config_hash: X9I1OB0W3WlWtrK-CNcg6hNWwa8wficanpH8pYnDZDE
+id: goddard_uswds_sub_local_tasks
+theme: goddard_uswds_sub
+region: content
+weight: -9
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  provider: core
+  label_display: '0'
+  primary: true
+  secondary: true
+visibility:
+  request_path:
+    id: request_path
+    pages: '/calendar/*'
+    negate: true
+    context_mapping: {  }

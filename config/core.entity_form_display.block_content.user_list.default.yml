@@ -1,0 +1,56 @@
+uuid: 6d3e260d-f9c0-4193-bfd1-01375dcc47be
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.user_list
+    - field.field.block_content.user_list.body
+    - field.field.block_content.user_list.field_button
+    - field.field.block_content.user_list.field_people
+  module:
+    - link
+    - paragraphs
+    - text
+id: block_content.user_list.default
+targetEntityType: block_content
+bundle: user_list
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 26
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+    region: content
+  field_button:
+    weight: 28
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+    region: content
+  field_people:
+    type: entity_reference_paragraphs
+    weight: 30
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: preview
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: user_list
+    third_party_settings: {  }
+    region: content
+  info:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden: {  }

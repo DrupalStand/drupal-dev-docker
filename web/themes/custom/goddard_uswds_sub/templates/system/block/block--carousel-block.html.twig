@@ -1,0 +1,14 @@
+<div{{ attributes }}>
+  <div class="carousel-block-wrap">
+    {{ title_prefix }}
+    {% if label %}
+      <h2{{ title_attributes }}>{{ label }}</h2>
+    {% endif %}
+    {{ title_suffix }}
+    <div class="carousel-block">
+      
+      {{ content }}
+    
+    </div>
+  </div>
+</div>

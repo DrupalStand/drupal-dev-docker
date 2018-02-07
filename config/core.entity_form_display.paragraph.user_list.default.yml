@@ -1,0 +1,42 @@
+uuid: 03a0edc6-da26-4588-acbd-45385a391517
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.user_list.field_email_address
+    - field.field.paragraph.user_list.field_name
+    - field.field.paragraph.user_list.field_title_or_position
+    - paragraphs.paragraphs_type.user_list
+id: paragraph.user_list.default
+targetEntityType: paragraph
+bundle: user_list
+mode: default
+content:
+  field_email_address:
+    weight: 2
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
+    region: content
+  field_name:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_title_or_position:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

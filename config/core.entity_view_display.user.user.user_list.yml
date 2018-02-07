@@ -1,0 +1,19 @@
+uuid: 824cb175-1eb8-4786-855c-b9a5bec1a8b6
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.user.user_list
+    - field.field.user.user.user_picture
+  module:
+    - user
+_core:
+  default_config_hash: V51QPCKkgNREKtSmB9Iu2wmAMEpktVpnzklWaZV8UYo
+id: user.user.user_list
+targetEntityType: user
+bundle: user
+mode: user_list
+content: {  }
+hidden:
+  member_for: true
+  user_picture: true

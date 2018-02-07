@@ -1,0 +1,33 @@
+uuid: 6db6ef23-9d01-4744-956f-399c7ac23f41
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.event.body
+    - node.type.event
+  module:
+    - text
+    - user
+id: node.event.teaser
+targetEntityType: node
+bundle: event
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 100
+    region: content
+hidden:
+  field_additional_location_inform: true
+  field_event_building: true
+  field_event_date: true
+  field_event_location: true
+  field_time_zones: true

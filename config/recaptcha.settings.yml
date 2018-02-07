@@ -1,0 +1,10 @@
+site_key: null
+secret_key: null
+widget:
+  theme: light
+  type: image
+  size: compact
+  tabindex: 0
+  noscript: false
+_core:
+  default_config_hash: ZKQ03ePk4sH2zESRw4tdZYw__nG2YN4Ru5roPL23g3A

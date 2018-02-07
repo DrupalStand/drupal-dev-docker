@@ -1,0 +1,84 @@
+// @todo: Refactor this file.
+// Contact Page
+body.contact-us {
+  .sub-section {
+    padding-top: 0;
+    .uswds-main-content-wrapper {
+      padding-top: 3rem;
+      border-top: 1px solid #ddd;
+    }
+  }
+  aside.region-sub-section-left {
+    padding-right: 25px;
+    padding-right: 50px;
+    border-right: 1px solid #ddd;
+  }
+  aside.region-sub-section-right {
+    padding-left: 25px;
+  }
+}
+
+
+.page-node-type-event {
+
+  #block-views-block-event-date-block-block-1 {
+    font-family: $sans-serif;
+    background: #F4F4F4;
+    border-radius: 5px;
+    padding: 30px 15px;
+    font-size: 1.4rem;
+  }
+
+  .views-field-field-event-date {
+    padding-bottom: 10px;
+  }
+
+  .uswds-main-content-wrapper {
+
+    h1 {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+    }
+
+  }
+
+}
+
+// Missions View Page
+.view-display-id-page_1 {
+    font-family: "Poppins", sans-serif;
+  .views-row {
+    float: left;
+    padding-bottom: 45px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 45px;
+    .created-on {
+      text-transform: uppercase;
+      font-size: 1.4rem;
+      font-weight: 300;
+    }
+    h3 {
+      a {
+        text-decoration: none;
+        color: #000;
+        font-size: 2.5rem;
+      }
+    }
+    p {
+      font-size: 1.5rem;
+      font-weight: 200;
+    }
+    p:first-child {
+      margin-top: 0;
+    }
+    .view-link {
+      a {
+        text-decoration: none;
+        font-weight: 500;
+        color: #0054A4;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}

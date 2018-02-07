@@ -1,0 +1,8 @@
+uuid: acb1e7a4-ee9e-425b-b0e2-99e14d0a2942
+langcode: en
+status: true
+dependencies: {  }
+id: icon_and_text_block
+label: 'Icon and Text Block'
+revision: 0
+description: 'Displays an icon on the left and text on the right along with an optional link below the text.'

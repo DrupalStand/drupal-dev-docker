@@ -1,0 +1,97 @@
+<?php
+
+function goddard_uswds_sub_preprocess_page(&$variables) {
+  $variables['center_name'] = theme_get_setting('center_name');
+  $variables['office_name'] = theme_get_setting('office_name');
+  $variables['footer_info_line_one'] = theme_get_setting('footer_info_line_one');
+  $variables['footer_info_line_two'] = theme_get_setting('footer_info_line_two');
+  $variables['footer_info_line_three'] = theme_get_setting('footer_info_line_three');
+}
+
+function goddard_uswds_sub_form_search_block_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $form['keys']['#attributes']['placeholder'] = t('Search...');
+}
+
+function goddard_uswds_sub_preprocess_html(&$variables) {
+  $variables['center_name'] = theme_get_setting('center_name');
+  $variables['office_name'] = theme_get_setting('office_name');
+  $variables['footer_info_line_one'] = theme_get_setting('footer_info_line_one');
+  $variables['footer_info_line_two'] = theme_get_setting('footer_info_line_two');
+  $variables['footer_info_line_three'] = theme_get_setting('footer_info_line_three');
+  $variables['is_front'] = \Drupal::service('path.matcher')->isFrontPage();
+
+  $request = \Drupal::request();
+  if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+    $page_title = \Drupal::service('title_resolver')->getTitle($request, $route);
+  }
+
+  $variables['current_page_title'] = $page_title;
+
+  $current_path = \Drupal::service('path.current')->getPath();
+  $path_alias = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+  $path_alias = ltrim($path_alias, '/');
+  $variables['attributes']['class'][] = \Drupal\Component\Utility\Html::cleanCssIdentifier($path_alias);
+
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function goddard_uswds_sub_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+    $suggestions[] = 'page__'.$content_type;
+  }
+}
+
+function goddard_uswds_sub_theme_suggestions_form_alter(array &$suggestions, array $variables) {
+  $suggestions[] = 'form__' . $variables['element']['#form_id'];
+}
+
+function goddard_uswds_sub_theme_suggestions_block_alter(array &$suggestions, array $variables) {
+  $block = $variables['elements'];
+  $blockType = $block['#configuration']['provider'];
+  if ($blockType == "block_content") {
+    $bundle = $block['content']['#block_content']->bundle();
+    array_splice($suggestions, 2, 0, 'block__' . $bundle);
+  }
+}
+
+/**
+ * Implements theme_preprocess_item_list().
+ *
+ * Set up extra variables for use in the Search Results template. Doing this here should provide these variables for
+ * other similar lists as well.
+ */
+function goddard_uswds_sub_preprocess_item_list(&$variables) {
+  $vars = $variables;
+  // Total Search Results
+  $total_items = 0;
+  if (isset($GLOBALS['pager_total_items'])) {
+    $total_items = $GLOBALS['pager_total_items'][0];
+  }
+
+  // Search term(s)
+  $keys = null;
+  if (isset($GLOBALS['_GET']['keys'])) {
+    $keys = $GLOBALS['_GET']['keys'];
+  }
+
+  $variables['count_items'] = $total_items;
+  $variables['keys'] = $keys;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ *
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function goddard_uswds_sub_form_search_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // We hide the form on the form page itself to match the design.
+  $form['#attributes']['class'][] = 'visually-hidden';
+}
+

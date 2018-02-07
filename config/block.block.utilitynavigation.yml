@@ -1,0 +1,24 @@
+uuid: a546fa1a-8025-4ea3-8e92-94697422f3ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.utility-navigation
+  module:
+    - system
+  theme:
+    - goddard_uswds_sub
+id: utilitynavigation
+theme: goddard_uswds_sub
+region: header_top
+weight: -7
+provider: null
+plugin: 'system_menu_block:utility-navigation'
+settings:
+  id: 'system_menu_block:utility-navigation'
+  label: 'Utility Navigation'
+  provider: system
+  label_display: '0'
+  level: 1
+  depth: 1
+visibility: {  }

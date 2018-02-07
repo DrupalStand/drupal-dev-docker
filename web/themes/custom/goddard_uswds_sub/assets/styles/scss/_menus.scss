@@ -1,0 +1,82 @@
+// Utility Menu
+.nasa-header-menu {
+  .utility-menu {
+    margin-left: 0;
+    @include respond-to(small) {
+      margin-left: auto;
+    }
+    .menu--utility-navigation {
+      display: flex;
+      @include respond-to(medium-large) {
+        float: right;
+      }
+      @include respond-to(large) {
+        display: inline-flex;
+        float: none;
+      }
+      .menu {
+        text-transform: uppercase;
+        padding-top: 7px;
+        text-align: center;
+        margin: 0 auto;
+        padding-left: 0;
+        @include respond-to(medium-large) {
+          margin-right: 0;
+          padding-left: 20px;
+        }
+        @include respond-to(large) {
+          margin-right: 25px;
+          margin-left: 0;
+        }
+        @include respond-to(xlarge) {
+          margin-right: 40px;
+          margin-left: 40px;
+        }
+        a {
+          color: #656565;
+          font-family: $sans-serif;
+          font-weight: 700;
+          font-size: 1.3rem;
+          letter-spacing: .12rem;
+        }
+      }
+    }
+  }
+}
+
+// Primary Sidebar Menu
+.usa-sidenav-list {
+  background: #F4F4F4;
+  padding: 0px 10px 15px;
+  > li {
+    border: none;
+  }
+  a {
+    font-family: $sans-serif;
+    font-size: 1.5rem;
+    padding: 1.25rem 1rem 1.25rem 1.8rem;
+    &:hover {
+      background: url('../../../images/delta.png');
+      background-repeat: no-repeat;
+      background-color: none;
+      background-size: inherit;
+      background-position: 5px 20px;
+      color: #000;
+      text-shadow: 0.07rem 0 0 #000;
+    }
+  }
+  &.page-title {
+    padding: 30px 28px;
+  }
+}
+
+
+
+// Homepage Block styles
+.front {
+  .block-views {
+    margin-top: 2rem;
+    margin-bottom: 8rem;
+    float: left;
+  }
+}

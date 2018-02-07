@@ -1,4 +1,4 @@
-# Docker/Drupal Development Environment
+# Goddard Development Environment
 
 This project is the start of a highly opinionated development environment using 
 a combination of ideas and strategies from many other opinions across the community.

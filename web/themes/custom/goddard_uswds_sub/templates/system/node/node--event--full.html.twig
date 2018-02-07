@@ -1,0 +1,14 @@
+<article{{ attributes }}>
+
+  {{ title_prefix }}
+  {% if not page %}
+    <h1{{ title_attributes }}>
+      <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+    </h1>
+  {% endif %}
+  {{ title_suffix }}
+
+  <div{{ content_attributes }}>
+    {{ content.body }}
+  </div>
+</article>

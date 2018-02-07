@@ -1,0 +1,52 @@
+{#
+/**
+ * @file
+ * Template to display a view as a mini calendar month.
+ *
+ * Available variables:
+ * - day_names: An array of the day of week names for the table header.
+ * - rows: An array of data for each day of the week.
+ * - view: The view.
+ * - min_date_formatted: The minimum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ * - max_date_formatted: The maximum date for this calendar in the format YYYY-MM-DD HH:MM:SS.
+ *
+ * @see template_preprocess_calendar_mini()
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="calendar-calendar">
+  <div class="month-view">
+    {% if options.month_name %}
+      <div class="date-nav-wrapper clear-block">
+        <div class="date-nav">
+          <div class="date-heading">
+            {{ options.month_name }}
+          </div>
+         </div>
+      </div>
+    {% endif %}
+    <table class="mini">
+      <thead>
+        <tr>
+          {% for day_names in cell %}
+            <th class="{{ cell.class }}">
+              { cell.data }}
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            {% for cell in row %}
+            <td id="{{ cell.id }}" class="{{ cell.class }}">
+              {{ cell.data }}
+            </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

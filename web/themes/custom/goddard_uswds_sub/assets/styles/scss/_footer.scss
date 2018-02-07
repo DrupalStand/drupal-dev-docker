@@ -1,0 +1,132 @@
+/* BEGIN Agency Footer */
+
+.nasa-agency-footer {
+  background-color: #0C131C;
+  color: white;
+  padding: 15px 0;
+  font-size: 80%;
+}
+.nasa-agency-footer-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  @include respond-to(small) {
+    flex-direction: row;
+    max-width: none;
+    padding: 0 20px;
+  }
+}
+
+.footer-agency-id {
+  margin-right: 0;
+  @include respond-to(small) {
+    width: 49%;
+  }
+  @include respond-to(large) {
+    width: auto;
+  }
+  .footer-logo {
+    width: 97px;
+    height: 80px;
+  }
+}
+
+.footer-agency-id p {
+  margin: 0;
+}
+
+.footer-agency-id > a,
+.footer-info {
+  text-align: center;
+  display: block;
+  @include respond-to(small) {
+    text-align: left;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.footer-info {
+  margin-top: 10px;
+  @include respond-to(small) {
+    text-align: left;
+    margin-top: 0;
+  }
+  @include respond-to(large) {
+    margin-left: 10px;
+  }
+}
+
+.footer-agency-links ul {
+}
+
+.footer-agency-links li {
+  display: block;
+  list-style: none;
+  margin-right: 10px;
+}
+
+.footer-agency-links a {
+  color: white;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+footer.usa-footer {
+
+  nav {
+    @include respond-to(large) {
+      margin-left: auto;
+    }
+
+    .menu {
+      //display: flex;
+      //align-items: stretch;
+      //justify-content: space-between;
+      display: block;
+      width: 100%;
+      list-style-type: none;
+      color: #fff;
+      padding-left: 0;
+      margin-bottom: 0;
+
+      a {
+        font-family: $sans-serif;
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      li {
+        display: block;
+        //flex: 0 1 auto;
+        padding: 0 2rem;
+        text-align: center;
+        @include respond-to(small) {
+          text-align: left;
+        }
+        //@include respond-to(large) {
+        //  display: inline-block;
+        //  padding: 0 1em;
+        //}
+
+        &:first-child {
+          //@include respond-to(large) {
+          //  padding-left: 0;
+          //}
+        }
+
+        &:last-child {
+          //@include respond-to(large) {
+          //  padding-right: 0;
+          //}
+        }
+      }
+
+    }
+
+  }
+
+}

@@ -1,0 +1,20 @@
+uuid: bf0e8586-947e-4af4-a11b-cd24b6bacb22
+langcode: en
+status: true
+dependencies:
+  theme:
+    - goddard_uswds_sub
+_core:
+  default_config_hash: 13GQpeITIJsp1kyPniXtWZfyFH87vb1xxJCHifL4UeE
+id: goddard_uswds_sub_local_actions
+theme: goddard_uswds_sub
+region: content
+weight: -10
+provider: null
+plugin: local_actions_block
+settings:
+  id: local_actions_block
+  label: 'Primary admin actions'
+  provider: core
+  label_display: '0'
+visibility: {  }

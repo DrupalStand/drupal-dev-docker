@@ -1,0 +1,22 @@
+uuid: 65cb6889-2c02-4c30-bf75-1c481f84547d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.missions
+  module:
+    - text
+id: node.missions.body
+field_name: body
+entity_type: node
+bundle: missions
+label: Body
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+field_type: text_with_summary

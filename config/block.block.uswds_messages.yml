@@ -1,0 +1,22 @@
+uuid: 9196d6af-c2dc-4ed6-8d26-a17b8b65f32a
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - uswds
+_core:
+  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+id: uswds_messages
+theme: uswds
+region: highlighted
+weight: 0
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }
