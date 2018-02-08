@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
+
 PARAMS=""
+USING_STDIN="t"
+
+# if useing stdin then we need to disable tty mode
+if [ ! -t 0 ] ; then USING_STDIN=""; fi
+
 
 for PARAM in "$@"
 do
   PARAMS="${PARAMS} \"${PARAM}\""
 done
-docker exec -it cms sh -c "/var/www/vendor/bin/drush --root=/var/www/web ${PARAMS}"
+docker exec -i$USING_STDIN cms sh -c "/var/www/vendor/bin/drush --root=/var/www/web ${PARAMS}"
