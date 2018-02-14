@@ -79,6 +79,7 @@ and best practices using PHP CodeSniffer.
 functionality built into PHP CodeSniffer via PHP Code Beautifier and Fixer.
 * **`fix-permissions`** Sets appropriate permissions in the working directory ensuring
 that the current user is able to edit files.
+* **`shell`** open a shell in the specified container as root
 
 ## Details
 

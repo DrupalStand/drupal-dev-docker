@@ -127,3 +127,8 @@ fix-permissions:
 	sudo find ./ -not -path "web/sites/default/files*" -exec chmod u=rwX,g=rwX,o=rX {} \;
 	sudo find ./ -type d -not -path "web/sites/default/files*" -exec chmod g+s {} \;
 	sudo chmod -R u=rwx,g=rwxs,o=rwx ./web/sites/default/files;
+
+# This command will open a shell in the specified container as root
+# usage: make shell cn=<container name>
+shell:
+	docker exec -it --user root ${cn} /bin/bash
