@@ -10,10 +10,22 @@ endif
 # behavior of echo'ing commands before running them.
 faketarget:
 	@echo "Please specify a target. See README for information about targets."
+	@echo ""
 	@grep Makefile -oe '^[a-z-]*:' | \
 	 tr -d ':' | \
 	 grep -v 'fake' | \
-	 sed -e 's/^/\o033[32m->\o033[0m /'
+	 tr '\n' '|' | \
+	 awk 'BEGIN{print "\\*\\*`("}{print}END{print ")"}' | \
+	 tr -d '\n' | \
+	 grep -E -f - README.md | \
+	 sed 's/\* \*\*`/\o033[32m/' | \
+	 sed 's/`\*\*/\o033[0m*/' | \
+	 sort | \
+	 column -N "Target,Description" -t -s "*"
+	@echo ""
+	@echo "Example Usage"
+	@echo "make <target>"
+	@echo "make clear-cache"
 
 init: salt composer-install docker-start ready init-drupal docker-status
 
