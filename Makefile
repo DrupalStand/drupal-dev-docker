@@ -106,7 +106,7 @@ clear-cache:
 	./bin/drush cr
 
 destroy:
-	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
+	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v --rmi 'all'
 	sudo rm -rf ./web/sites/default/files/*
 	sudo rm -rf ./web/core/*
 	sudo rm -rf ./web/libraries/*
