@@ -51,6 +51,8 @@ docker-start:
 docker-stop:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down
 
+docker-restart: docker-stop docker-start
+
 composer-install:
 	composer install --ignore-platform-reqs --no-interaction --no-progress
 

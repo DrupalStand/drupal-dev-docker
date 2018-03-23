@@ -51,6 +51,7 @@ matches the repository. This will not overwrite Drupal configuration.
 * **`docker-status`** Prints the status of docker.
 * **`docker-start`** Brings up the docker environment and displays status.
 * **`docker-stop`** Brings down the docker environment.
+* **`docker-restart`** Meta command to run `docker-stop` and `docker-start`.
 * **`composer-install`** Runs composer install against root composer.json.
 * **`composer-upgrade`** Runs composer upgrade against root composer.json. This 
 will upgrade all files tracked by composer. Use with caution. To only upgrade Drupal 
