@@ -3,7 +3,7 @@ services:
   cms:
     build:
       context: ./docker-src/cms
-    container_name: cms
+    container_name: cms-${PROJECT}
     mem_limit: 512M
     ports:
       - 8080:80
@@ -13,6 +13,7 @@ services:
     env_file: environment
     environment:
       - CONNECTBACK=off
+      - DRUPAL_MYSQL_HOST=db-${PROJECT}
     links:
       - db
       - memcache
@@ -21,7 +22,7 @@ services:
 
   db:
     image: mariadb:latest
-    container_name: db
+    container_name: db-${PROJECT}
     mem_limit: 512M
     env_file: environment
     ports:
@@ -34,10 +35,10 @@ services:
 
   memcache:
     image: memcached:latest
-    container_name: memcached
+    container_name: memcached-${PROJECT}
     mem_limit: 128M
     environment:
-      - MEMCACHED_SERVER=memcached:11211
+      - MEMCACHED_SERVER=memcached-${PROJECT}:11211
     ports:
       - 11211:11211
     networks:

@@ -4,6 +4,7 @@ DOCKER_COMPOSE_FILE := docker-compose.yml
 ifeq ($(UNAME), Linux)
 DOCKER_COMPOSE_FILE := docker-compose.yml -f docker-compose.linux.yml
 endif
+export PROJECT := $(shell basename $(CURDIR))
 
 # This should always be the first target so that we know running make without any
 # arguments is going to be nondestructive. The @ is to silence the normal make
@@ -75,7 +76,7 @@ config-init:
 		echo "Config found. Processing setting uuid..."; \
 		cat ./config/system.site.yml | \
 		grep uuid | tail -c +7 | head -c 36 | \
-		docker exec -i cms sh -c "/var/www/vendor/bin/drush \
+		docker exec -i cms-${PROJECT} sh -c "/var/www/vendor/bin/drush \
 		--root=/var/www/web config-set -y system.site uuid - ";\
 	else \
 		echo "Config is empty. Skipping uuid init..."; \
