@@ -99,10 +99,14 @@ with Drupal 8.5.0. You can upgrade with `make drupal-upgrade` or wait until this
 repository is updated. Certain files such as those provided by the Drupal scaffolding 
 project may be subject to manipulation and may or may not upgrade cleanly.
 * The Drupal site installed by default is configured with the "minimal" profile 
-which has absolutely zero configuration out of the box. If you do not import config, 
-the site will be setup with the "Stark" theme. The installation profile used can 
-be set in the Makefile under the `drupal-install` target, however, if you use any 
-configuration, it's recommended that you leave it "minimal".
+which has absolutely zero configuration out of the box. This environment, however,
+ships with a small amount of configuration that sets up blocks and themes similar to
+a "standard" Drupal installation. If you want to start with less (which might be
+preferable if a project is planning on building an entire theme from scratch), delete
+the entire configuration found in `/config`. If you do not import config, the site
+will be setup with the "Stark" theme. The installation profile used can be set in the
+Makefile under the `drupal-install` target, however, if you use any configuration, it's
+recommended that you leave it "minimal".
 * This repository tracks a local development file. It is included automatically 
 if the file exists. If this code base is used in production, ensure that there 
 is a deployment process in place to remove this file before going live.
