@@ -2,7 +2,7 @@
 UNAME := $(shell uname)
 DOCKER_COMPOSE_FILE := docker-compose.yml
 ifeq ($(UNAME), Linux)
-	DOCKER_COMPOSE_FILE := docker-compose.linux.yml
+DOCKER_COMPOSE_FILE := docker-compose.yml -f docker-compose.linux.yml
 endif
 
 # This should always be the first target so that we know running make without any
@@ -12,16 +12,16 @@ faketarget:
 	@echo "Please specify a target. See README for information about targets."
 	@echo ""
 	@grep Makefile -oe '^[a-z-]*:' | \
-	 tr -d ':' | \
-	 grep -v 'fake' | \
-	 tr '\n' '|' | \
-	 awk 'BEGIN{print "\\*\\*`("}{print}END{print ")"}' | \
-	 tr -d '\n' | \
-	 grep -E -f - README.md | \
-	 sed 's/\* \*\*`/\o033[32m/' | \
-	 sed 's/`\*\*/\o033[0m*/' | \
-	 sort | \
-	 column -N "Target,Description" -t -s "*"
+		tr -d ':' | \
+		grep -v 'fake' | \
+		tr '\n' '|' | \
+		awk 'BEGIN{print "\\*\\*`("}{print}END{print ")"}' | \
+		tr -d '\n' | \
+		grep -E -f - README.md | \
+		sed 's/\* \*\*`/\o033[32m/' | \
+		sed 's/`\*\*/\o033[0m*/' | \
+		sort | \
+		column -N "Target,Description" -t -s "*"
 	@echo ""
 	@echo "Example Usage"
 	@echo "make <target>"
