@@ -36,10 +36,8 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /tmp/pear
 
-# Install Composer & add global vendor bin dir to $PATH
-RUN curl -sS https://getcomposer.org/installer | php
-RUN mv composer.phar /usr/local/bin/composer
-RUN echo 'export PATH="$PATH:/root/.composer/vendor/bin"' >> $HOME/.bashrc
+# Install Composer
+COPY --from composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set timezone.
 RUN echo "date.timezone = \"$PHP_TIMEZONE\"" > /usr/local/etc/php/conf.d/timezone.ini
