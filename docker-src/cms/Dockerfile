@@ -37,7 +37,7 @@ RUN apt-get update \
   && rm -rf /tmp/pear
 
 # Install Composer
-COPY --from composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set timezone.
 RUN echo "date.timezone = \"$PHP_TIMEZONE\"" > /usr/local/etc/php/conf.d/timezone.ini
