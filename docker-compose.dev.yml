@@ -1,0 +1,21 @@
+version: '3.4'
+services:
+  php:
+    container_name: php-${PROJECT}
+    volumes:
+      - "./drupal/modules:/var/www/drupal/modules/custom"
+      - "./drupal/themes:/var/www/drupal/themes/custom"
+      - "./drupal/profiles:/var/www/drupal/profiles/custom"
+      - "./drupal/sites:/var/www/drupal/sites"
+      - "./config:/var/www/config"
+
+  web:
+    container_name: web-${PROJECT}
+    ports:
+      - 8080:80
+      - 8443:443
+    volumes:
+      - "./drupal/modules:/var/www/drupal/modules/custom"
+      - "./drupal/themes:/var/www/drupal/themes/custom"
+      - "./drupal/profiles:/var/www/drupal/profiles/custom"
+      - "./drupal/sites:/var/www/drupal/sites"

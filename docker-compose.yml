@@ -1,15 +1,15 @@
-version: '2'
+version: '3.4'
 services:
-  cms:
+  php:
     build:
-      context: ./docker-src/cms
-    container_name: cms-${PROJECT}
-    mem_limit: 512M
-    ports:
-      - 8080:80
-      - 8443:443
-    volumes:
-      - .:/var/www
+      context: .
+      dockerfile: ./docker-src/cms/Dockerfile
+      target: php-$ENV
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-php
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     env_file: environment
     environment:
       - CONNECTBACK=off
@@ -17,30 +17,63 @@ services:
     links:
       - db
       - memcache
+    depends_on:
+      - db
+      - memcache
     networks:
       - connector
+    volumes:
+      - files:/var/www/drupal/sites/default/files
+
+  web:
+    build:
+      context: .
+      dockerfile: ./docker-src/cms/Dockerfile
+      target: web-prod
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-web
+    ports:
+      - 8080:80
+      - 8443:443
+    networks:
+      - connector
+    links:
+      - php
+    depends_on:
+      - php
+    volumes:
+      - files:/var/www/drupal/sites/default/files:ro
 
   db:
-    image: mariadb:latest
+    build:
+      context: ./docker-src/db
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-db
     container_name: db-${PROJECT}
-    mem_limit: 512M
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 512M
     env_file: environment
-    ports:
-      - 3306:3306
     volumes:
-      - ./docker-src/db/conf:/etc/mysql/conf.d
       - database:/var/lib/mysql
     networks:
       - connector
+    healthcheck:
+       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+       interval: 15s
+       timeout: 5s
+       retries: 5
 
   memcache:
-    image: memcached:latest
+    image: memcached:1.5-alpine
     container_name: memcached-${PROJECT}
-    mem_limit: 128M
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 128M
     environment:
       - MEMCACHED_SERVER=memcached-${PROJECT}:11211
-    ports:
-      - 11211:11211
     networks:
       - connector
 
@@ -49,3 +82,4 @@ networks:
 
 volumes:
   database: {}
+  files: {}
