@@ -95,8 +95,8 @@ composer:
 composer-update:
 	docker run \
 	  --rm \
-	  -v $(CURDIR)/composer.json:/app/composer.json \
-	  -v $(CURDIR)/composer.lock:/app/composer.lock \
+	  -v $(CURDIR)/composer-d${DRUPAL_VERSION}.json:/app/composer.json \
+	  -v $(CURDIR)/composer-d${DRUPAL_VERSION}.lock:/app/composer.lock \
 	  -v $(CURDIR)/scripts:/app/scripts \
 	  composer update --lock
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
@@ -104,8 +104,8 @@ composer-update:
 drupal-upgrade:
 	docker run \
 	  --rm \
-	  -v $(CURDIR)/composer.json:/app/composer.json \
-	  -v $(CURDIR)/composer.lock:/app/composer.lock \
+	  -v $(CURDIR)/composer-d${DRUPAL_VERSION}.json:/app/composer.json \
+	  -v $(CURDIR)/composer-d${DRUPAL_VERSION}.lock:/app/composer.lock \
 	  -v $(CURDIR)/scripts:/app/scripts \
 	  composer update drupal/core --lock --with-dependencies
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
