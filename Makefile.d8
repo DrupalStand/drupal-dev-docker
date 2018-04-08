@@ -1,0 +1,26 @@
+config-init:
+	@if [ -e ./config/system.site.yml ]; then \
+		echo "Config found. Processing setting uuid..."; \
+		cat ./config/system.site.yml | \
+		grep uuid | tail -c +7 | head -c 36 | \
+		docker exec -i php-${PROJECT} drush config-set -y system.site uuid - ;\
+	else \
+		echo "Config is empty. Skipping uuid init..."; \
+	fi;
+
+config-import:
+	@if [ -e ./config/system.site.yml ]; then \
+		echo "Config found. Importing config..."; \
+		docker exec -i php-${PROJECT} drush config-import sync --yes ;\
+		docker exec -i php-${PROJECT} drush config-import sync --yes ;\
+	else \
+		echo "Config is empty. Skipping import..."; \
+	fi;
+
+config-export:
+	docker exec -i php-${PROJECT} drush config-export sync --yes
+
+config-validate:
+	docker exec -i php-${PROJECT} drush config-export sync --no
+
+config-refresh: config-init config-import
