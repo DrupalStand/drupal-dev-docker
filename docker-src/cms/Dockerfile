@@ -3,21 +3,35 @@
 #------------------------------------------------------------------------------
 FROM composer:latest as composer-prod
 
-RUN mkdir -p /var/www
-COPY composer.json /var/www/
-COPY composer.lock /var/www/
-COPY scripts /var/www/scripts
+ENV DRUPAL_VERSION 8
+
+# Get the drush and script directories from docker-composer
+RUN  composer create-project \
+       drupal-composer/drupal-project:$DRUPAL_VERSION.x-dev \
+       /var/www \
+       --ignore-platform-reqs \
+       --prefer-dist \
+       --remove-vcs \
+  && rm -rf \
+       /var/www/web \
+       /var/www/vendor \
+       /var/www/composer.json \
+       /var/www/composer.lock
+
+COPY composer-d$DRUPAL_VERSION.json /var/www/composer.json
+COPY composer-d$DRUPAL_VERSION.lock /var/www/composer.lock
 
 WORKDIR /var/www
 
 # The following flag breaks drupal 8--classmap-authoritative
-RUN composer install \
-      --ignore-platform-reqs \
-      --no-interaction \
-      --no-progress \
-      --no-scripts \
-      --no-ansi \
-      --no-dev \
+RUN  composer install \
+       --ignore-platform-reqs \
+       --no-interaction \
+       --no-progress \
+       --prefer-dist \
+       --no-scripts \
+       --no-ansi \
+       --no-dev \
   && composer drupal-scaffold
 
 #------------------------------------------------------------------------------
@@ -123,6 +137,7 @@ COPY docker-src/cms/php-conf.d/* /usr/local/etc/php/conf.d/
 
 COPY --from=composer-prod /var/www/drupal /var/www/drupal
 COPY --from=composer-prod /var/www/vendor /var/www/vendor
+COPY --from=composer-prod /var/www/drush /var/www/drush
 
 RUN ln -s /var/www/vendor/bin/* /bin/
 
@@ -171,50 +186,49 @@ WORKDIR /var/www
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY composer.json /var/www/
-COPY composer.lock /var/www/
-COPY scripts /var/www/scripts
-
-
-RUN apk add --no-cache --virtual .build-deps \
+RUN  apk add --no-cache --virtual \
+             git \
+             curl \
+             vim \
+             unzip \
+             wget \
+  && apk add --no-cache --virtual .build-deps \
              # unknown needed
              autoconf \
              g++ \
              pcre-dev \
              libtool \
              make \
-             curl \
-             git \
              # Needed base depend
              coreutils \
-    && composer install --dev --ignore-platform-reqs --no-interaction --no-progress \
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
-    && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.remote_autostart=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    # Remote connect_back only works on Linux systems because OSX abstracts it away into a VM
-    && echo 'xdebug.remote_connect_back="${CONNECTBACK}"' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.remote_host=192.168.65.1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && apk del .build-deps \
-    && apk add --no-cache --virtual \
-      vim \
-      git \
-      unzip \
-      wget \
-      curl
+  && pecl install xdebug \
+  && docker-php-ext-enable xdebug \
+  && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.remote_autostart=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  # Remote connect_back only works on Linux systems because OSX abstracts it away into a VM
+  && echo 'xdebug.remote_connect_back="${CONNECTBACK}"' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.remote_host=192.168.65.1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && apk del .build-deps \
+  # recommended PHP.ini settings: https://secure.php.net/manual/en/opcache.installation.php
+  && { \
+    echo 'opcache.memory_consumption=128'; \
+    echo 'opcache.interned_strings_buffer=8'; \
+    echo 'opcache.max_accelerated_files=4000'; \
+    echo 'opcache.revalidate_freq=60'; \
+    echo 'opcache.fast_shutdown=1'; \
+    echo 'opcache.enable_cli=1'; \
+  } > /usr/local/etc/php/conf.d/opcache.ini
 
-# recommended PHP.ini settings: https://secure.php.net/manual/en/opcache.installation.php
-RUN { \
-      echo 'opcache.memory_consumption=128'; \
-      echo 'opcache.interned_strings_buffer=8'; \
-      echo 'opcache.max_accelerated_files=4000'; \
-      echo 'opcache.revalidate_freq=60'; \
-      echo 'opcache.fast_shutdown=1'; \
-      echo 'opcache.enable_cli=1'; \
-} > /usr/local/etc/php/conf.d/opcache.ini
 
-#RUN echo 'export PATH="$PATH:/var/www/vendor/bin"' > /etc/profile.d/php.sh
-RUN ln -s /var/www/vendor/bin/* /bin/
+COPY --from=composer-prod /var/www/scripts /var/www/scripts
+
+ENV DRUPAL_VERSION 8
+
+COPY composer-d$DRUPAL_VERSION.json /var/www/composer.json
+COPY composer-d$DRUPAL_VERSION.lock /var/www/composer.lock
+
+RUN  composer install --dev --ignore-platform-reqs --no-interaction --no-progress \
+  && ln -s /var/www/vendor/bin/* /bin/
 
 WORKDIR /var/www/drupal
 
