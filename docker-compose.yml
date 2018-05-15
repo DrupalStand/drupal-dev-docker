@@ -5,15 +5,13 @@ services:
       context: .
       dockerfile: ./docker-src/cms/Dockerfile
       target: php-$ENV
+      args:
+        - DRUPAL_VERSION=${DRUPAL_VERSION}
     image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-php
-    deploy:
-      resources:
-        limits:
-          memory: 512M
     env_file: environment
     environment:
       - CONNECTBACK=off
-      - DRUPAL_MYSQL_HOST=db-${PROJECT}
+      - DRUPAL_MYSQL_HOST=${PROJECT}-${ENV}-db
     links:
       - db
       - memcache
@@ -30,6 +28,8 @@ services:
       context: .
       dockerfile: ./docker-src/cms/Dockerfile
       target: web-prod
+      args:
+        - DRUPAL_VERSION=${DRUPAL_VERSION}
     image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-web
     ports:
       - 8080:80
@@ -47,12 +47,7 @@ services:
     build:
       context: ./docker-src/db
     image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-db
-    container_name: db-${PROJECT}
-    deploy:
-      replicas: 1
-      resources:
-        limits:
-          memory: 512M
+    container_name: ${PROJECT}-${ENV}-db
     env_file: environment
     volumes:
       - database:/var/lib/mysql
@@ -66,12 +61,7 @@ services:
 
   memcache:
     image: memcached:1.5-alpine
-    container_name: memcached-${PROJECT}
-    deploy:
-      replicas: 1
-      resources:
-        limits:
-          memory: 128M
+    container_name: ${PROJECT}-${ENV}-memcached
     environment:
       - MEMCACHED_SERVER=memcached-${PROJECT}:11211
     networks:

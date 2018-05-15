@@ -1,5 +1,7 @@
 <?php
 
+// @codingStandardsIgnoreFile
+
 /**
  * @file
  * Drupal site-specific configuration file.
@@ -86,7 +88,16 @@
  * );
  * @endcode
  */
-$databases = array();
+$databases['default']['default'] = array (
+  'database' => getenv('MYSQL_DATABASE'),
+  'username' => getenv('MYSQL_USER'),
+  'password' => getenv('MYSQL_PASSWORD'),
+  'prefix' => '',
+  'host' => getenv('DRUPAL_MYSQL_HOST'),
+  'port' => '3306',
+  'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+  'driver' => 'mysql',
+);
 
 /**
  * Customizing database settings.
@@ -144,11 +155,6 @@ $databases = array();
  * @code
  *   'prefix' => 'main_',
  * @endcode
- *
- * Per-table prefixes are deprecated as of Drupal 8.2, and will be removed in
- * Drupal 9.0. After that, only a single prefix for all tables will be
- * supported.
- *
  * To provide prefixes for specific tables, set 'prefix' as an array.
  * The array's keys are the table names and the values are the prefixes.
  * The 'default' element is mandatory and holds the prefix for any tables
@@ -249,7 +255,7 @@ $databases = array();
  *   );
  * @endcode
  */
-$config_directories = array();
+$config_directories['sync'] = '../config';
 
 /**
  * Settings:
@@ -270,13 +276,8 @@ $config_directories = array();
  * by the user.
  *
  * @see install_select_profile()
- *
- * @deprecated in Drupal 8.3.0 and will be removed before Drupal 9.0.0. The
- *   install profile is written to the core.extension configuration. If a
- *   service requires the install profile use the 'install_profile' container
- *   parameter. Functional code can use \Drupal::installProfile().
  */
-# $settings['install_profile'] = '';
+$settings['install_profile'] = 'minimal';
 
 /**
  * Salt for one-time login links, cancel links, form tokens, etc.
@@ -295,7 +296,7 @@ $config_directories = array();
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = '';
+$settings['hash_salt'] = file_get_contents('../salt.txt');
 
 /**
  * Deployment identifier.
@@ -779,7 +780,6 @@ $settings['entity_update_batch_size'] = 50;
  *
  * Keep this code block at the end of this file to take full effect.
  */
-#
-# if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
-#   include $app_root . '/' . $site_path . '/settings.local.php';
-# }
+if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
+  include $app_root . '/' . $site_path . '/settings.local.php';
+}

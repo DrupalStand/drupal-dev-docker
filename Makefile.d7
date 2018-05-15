@@ -1,3 +1,11 @@
-moof:
-	@echo "woot besh"
+init-drupal: drupal-install clear-cache
 
+clear-cache: docker-running # Clear Drupal cache
+	docker exec -i ${PROJECT}-${ENV}-php drush cc all
+
+drupal-install: docker-running
+	docker exec -i ${PROJECT}-${ENV}-php drush \
+	  --root=/var/www/drupal site-install minimal -vv --yes \
+	  --account-name=admin \
+	  --account-pass=admin \
+	  --site-name="Drupal Dev Docker" \

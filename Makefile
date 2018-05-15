@@ -27,11 +27,10 @@ ifeq (${DRUPAL_VERSION}, 8)
   INCLUDE_MAKEFILES += Makefile.d8
 endif
 
-
 # This should always be the first target so that we know running make without any
 # arguments is going to be nondestructive. The @ is to silence the normal make
 # behavior of echo'ing commands before running them.
-help:
+help: # Show this help
 	@echo "Please specify a target. See README for information about targets."
 	@echo ""
 	@cat Makefile ${INCLUDE_MAKEFILES} | \
@@ -56,82 +55,102 @@ include ${INCLUDE_MAKEFILES}
 %:
 	@:
 
-init: docker-start ready init-drupal docker-status # Build environment
 
-init-drupal: drupal-install config-init config-import clear-cache
 
-update: docker-stop docker-rebuild ready config-import clear-cache
 
-safe-update: docker-stop docker-rebuild ready clear-cache
+init: settings docker-start wait-healthy init-drupal docker-status # Build environment
 
-docker-rebuild:
+safe-update: docker-stop docker-rebuild wait-healthy clear-cache # update without importing config
+
+docker-running:
+	@docker inspect -f '{{.State.Running}}' ${PROJECT}-${ENV}-{db,php,web} &>/dev/null
+
+wait-healthy:
+	@echo "Wait for all containers to become healthy"
+	@python $(CURDIR)/bin/docker-compose-wait.py
+
+settings:
+	@echo "Put settings into place"
+	@mkdir settings
+	@# @NOTE maybe we should link the files
+	@cp $(CURDIR)/env-init-resources/drupal${DRUPAL_VERSION}/* settings
+
+switch-drupal-version: clean
+	## @TODO check if git is clean
+	@if [ "${DRUPAL_VERSION}" -eq "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
+	  echo "You are already on this version"; \
+	  exit 1; \
+	 fi
+	@echo "Changing version in .env file"
+	@sed -i 's/DRUPAL_VERSION=./DRUPAL_VERSION=$(filter-out $@,$(MAKECMDGOALS))/' .env
+	make init
+
+docker-rebuild: settings docker-stop # Update docker images if there has been changes to Dockerfiles
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
-	@sleep 10
 
-docker-status:
+docker-status: # Display status of containers related to this project
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
 
-docker-start: # Start Docker
+docker-start: # Start containers for this project
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
-	@sleep 15
 
-docker-stop:
+docker-stop: # Stop containers for this project
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down
 
-docker-restart: docker-stop docker-start
+docker-restart: docker-stop docker-start # Restart containers for this project
 
-drush: # drush
-	docker exec -i php-${PROJECT} drush $(filter-out $@,$(MAKECMDGOALS))
+drush: # Forwards to drush inside php container
+	docker exec -i ${PROJECT}-${ENV}-php drush $(filter-out $@,$(MAKECMDGOALS))
 
-composer:
+composer: settings # Runs composer
 	docker run \
 	  --rm \
-	  -v $(CURDIR):/app/ \
+	  -v $(CURDIR)/settings/composer.json:/app/composer.json \
+	  -v $(CURDIR)/settings/composer.lock:/app/composer.lock \
 	  composer $(filter-out $@,$(MAKECMDGOALS))
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
-composer-update:
+composer-update: settings # Update lock file from composer.json and rebuild images
 	docker run \
 	  --rm \
-	  -v $(CURDIR)/composer-d${DRUPAL_VERSION}.json:/app/composer.json \
-	  -v $(CURDIR)/composer-d${DRUPAL_VERSION}.lock:/app/composer.lock \
-	  -v $(CURDIR)/scripts:/app/scripts \
-	  composer update --lock
+	  -v $(CURDIR)/settings/composer.json:/app/composer.json \
+	  -v $(CURDIR)/settings/composer.lock:/app/composer.lock \
+	  composer update --lock --no-scripts --no-autoloader
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
-drupal-upgrade:
+drupal-upgrade: settings # update drupal core
 	docker run \
 	  --rm \
-	  -v $(CURDIR)/composer-d${DRUPAL_VERSION}.json:/app/composer.json \
-	  -v $(CURDIR)/composer-d${DRUPAL_VERSION}.lock:/app/composer.lock \
+	  -v $(CURDIR)/composer.json:/app/composer.json \
+	  -v $(CURDIR)/composer.lock:/app/composer.lock \
 	  -v $(CURDIR)/scripts:/app/scripts \
 	  composer update drupal/core --lock --with-dependencies
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
-drupal-install:
-	docker exec -i php-${PROJECT} drush \
-	  --root=/var/www/drupal site-install minimal -vv --yes \
-	  --account-name=admin \
-	  --account-pass=admin \
-	  --site-name="Drupal Dev Docker" \
-	  install_configure_form.enable_update_status_module=NULL \
-	  install_configure_form.enable_update_status_emails=NULL
-
-clear-cache:
-	docker exec -i php-${PROJECT} drush cr
-
-destroy:
+destroy: # take town and remove all data related to this project's current state
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
 
-rebuild: destroy init
+clean: destroy # Removes all artifacts built via make or docker
+	@echo "Removing Settings file"
+	@rm -r $(CURDIR)/settings || true
+	@echo "Removing docker images"
+	rm $(CURDIR)/${PROJECT}-prod.tar || true
+	@echo "Removing docker images"
+	docker rmi ${IMAGE_MAINTAINER}/${PROJECT}-{dev,prod}-{db,php,web}:latest \
+	  || true
+	docker rmi \
+	  memcached:1.5-alpine \
+	  alpine:latest \
+	  composer:latest \
+	  php:7.1-fpm-alpine \
+	  nginx:stable-alpine \
+	  || true
 
-ready:
-	@echo "Waiting for files to sync between host and Docker...";
-#	@bash ./docker-src/cms/ready.sh;
+rebuild: destroy init # Destroy and Init the environment
 
-fix-permissions:
+fix-permissions: # Permissions all buggered up? Run this
 	sudo chown $(USER) ./
 	sudo chmod u=rwx,g=rwxs,o=rx ./
 	sudo find ./ -exec chown $(USER) {} \;
@@ -150,8 +169,6 @@ export-prod: # Export prod tar ball
 	  -t ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-db:latest \
 	  docker-src/db
 	docker save -o ${PROJECT}-prod.tar \
-	  ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-php:latest \
-	  ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-web:latest \
-	  ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-db:latest \
+	  ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-{php,web,db}:latest \
 	  memcached:1.5-alpine
 

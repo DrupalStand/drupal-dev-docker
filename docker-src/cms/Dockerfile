@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 FROM composer:latest as composer-prod
 
-ENV DRUPAL_VERSION 8
+ARG DRUPAL_VERSION
 
 # Get the drush and script directories from docker-composer
 RUN  composer create-project \
@@ -18,21 +18,22 @@ RUN  composer create-project \
        /var/www/composer.json \
        /var/www/composer.lock
 
-COPY composer-d$DRUPAL_VERSION.json /var/www/composer.json
-COPY composer-d$DRUPAL_VERSION.lock /var/www/composer.lock
+COPY ./settings/composer.json /var/www/composer.json
+COPY ./settings/composer.lock /var/www/composer.lock
 
 WORKDIR /var/www
 
 # The following flag breaks drupal 8--classmap-authoritative
 RUN  composer install \
        --ignore-platform-reqs \
+       --optimize-autoloader \
        --no-interaction \
        --no-progress \
        --prefer-dist \
        --no-scripts \
        --no-ansi \
-       --no-dev \
-  && composer drupal-scaffold
+       --no-dev
+RUN  [ "$DRUPAL_VERSION" -eq '8' ] && composer drupal-scaffold || exit 0
 
 #------------------------------------------------------------------------------
 # PHP PROD
@@ -148,10 +149,12 @@ RUN ln -s /var/www/vendor/bin/* /bin/
 RUN  mkdir -p /var/www/drupal/sites/default/files \
   && chmod 777 /var/www/drupal/sites/default/files
 
+COPY ./settings/settings.php /var/www/drupal/sites/default/settings.php
+COPY ./settings/settings.local.php /var/www/drupal/sites/default/settings.local.php
+
 COPY drupal/modules /var/www/drupal/modules/custom
 COPY drupal/themes /var/www/drupal/theams/custom
 COPY drupal/profiles /var/www/drupal/profiles/custom
-COPY drupal/sites /var/www/drupal/sites
 
 
 WORKDIR /var/www/drupal
@@ -222,13 +225,13 @@ RUN  apk add --no-cache --virtual \
 
 COPY --from=composer-prod /var/www/scripts /var/www/scripts
 
-ENV DRUPAL_VERSION 8
+ARG DRUPAL_VERSION
 
-COPY composer-d$DRUPAL_VERSION.json /var/www/composer.json
-COPY composer-d$DRUPAL_VERSION.lock /var/www/composer.lock
+COPY ./settings/composer.json /var/www/composer.json
+COPY ./settings/composer.lock /var/www/composer.lock
 
-RUN  composer install --dev --ignore-platform-reqs --no-interaction --no-progress \
-  && ln -s /var/www/vendor/bin/* /bin/
+RUN composer install --dev --ignore-platform-reqs --no-interaction --no-progress
+RUN ln -sf /var/www/vendor/bin/* /bin/
 
 WORKDIR /var/www/drupal
 
