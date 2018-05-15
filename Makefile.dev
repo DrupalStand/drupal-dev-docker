@@ -18,4 +18,7 @@ code-fix: # Description needed
 	-vendor/bin/phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
 	#
 shell: # This command will open a shell in the specified container as root. Usage: make shell <container type>
-	docker exec -it --user root $(filter-out $@,$(MAKECMDGOALS))-${PROJECT} /bin/sh
+	docker exec -it --user root ${PROJECT}-${ENV}-$(filter-out $@,$(MAKECMDGOALS)) /bin/sh
+
+exec: # This command will open a run a command in the specified container as root. Usage: make exec <container type> <cmd>
+	docker exec -it --user root ${PROJECT}-${ENV}-$(filter-out $@,$(MAKECMDGOALS))

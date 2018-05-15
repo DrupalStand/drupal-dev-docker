@@ -1,26 +1,42 @@
-config-init:
+init-drupal: drupal-install config-init config-import clear-cache
+
+update: docker-stop docker-rebuild config-import clear-cache
+
+clear-cache: docker-running  # Clear Drupal cache
+	docker exec -i ${PROJECT}-${ENV}-php drush cr
+
+drupal-install: docker-running
+	docker exec -i ${PROJECT}-${ENV}-php drush \
+	  --root=/var/www/drupal site-install minimal -vv --yes \
+	  --account-name=admin \
+	  --account-pass=admin \
+	  --site-name="Drupal Dev Docker" \
+	  install_configure_form.enable_update_status_module=NULL \
+	  install_configure_form.enable_update_status_emails=NULL
+
+config-init: docker-running
 	@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Processing setting uuid..."; \
 		cat ./config/system.site.yml | \
 		grep uuid | tail -c +7 | head -c 36 | \
-		docker exec -i php-${PROJECT} drush config-set -y system.site uuid - ;\
+		docker exec -i ${PROJECT}-${ENV}-php drush config-set -y system.site uuid - ;\
 	else \
 		echo "Config is empty. Skipping uuid init..."; \
 	fi;
 
-config-import:
+config-import: docker-running
 	@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Importing config..."; \
-		docker exec -i php-${PROJECT} drush config-import sync --yes ;\
-		docker exec -i php-${PROJECT} drush config-import sync --yes ;\
+		docker exec -i ${PROJECT}-${ENV}-php drush config-import sync --yes ;\
+		docker exec -i ${PROJECT}-${ENV}-php drush config-import sync --yes ;\
 	else \
 		echo "Config is empty. Skipping import..."; \
 	fi;
 
-config-export:
-	docker exec -i php-${PROJECT} drush config-export sync --yes
+config-export: docker-running
+	docker exec -i ${PROJECT}-${ENV}-php drush config-export sync --yes
 
-config-validate:
-	docker exec -i php-${PROJECT} drush config-export sync --no
+config-validate: docker-running
+	docker exec -i ${PROJECT}-${ENV}-php drush config-export sync --no
 
-config-refresh: config-init config-import
+config-refresh: config-running
