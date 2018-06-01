@@ -2,7 +2,9 @@
 
 PARAMS=""
 USING_STDIN="t"
-PROJECT=${PWD##*/}
+
+# Get environment variables from .env
+export $(grep -v '^#' .env | xargs -d '\n')
 
 # if using stdin then we need to disable tty mode
 if [ ! -t 0 ] ; then USING_STDIN=""; fi
@@ -11,4 +13,5 @@ for PARAM in "$@"
 do
   PARAMS="${PARAMS} \"${PARAM}\""
 done
-docker exec -i$USING_STDIN cms-$PROJECT sh -c "/var/www/vendor/bin/drush --root=/var/www/web ${PARAMS}"
+echo ${PROJECT}-${ENV}-web
+docker exec -i$USING_STDIN ${PROJECT}-${ENV}-php sh -c "/var/www/vendor/bin/drush --root=/var/www/web ${PARAMS}"
