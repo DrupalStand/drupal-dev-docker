@@ -19,14 +19,6 @@ ifeq (${ENV}, dev)
   INCLUDE_MAKEFILES += Makefile.dev
 endif
 
-ifeq (${DRUPAL_VERSION}, 7)
-  INCLUDE_MAKEFILES += Makefile.d7
-endif
-
-ifeq (${DRUPAL_VERSION}, 8)
-  INCLUDE_MAKEFILES += Makefile.d8
-endif
-
 # This should always be the first target so that we know running make without any
 # arguments is going to be nondestructive. The @ is to silence the normal make
 # behavior of echo'ing commands before running them.
@@ -73,17 +65,7 @@ settings:
 	@echo "Put settings into place"
 	@mkdir settings
 	@# @NOTE maybe we should link the files
-	@cp $(CURDIR)/env-init-resources/drupal${DRUPAL_VERSION}/* settings
-
-switch-drupal-version: clean
-	## @TODO check if git is clean
-	@if [ "${DRUPAL_VERSION}" -eq "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
-	  echo "You are already on this version"; \
-	  exit 1; \
-	 fi
-	@echo "Changing version in .env file"
-	@sed -i 's/DRUPAL_VERSION=./DRUPAL_VERSION=$(filter-out $@,$(MAKECMDGOALS))/' .env
-	make init
+	@cp $(CURDIR)/env-init-resources/drupal/* settings
 
 docker-rebuild: settings docker-stop # Update docker images if there has been changes to Dockerfiles
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
@@ -171,4 +153,44 @@ export-prod: # Export prod tar ball
 	docker save -o ${PROJECT}-prod.tar \
 	  ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-{php,web,db}:latest \
 	  memcached:1.5-alpine
+
+init-drupal: drupal-install config-init config-import clear-cache
+
+update: docker-stop docker-rebuild config-import clear-cache # Run the 'rebuild' task then import configuration and clear Drupal's cache
+
+drupal-install: docker-running
+	docker exec -i ${PROJECT}-${ENV}-php drush \
+	  --root=/var/www/drupal site-install minimal -vv --yes \
+	  --account-name=admin \
+	  --account-pass=admin \
+	  --site-name="Drupal Dev Docker" \
+	  install_configure_form.enable_update_status_module=NULL \
+	  install_configure_form.enable_update_status_emails=NULL
+
+config-init: docker-running
+	@if [ -e ./config/system.site.yml ]; then \
+		echo "Config found. Processing setting uuid..."; \
+		cat ./config/system.site.yml | \
+		grep uuid | tail -c +7 | head -c 36 | \
+		docker exec -i ${PROJECT}-${ENV}-php drush config-set -y system.site uuid - ;\
+	else \
+		echo "Config is empty. Skipping uuid init..."; \
+	fi;
+
+config-import: docker-running
+	@if [ -e ./config/system.site.yml ]; then \
+		echo "Config found. Importing config..."; \
+		docker exec -i ${PROJECT}-${ENV}-php drush config-import sync --yes ;\
+	else \
+		echo "Config is empty. Skipping import..."; \
+	fi;
+
+config-export: docker-running
+	docker exec -i ${PROJECT}-${ENV}-php drush config-export sync --yes
+
+config-validate: docker-running
+	docker exec -i ${PROJECT}-${ENV}-php drush config-export sync --no
+
+config-refresh: config-running
+
 
