@@ -152,9 +152,15 @@ RUN  mkdir -p /var/www/drupal/sites/default/files \
 COPY ./settings/settings.php /var/www/drupal/sites/default/settings.php
 COPY ./settings/settings.local.php /var/www/drupal/sites/default/settings.local.php
 
-COPY drupal/modules /var/www/drupal/modules/custom
-COPY drupal/themes /var/www/drupal/theams/custom
-COPY drupal/profiles /var/www/drupal/profiles/custom
+# @TODO: I'm not sure what these are supposed to do or where we are expected to
+# be when this runs, but uncommenting these lines causes the php-prod build to
+# fail entirely. When built without them, the themes/profiles/modules appear in
+# their correct places. Isn't composer handling the modules? Is this so we can
+# place our custom stuff outside the container?
+#
+# COPY drupal/modules/ /var/www/drupal/modules/custom
+# COPY drupal/themes/ /var/www/drupal/themes/custom
+# COPY drupal/profiles/ /var/www/drupal/profiles/custom
 
 
 WORKDIR /var/www/drupal
