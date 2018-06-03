@@ -50,7 +50,7 @@ include ${INCLUDE_MAKEFILES}
 
 
 
-init: settings docker-start wait-healthy init-drupal docker-status # Build environment
+init: docker-start wait-healthy init-drupal docker-status # Build environment
 
 safe-update: docker-stop docker-rebuild wait-healthy clear-cache # update without importing config
 
@@ -61,13 +61,7 @@ wait-healthy:
 	@echo "Wait for all containers to become healthy"
 	@python $(CURDIR)/bin/docker-compose-wait.py
 
-settings:
-	@echo "Put settings into place"
-	@mkdir settings
-	@# @NOTE maybe we should link the files
-	@cp $(CURDIR)/env-init-resources/drupal/* settings
-
-docker-rebuild: settings docker-stop # Update docker images if there has been changes to Dockerfiles
+docker-rebuild: docker-stop # Update docker images if there has been changes to Dockerfiles
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
 
@@ -86,23 +80,23 @@ docker-restart: docker-stop docker-start # Restart containers for this project
 drush: # Forwards to drush inside php container
 	docker exec -i ${PROJECT}-${ENV}-php drush $(filter-out $@,$(MAKECMDGOALS))
 
-composer: settings # Runs composer
+composer: # Runs composer
 	docker run \
 	  --rm \
-	  -v $(CURDIR)/settings/composer.json:/app/composer.json \
-	  -v $(CURDIR)/settings/composer.lock:/app/composer.lock \
+	  -v $(CURDIR)/composer.json:/app/composer.json \
+	  -v $(CURDIR)/composer.lock:/app/composer.lock \
 	  composer $(filter-out $@,$(MAKECMDGOALS))
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
-composer-update: settings # Update lock file from composer.json and rebuild images
+composer-update: # Update lock file from composer.json and rebuild images
 	docker run \
 	  --rm \
-	  -v $(CURDIR)/settings/composer.json:/app/composer.json \
-	  -v $(CURDIR)/settings/composer.lock:/app/composer.lock \
+	  -v $(CURDIR)/composer.json:/app/composer.json \
+	  -v $(CURDIR)/composer.lock:/app/composer.lock \
 	  composer update --lock --no-scripts --no-autoloader
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
-drupal-upgrade: settings # update drupal core
+drupal-upgrade: # update drupal core
 	docker run \
 	  --rm \
 	  -v $(CURDIR)/composer.json:/app/composer.json \
@@ -115,8 +109,6 @@ destroy: # take town and remove all data related to this project's current state
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
 
 clean: destroy # Removes all artifacts built via make or docker
-	@echo "Removing Settings file"
-	@rm -r $(CURDIR)/settings || true
 	@echo "Removing docker images"
 	rm $(CURDIR)/${PROJECT}-prod.tar || true
 	@echo "Removing docker images"
