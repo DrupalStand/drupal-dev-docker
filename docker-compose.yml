@@ -5,8 +5,6 @@ services:
       context: .
       dockerfile: ./docker-src/cms/Dockerfile
       target: php-$ENV
-      args:
-        - DRUPAL_VERSION=${DRUPAL_VERSION}
     image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-php
     env_file: environment
     environment:
@@ -28,8 +26,6 @@ services:
       context: .
       dockerfile: ./docker-src/cms/Dockerfile
       target: web-prod
-      args:
-        - DRUPAL_VERSION=${DRUPAL_VERSION}
     image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-web
     ports:
       - 8080:80

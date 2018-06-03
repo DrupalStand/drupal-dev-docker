@@ -3,11 +3,9 @@
 #------------------------------------------------------------------------------
 FROM composer:latest as composer-prod
 
-ARG DRUPAL_VERSION
-
 # Get the drush and script directories from docker-composer
 RUN  composer create-project \
-       drupal-composer/drupal-project:$DRUPAL_VERSION.x-dev \
+       drupal-composer/drupal-project:8.x-dev \
        /var/www \
        --ignore-platform-reqs \
        --prefer-dist \
@@ -33,7 +31,7 @@ RUN  composer install \
        --no-scripts \
        --no-ansi \
        --no-dev
-RUN  [ "$DRUPAL_VERSION" -eq '8' ] && composer drupal-scaffold || exit 0
+RUN  composer drupal-scaffold
 
 #------------------------------------------------------------------------------
 # PHP PROD
@@ -230,8 +228,6 @@ RUN  apk add --no-cache --virtual \
 
 
 COPY --from=composer-prod /var/www/scripts /var/www/scripts
-
-ARG DRUPAL_VERSION
 
 COPY ./settings/composer.json /var/www/composer.json
 COPY ./settings/composer.lock /var/www/composer.lock
