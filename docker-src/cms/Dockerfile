@@ -16,8 +16,8 @@ RUN  composer create-project \
        /var/www/composer.json \
        /var/www/composer.lock
 
-COPY ./settings/composer.json /var/www/composer.json
-COPY ./settings/composer.lock /var/www/composer.lock
+COPY ./composer.json /var/www/composer.json
+COPY ./composer.lock /var/www/composer.lock
 
 WORKDIR /var/www
 
@@ -147,8 +147,8 @@ RUN ln -s /var/www/vendor/bin/* /bin/
 RUN  mkdir -p /var/www/drupal/sites/default/files \
   && chmod 777 /var/www/drupal/sites/default/files
 
-COPY ./settings/settings.php /var/www/drupal/sites/default/settings.php
-COPY ./settings/settings.local.php /var/www/drupal/sites/default/settings.local.php
+COPY ./docker-src/cms/drupal/settings.php /var/www/drupal/sites/default/settings.php
+COPY ./docker-src/cms/drupal/settings.local.php /var/www/drupal/sites/default/settings.local.php
 
 # @TODO: I'm not sure what these are supposed to do or where we are expected to
 # be when this runs, but uncommenting these lines causes the php-prod build to
@@ -177,7 +177,7 @@ RUN mkdir -p /var/www/drupal/sites/default/files
 COPY --from=php-prod /var/www/drupal /var/www/drupal
 
 RUN rm /etc/nginx/conf.d/default.conf
-COPY ./docker-src/cms/drupal.conf /etc/nginx/conf.d/drupal.conf
+COPY ./docker-src/cms/nginx/drupal.conf /etc/nginx/conf.d/drupal.conf
 
 
 #------------------------------------------------------------------------------
