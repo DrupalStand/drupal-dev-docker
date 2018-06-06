@@ -3,9 +3,7 @@ services:
   php:
     container_name: ${PROJECT}-${ENV}-php
     volumes:
-      - "./drupal/modules:/var/www/drupal/modules/custom"
-      - "./drupal/themes:/var/www/drupal/themes/custom"
-      - "./drupal/profiles:/var/www/drupal/profiles/custom"
+      - "./drupal:/var/www/drupal"
       - "./config:/var/www/config"
 
   web:
@@ -14,6 +12,4 @@ services:
       - 8080:80
       - 8443:443
     volumes:
-      - "./drupal/modules:/var/www/drupal/modules/custom"
-      - "./drupal/themes:/var/www/drupal/themes/custom"
-      - "./drupal/profiles:/var/www/drupal/profiles/custom"
+      - "./drupal:/var/www/drupal"

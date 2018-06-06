@@ -147,19 +147,7 @@ RUN ln -s /var/www/vendor/bin/* /bin/
 RUN  mkdir -p /var/www/drupal/sites/default/files \
   && chmod 777 /var/www/drupal/sites/default/files
 
-COPY ./docker-src/cms/drupal/settings.php /var/www/drupal/sites/default/settings.php
-COPY ./docker-src/cms/drupal/settings.local.php /var/www/drupal/sites/default/settings.local.php
-
-# @TODO: I'm not sure what these are supposed to do or where we are expected to
-# be when this runs, but uncommenting these lines causes the php-prod build to
-# fail entirely. When built without them, the themes/profiles/modules appear in
-# their correct places. Isn't composer handling the modules? Is this so we can
-# place our custom stuff outside the container?
-#
-# COPY drupal/modules/ /var/www/drupal/modules/custom
-# COPY drupal/themes/ /var/www/drupal/themes/custom
-# COPY drupal/profiles/ /var/www/drupal/profiles/custom
-
+COPY drupal /var/www/drupal
 
 WORKDIR /var/www/drupal
 
@@ -229,8 +217,8 @@ RUN  apk add --no-cache --virtual \
 
 COPY --from=composer-prod /var/www/scripts /var/www/scripts
 
-COPY ./settings/composer.json /var/www/composer.json
-COPY ./settings/composer.lock /var/www/composer.lock
+COPY ./composer.json /var/www/composer.json
+COPY ./composer.lock /var/www/composer.lock
 
 RUN composer install --dev --ignore-platform-reqs --no-interaction --no-progress
 RUN ln -sf /var/www/vendor/bin/* /bin/
