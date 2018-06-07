@@ -19,3 +19,6 @@ html
 drupal/sites/default/default.settings.php
 drupal/sites/example.settings.local.php
 drupal/sites/example.sites.php
+
+# Ignore tar files which are likely export
+*.tar
