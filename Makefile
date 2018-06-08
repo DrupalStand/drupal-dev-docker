@@ -132,9 +132,10 @@ rebuild: destroy init # Destroy and Init the environment
 fix-permissions: # Permissions all buggered up? Run this
 	sudo chown $(USER) ./
 	sudo chmod u=rwx,g=rwxs,o=rx ./
-	sudo find ./ -exec chown $(USER) {} \;
-	sudo find ./ -exec chmod u=rwX,g=rwX,o=rX {} \;
-	sudo find ./ -type d -exec chmod g+s {} \;
+	sudo find ./ -not -path "drupal/sites/default/files*" -exec chown $(USER) {} \;
+	sudo find ./ -not -path "drupal/sites/default/files*" -exec chmod u=rwX,g=rwX,o=rX {} \;                                                                                   
+	sudo find ./ -type d -not -path "drupal/sites/default/files*" -exec chmod g+s {} \;                                                                                        
+	sudo chmod -R u=rwx,g=rwxs,o=rwx ./drupal/sites/default/files;
 
 export-prod: # Export prod tar ball
 	@export ENV=prod
