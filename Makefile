@@ -88,6 +88,11 @@ composer: # Runs composer
 	  composer $(filter-out $@,$(MAKECMDGOALS))
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
+composer-install: # Installs composer packages from composer.lock file
+	docker exec -i -w "/var/www" ${PROJECT}-${ENV}-php \
+          composer install --dev --ignore-platform-reqs --no-interaction --no-progress
+
+
 composer-update: # Update lock file from composer.json and rebuild images
 	docker run \
 	  --rm \

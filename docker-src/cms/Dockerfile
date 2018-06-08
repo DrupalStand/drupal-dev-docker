@@ -3,8 +3,11 @@
 #------------------------------------------------------------------------------
 FROM composer:latest as composer-prod
 
-# Get the drush and script directories from docker-composer
-RUN  composer create-project \
+
+# instlal tool to make composer download packages in parallel
+RUN  composer global require hirak/prestissimo \
+  # Get the drush and script directories from docker-composer
+  && composer create-project \
        drupal-composer/drupal-project:8.x-dev \
        /var/www \
        --ignore-platform-reqs \
@@ -16,8 +19,7 @@ RUN  composer create-project \
        /var/www/composer.json \
        /var/www/composer.lock
 
-COPY ./composer.json /var/www/composer.json
-COPY ./composer.lock /var/www/composer.lock
+COPY composer.json composer.lock /var/www/
 
 WORKDIR /var/www
 
@@ -134,23 +136,26 @@ RUN { \
 
 COPY docker-src/cms/php-conf.d/* /usr/local/etc/php/conf.d/
 
-COPY --from=composer-prod /var/www/drupal /var/www/drupal
-COPY --from=composer-prod /var/www/vendor /var/www/vendor
-COPY --from=composer-prod /var/www/drush /var/www/drush
+COPY --from=composer-prod /var/www/drupal drupal
+COPY --from=composer-prod /var/www/drush drush
+COPY --from=composer-prod /var/www/scripts scripts
+COPY --from=composer-prod /var/www/vendor vendor
+COPY --from=composer-prod /var/www/load.environment.php /var/www/
+COPY --from=composer-prod /var/www/phpunit.xml.dist /var/www/
 
-RUN ln -s /var/www/vendor/bin/* /bin/
+WORKDIR /var/www/drupal
 
+COPY drupal/modules/custom /var/www/drupal/modules/custom
+COPY drupal/themes/custom /var/www/drupal/themes/custom
+COPY drupal/sites drupal/*.php drupal/*.txt drupal/web.config /var/www/drupal/
 
 # Create files directory
 # Setting a volume will mean that any php run durring the build wont
 # save cache files which may appear in the files dir
 RUN  mkdir -p /var/www/drupal/sites/default/files \
-  && chmod 777 /var/www/drupal/sites/default/files
-
-COPY drupal /var/www/drupal
-
-WORKDIR /var/www/drupal
-
+  && chmod 777 /var/www/drupal/sites/default/files \
+  # Copy drush drupal and other cli tools to bin
+  && ln -s /var/www/vendor/bin/* /bin/
 
 #------------------------------------------------------------------------------
 # WEB PROD
@@ -167,6 +172,7 @@ COPY --from=php-prod /var/www/drupal /var/www/drupal
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./docker-src/cms/nginx/drupal.conf /etc/nginx/conf.d/drupal.conf
 
+WORKDIR /var/www/drupal
 
 #------------------------------------------------------------------------------
 # PHP DEV
@@ -180,6 +186,10 @@ WORKDIR /var/www
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+COPY --from=composer-prod /var/www/scripts /var/www/scripts
+# we should be able to pull this along with the cache over from the composer image
+RUN  composer global require hirak/prestissimo
 
 RUN  apk add --no-cache --virtual \
              git \
@@ -215,10 +225,8 @@ RUN  apk add --no-cache --virtual \
   } > /usr/local/etc/php/conf.d/opcache.ini
 
 
-COPY --from=composer-prod /var/www/scripts /var/www/scripts
 
-COPY ./composer.json /var/www/composer.json
-COPY ./composer.lock /var/www/composer.lock
+COPY ./composer.json ./composer.lock /var/www/
 
 RUN composer install --dev --ignore-platform-reqs --no-interaction --no-progress
 RUN ln -sf /var/www/vendor/bin/* /bin/
