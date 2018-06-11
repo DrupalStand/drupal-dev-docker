@@ -119,13 +119,13 @@ clean: destroy # Removes all artifacts built via make or docker
 	@echo "Removing docker images"
 	docker rmi ${IMAGE_MAINTAINER}/${PROJECT}-{dev,prod}-{db,php,web}:latest \
 	  || true
-	docker rmi \
-	  memcached:1.5-alpine \
-	  alpine:latest \
-	  composer:latest \
-	  php:7.1-fpm-alpine \
-	  nginx:stable-alpine \
-	  || true
+	#docker rmi \
+	#  memcached:1.5-alpine \
+	#  alpine:latest \
+	#  composer:latest \
+	#  php:7.1-fpm-alpine \
+	#  nginx:stable-alpine \
+	#  || true
 
 rebuild: destroy init # Destroy and Init the environment
 
