@@ -23,7 +23,7 @@ COPY composer.json composer.lock /var/www/
 
 WORKDIR /var/www
 
-# The following flag breaks drupal 8--classmap-authoritative
+# The following flag breaks drupal --classmap-authoritative
 RUN  composer install \
        --ignore-platform-reqs \
        --optimize-autoloader \
@@ -228,7 +228,7 @@ RUN  apk add --no-cache --virtual \
 
 COPY ./composer.json ./composer.lock /var/www/
 
-RUN composer install --dev --ignore-platform-reqs --no-interaction --no-progress
+RUN composer install --ignore-platform-reqs --no-interaction --no-progress
 RUN ln -sf /var/www/vendor/bin/* /bin/
 
 WORKDIR /var/www/drupal
