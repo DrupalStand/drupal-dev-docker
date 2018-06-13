@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
+readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
+readonly ARGS="$@"
+readonly PROJECT="$(basename "$(dirname "$PROGDIR")")"
+
 PARAMS=""
 USING_STDIN="t"
-PROJECT=${PWD##*/}
 
 # if using stdin then we need to disable tty mode
 if [ ! -t 0 ] ; then USING_STDIN=""; fi
 
-for PARAM in "$@"
+for PARAM in "$ARGS"
 do
   PARAMS="${PARAMS} \"${PARAM}\""
 done
-docker exec -i$USING_STDIN cms-$PROJECT sh -c "/var/www/vendor/bin/drupal --root=/var/www/web ${PARAMS}"
+docker exec -i$USING_STDIN ${PROJECT}-php sh -c "/var/www/vendor/bin/drupal --root=/var/www/web ${PARAMS}"

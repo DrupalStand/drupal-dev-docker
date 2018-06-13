@@ -4,12 +4,13 @@ services:
     build:
       context: .
       dockerfile: ./docker-src/cms/Dockerfile
-      target: php-$ENV
-    image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-php
+      target: php-dev
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-php
+    container_name: ${PROJECT}-php
     env_file: environment
     environment:
       - CONNECTBACK=off
-      - DRUPAL_MYSQL_HOST=${PROJECT}-${ENV}-db
+      - DRUPAL_MYSQL_HOST=${PROJECT}-db
     links:
       - db
       - memcache
@@ -20,13 +21,18 @@ services:
       - connector
     volumes:
       - files:/var/www/drupal/sites/default/files
+      - "./drupal:/var/www/drupal"
+      - "./config:/var/www/config"
+      - "./vendor:/var/www/vendor"
+      - "./test:/var/www/test"
 
   web:
     build:
       context: .
       dockerfile: ./docker-src/cms/Dockerfile
       target: web-prod
-    image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-web
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-web
+    container_name: ${PROJECT}-web
     ports:
       - 8080:80
       - 8443:443
@@ -38,12 +44,13 @@ services:
       - php
     volumes:
       - files:/var/www/drupal/sites/default/files:ro
+      - "./drupal:/var/www/drupal:ro"
 
   db:
     build:
       context: ./docker-src/db
-    image: ${IMAGE_MAINTAINER}/${PROJECT}-${ENV}-db
-    container_name: ${PROJECT}-${ENV}-db
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-db
+    container_name: ${PROJECT}-db
     env_file: environment
     volumes:
       - database:/var/lib/mysql
@@ -57,9 +64,9 @@ services:
 
   memcache:
     image: memcached:1.5-alpine
-    container_name: ${PROJECT}-${ENV}-memcached
+    container_name: ${PROJECT}-memcached
     environment:
-      - MEMCACHED_SERVER=memcached-${PROJECT}:11211
+      - MEMCACHED_SERVER=${PROJECT}-memcached:11211
     networks:
       - connector
 
