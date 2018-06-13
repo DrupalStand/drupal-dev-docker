@@ -228,3 +228,6 @@ shell: # This command will open a shell in the specified container as root. Usag
 
 exec: # This command will open a run a command in the specified container as root. Usage: make exec <container type> <cmd>
 	docker exec -it --user root ${PROJECT}-$(filter-out $@,$(MAKECMDGOALS))
+
+logs: # This command will watch the logs in the specified container. Usage: make logs <container type>
+	docker logs -f ${PROJECT}-$(filter-out $@,$(MAKECMDGOALS)) 
