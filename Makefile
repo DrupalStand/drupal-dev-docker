@@ -80,31 +80,43 @@ drush: # Forwards to drush inside php container
 composer: # Runs composer
 	docker run \
 	  --rm \
+	  -w "/var/www" \
 	  -v $(CURDIR)/composer.json:/app/composer.json \
 	  -v $(CURDIR)/composer.lock:/app/composer.lock \
 	  composer $(filter-out $@,$(MAKECMDGOALS))
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
 composer-install: vendor # Installs composer packages from composer.lock file
-	docker exec -i -w "/var/www" ${PROJECT}-php \
-          composer install --ignore-platform-reqs --no-interaction --no-progress
+	docker exec \
+	  -i \
+	  -w "/var/www" \
+	  ${PROJECT}-php \
+		composer install \
+		  --ignore-platform-reqs \
+		  --no-interaction \
+		  --no-progress
 
 
 composer-update: # Update lock file from composer.json and rebuild images
-	docker run \
+	docker exec \
+	  -i \
 	  --rm \
-	  -v $(CURDIR)/composer.json:/app/composer.json \
-	  -v $(CURDIR)/composer.lock:/app/composer.lock \
-	  composer update --lock --no-scripts --no-autoloader
+	  -w "/var/www" \
+	  ${PROJECT}-php \
+		composer update \
+		  --lock \
+		  --no-scripts \
+		  --no-autoloader
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
 drupal-upgrade: # update drupal core
-	docker run \
-	  --rm \
-	  -v $(CURDIR)/composer.json:/app/composer.json \
-	  -v $(CURDIR)/composer.lock:/app/composer.lock \
-	  -v $(CURDIR)/scripts:/app/scripts \
-	  composer update drupal/core --lock --with-dependencies
+	docker exec \
+	  -i \
+	  -w "/var/www" \
+	  ${PROJECT}-php \
+		composer update drupal/core \
+		  --lock \
+		  --with-all-dependencies
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 
 vendor:
