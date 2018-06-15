@@ -20,7 +20,7 @@
         "drupal-composer/drupal-scaffold": "^2.4",
         "cweagans/composer-patches": "^1.6",
         "drupal/core": "~8.0",
-        "drush/drush": "~9.0",
+        "drush/drush": "~8.0",
         "drupal/console": "~1.0",
         "drupal/admin_toolbar": "^1.0"
     },
@@ -64,12 +64,12 @@
     },
     "extra": {
         "installer-paths": {
-            "drupal/core": ["type:drupal-core"],
-            "drupal/libraries/{$name}": ["type:drupal-library"],
-            "drupal/modules/contrib/{$name}": ["type:drupal-module"],
-            "drupal/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "drupal/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"]
+            "webroot/core": ["type:drupal-core"],
+            "webroot/libraries/{$name}": ["type:drupal-library"],
+            "webroot/modules/contrib/{$name}": ["type:drupal-module"],
+            "webroot/profiles/contrib/{$name}": ["type:drupal-profile"],
+            "webroot/themes/contrib/{$name}": ["type:drupal-theme"],
+            "webroot/sites/all/drush/contrib/{$name}": ["type:drupal-drush"]
         }
     }
 }

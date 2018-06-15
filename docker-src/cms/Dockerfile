@@ -5,21 +5,31 @@ FROM composer:latest as composer-prod
 
 
 # instlal tool to make composer download packages in parallel
-RUN  composer global require hirak/prestissimo \
-  # Get the drush and script directories from docker-composer
-  && composer create-project \
-       drupal-composer/drupal-project:8.x-dev \
-       /var/www \
-       --ignore-platform-reqs \
-       --prefer-dist \
-       --remove-vcs \
-  && rm -rf \
-       /var/www/web \
-       /var/www/vendor \
-       /var/www/composer.json \
-       /var/www/composer.lock
+RUN  composer global require hirak/prestissimo
+#RUN  composer global require hirak/prestissimo \
+#  # Get the drush and script directories from docker-composer
+#  && composer create-project \
+#       drupal-composer/drupal-project:8.x-dev \
+#       /var/www \
+#       --ignore-platform-reqs \
+#       --prefer-dist \
+#       --remove-vcs \
+#  && rm -rf \
+#       /var/www/web \
+#       /var/www/vendor \
+#       /var/www/composer.json \
+#       /var/www/composer.lock
+
+RUN mkdir -p /var/www/webroot/core \
+      /var/www/webroot/libraries \
+      /var/www/webroot/modules/contrib \
+      /var/www/webroot/profiles/contrib \
+      /var/www/webroot/themes/contrib \
+      /var/www/webroot/sites/all/drush/contrib \
+      /var/www/vendor
 
 COPY composer.json composer.lock /var/www/
+COPY scripts /var/www/scripts
 
 WORKDIR /var/www
 
@@ -33,12 +43,9 @@ RUN  composer install \
        --no-scripts \
        --no-ansi \
        --no-dev
-RUN  composer drupal-scaffold
-
 #------------------------------------------------------------------------------
 # PHP PROD
 #------------------------------------------------------------------------------
-
 FROM php:7.1-fpm-alpine as php-prod
 
 # Set timezone.
@@ -123,73 +130,54 @@ RUN set -ex \
   && apk del .build-deps .build-deps2 \
   && rm -rf /tmp/* /var/cache/apk/*
 
-# recommended PHP.ini settings: https://secure.php.net/manual/en/opcache.installation.php
-# with prod modifcations to turn cache files only once
-RUN { \
-      echo 'opcache.memory_consumption=128'; \
-      echo 'opcache.interned_strings_buffer=8'; \
-      echo 'opcache.max_accelerated_files=4000'; \
-      echo 'opcache.validate_timestamps=0'; \
-      echo 'opcache.fast_shutdown=1'; \
-      echo 'opcache.enable_cli=1'; \
-} > /usr/local/etc/php/conf.d/opcache.ini
-
 COPY docker-src/cms/php-conf.d/* /usr/local/etc/php/conf.d/
 
-COPY --from=composer-prod /var/www/drupal drupal
-COPY --from=composer-prod /var/www/drush drush
+COPY webroot /var/www/webroot
+
+RUN  rm -rf \
+       webroot/core/* \
+       webroot/libraries/* \
+       webroot/modules/contrib/* \
+       webroot/profiles/contrib/* \
+       webroot/themes/contrib/* \
+       webroot/sites/all/drush/contrib/*
+
+COPY --from=composer-prod /var/www/webroot/core webroot/core
+COPY --from=composer-prod /var/www/webroot/libraries webroot/libraries
+COPY --from=composer-prod /var/www/webroot/modules/contrib webroot/modules/contrib
+COPY --from=composer-prod /var/www/webroot/profiles/contrib webroot/profiles/contrib
+COPY --from=composer-prod /var/www/webroot/themes/contrib webroot/themes/contrib
+COPY --from=composer-prod /var/www/webroot/sites/all/drush/contrib webroot/sites/all/drush/contrib
 COPY --from=composer-prod /var/www/scripts scripts
 COPY --from=composer-prod /var/www/vendor vendor
-COPY --from=composer-prod /var/www/load.environment.php /var/www/
-COPY --from=composer-prod /var/www/phpunit.xml.dist /var/www/
+COPY phpunit.xml.dist /var/www/
 
-WORKDIR /var/www/drupal
+WORKDIR /var/www/webroot
 
-COPY drupal/modules/custom /var/www/drupal/modules/custom
-COPY drupal/themes/custom /var/www/drupal/themes/custom
-COPY drupal/sites drupal/*.php drupal/*.txt drupal/web.config /var/www/drupal/
-
-# Create files directory
-# Setting a volume will mean that any php run durring the build wont
-# save cache files which may appear in the files dir
-RUN  mkdir -p /var/www/drupal/sites/default/files \
-  && chmod 777 /var/www/drupal/sites/default/files \
-  # Copy drush drupal and other cli tools to bin
-  && ln -s /var/www/vendor/bin/* /bin/
+RUN ln -s /var/www/vendor/bin/* /bin/
 
 #------------------------------------------------------------------------------
 # WEB PROD
 #------------------------------------------------------------------------------
-
-
 FROM nginx:stable-alpine as web-prod
 
 # This will ensure that no matter what the files directory will be empty
-RUN mkdir -p /var/www/drupal/sites/default/files
+RUN mkdir -p /var/www/webroot/sites/default/files
 
-COPY --from=php-prod /var/www/drupal /var/www/drupal
+COPY --from=php-prod /var/www/webroot /var/www/webroot
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./docker-src/cms/nginx/drupal.conf /etc/nginx/conf.d/drupal.conf
 
-WORKDIR /var/www/drupal
+WORKDIR /var/www/webroot
 
 #------------------------------------------------------------------------------
 # PHP DEV
 #------------------------------------------------------------------------------
-
-
 FROM scratch as php-dev
 COPY --from=php-prod . /
 
 WORKDIR /var/www
-
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-COPY --from=composer-prod /var/www/scripts /var/www/scripts
-# we should be able to pull this along with the cache over from the composer image
-RUN  composer global require hirak/prestissimo
 
 RUN  apk add --no-cache --virtual \
              git \
@@ -213,24 +201,16 @@ RUN  apk add --no-cache --virtual \
   # Remote connect_back only works on Linux systems because OSX abstracts it away into a VM
   && echo 'xdebug.remote_connect_back="${CONNECTBACK}"' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.remote_host=192.168.65.1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  && apk del .build-deps \
-  # recommended PHP.ini settings: https://secure.php.net/manual/en/opcache.installation.php
-  && { \
-    echo 'opcache.memory_consumption=128'; \
-    echo 'opcache.interned_strings_buffer=8'; \
-    echo 'opcache.max_accelerated_files=4000'; \
-    echo 'opcache.revalidate_freq=60'; \
-    echo 'opcache.fast_shutdown=1'; \
-    echo 'opcache.enable_cli=1'; \
-  } > /usr/local/etc/php/conf.d/opcache.ini
+  && apk del .build-deps
 
+COPY docker-src/cms/php-conf.d.dev/* /usr/local/etc/php/conf.d/
 
-
-COPY ./composer.json ./composer.lock /var/www/
-
-RUN composer install --ignore-platform-reqs --no-interaction --no-progress
 RUN ln -sf /var/www/vendor/bin/* /bin/
 
-WORKDIR /var/www/drupal
+WORKDIR /var/www/webroot
+
+# this doesn't work. nor with &&
+#ENTRYPOINT ["ln", "-sf", "/var/www/vendor/bin/*", "/bin/", "&", "docker-php-entrypoint"]
+ENTRYPOINT ["docker-php-entrypoint"]
 
 CMD ["php-fpm"]

@@ -20,8 +20,7 @@ services:
     networks:
       - connector
     volumes:
-      - files:/var/www/drupal/sites/default/files
-      - "./drupal:/var/www/drupal"
+      - "./webroot:/var/www/webroot"
       - "./config:/var/www/config"
       - "./vendor:/var/www/vendor"
       - "./test:/var/www/test"
@@ -43,8 +42,7 @@ services:
     depends_on:
       - php
     volumes:
-      - files:/var/www/drupal/sites/default/files:ro
-      - "./drupal:/var/www/drupal:ro"
+      - "./webroot:/var/www/webroot:ro"
 
   db:
     build:
@@ -75,4 +73,3 @@ networks:
 
 volumes:
   database: {}
-  files: {}

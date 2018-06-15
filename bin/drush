@@ -2,17 +2,5 @@
 
 readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
 readonly ARGS="$@"
-readonly PROJECT="$(basename "$(dirname "$PROGDIR")")"
 
-PARAMS=""
-USING_STDIN="t"
-
-# if using stdin then we need to disable tty mode
-if [ ! -t 0 ] ; then USING_STDIN=""; fi
-
-for PARAM in "$ARGS"
-do
-  PARAMS="${PARAMS} \"${PARAM}\""
-done
-
-docker exec -i$USING_STDIN ${PROJECT}-php sh -c "/var/www/vendor/bin/drush --root=/var/www/web ${PARAMS}"
+$PROGDIR/tool drush --root=/var/www/webroot $ARGS

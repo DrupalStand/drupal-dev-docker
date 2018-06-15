@@ -1,5 +1,5 @@
 FROM alpine:latest
-LABEL maintainer="Mobomo"
+LABEL maintainer="DrupalStand"
 
 RUN apk --no-cache add --update mariadb mariadb-client pwgen
 
