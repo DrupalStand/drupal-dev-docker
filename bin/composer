@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
+readonly PROJECTDIR="$(dirname "$PROGDIR")"
+readonly ARGS="$@"
+
+docker run \
+   --rm \
+   -v ${PROJECTDIR}/composer.json:/app/composer.json \
+   -v ${PROJECTDIR}/composer.lock:/app/composer.lock \
+   -v ${PROJECTDIR}/webroot:/app/webroot \
+   -v ${PROJECTDIR}/vendor:/app/vendor \
+   -v ${PROJECTDIR}/scripts:/app/scripts \
+   -v composer-cache:/tmp/cache \
+   composer $ARGS
