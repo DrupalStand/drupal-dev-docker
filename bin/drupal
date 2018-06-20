@@ -3,4 +3,4 @@
 readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
 readonly ARGS="$@"
 
-$PROGDIR/tool drupal $ARGS
+$PROGDIR/tool drupal --root=/var/www/webroot $ARGS

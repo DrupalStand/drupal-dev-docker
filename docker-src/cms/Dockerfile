@@ -161,9 +161,6 @@ RUN ln -s /var/www/vendor/bin/* /bin/
 #------------------------------------------------------------------------------
 FROM nginx:stable-alpine as web-prod
 
-# This will ensure that no matter what the files directory will be empty
-RUN mkdir -p /var/www/webroot/sites/default/files
-
 COPY --from=php-prod /var/www/webroot /var/www/webroot
 
 RUN rm /etc/nginx/conf.d/default.conf
@@ -176,6 +173,9 @@ WORKDIR /var/www/webroot
 #------------------------------------------------------------------------------
 FROM scratch as php-dev
 COPY --from=php-prod . /
+
+COPY docker-src/cms/entrypoint /usr/local/bin/drupalstand-entrypoint
+ENTRYPOINT ["drupalstand-entrypoint"]
 
 WORKDIR /var/www
 
@@ -208,9 +208,5 @@ COPY docker-src/cms/php-conf.d.dev/* /usr/local/etc/php/conf.d/
 RUN ln -sf /var/www/vendor/bin/* /bin/
 
 WORKDIR /var/www/webroot
-
-# this doesn't work. nor with &&
-#ENTRYPOINT ["ln", "-sf", "/var/www/vendor/bin/*", "/bin/", "&", "docker-php-entrypoint"]
-ENTRYPOINT ["docker-php-entrypoint"]
 
 CMD ["php-fpm"]

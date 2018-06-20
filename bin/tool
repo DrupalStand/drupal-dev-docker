@@ -1,24 +1,15 @@
 #!/usr/bin/env bash
 
 readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
-#readonly CMD="$1"
-#shift
 readonly ARGS="$@"
 readonly PROJECT="$(basename "$(dirname "$PROGDIR")")"
 
-PARAMS=""
 USING_STDIN="t"
 
 # if using stdin then we need to disable tty mode
 if [ ! -t 0 ] ; then USING_STDIN=""; fi
 
+# allow dynamic variables like columns
+shopt -s checkwinsize
 
-#for PARAM in "$ARGS"
-#do
-#  PARAMS="${PARAMS} \"${PARAM}\""
-#done
-#
-#echo " ${CMD}  ${PARAMS}"
-
-echo "docker exec -i$USING_STDIN ${PROJECT}-php ${ARGS}"
-docker exec -i$USING_STDIN ${PROJECT}-php ${ARGS}
+docker exec -i$USING_STDIN -e COLUMNS=$COLUMNS ${PROJECT}-php sh -c "${ARGS}"
