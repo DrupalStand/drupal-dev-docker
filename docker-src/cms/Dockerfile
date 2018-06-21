@@ -54,4 +54,6 @@ RUN [ -e /etc/apache2/sites-enabled/000-default.conf ] && sed -i -e "s/\/var\/ww
   || sed -i -e "s/\/var\/www\/html/\/var\/www\/web/" /etc/apache2/apache2.conf \
   && [ -e /etc/apache2/sites-enabled/default-ssl.conf ] && sed -i -e "s/\/var\/www\/html/\/var\/www\/web/" /etc/apache2/sites-enabled/default-ssl.conf
 
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
 WORKDIR /var/www
