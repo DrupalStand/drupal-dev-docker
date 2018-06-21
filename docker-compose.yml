@@ -29,7 +29,7 @@ services:
     build:
       context: .
       dockerfile: ./docker-src/cms/Dockerfile
-      target: web-prod
+      target: web-dev
     image: ${IMAGE_MAINTAINER}/${PROJECT}-web
     container_name: ${PROJECT}-web
     ports:

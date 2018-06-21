@@ -36,9 +36,9 @@ include ${INCLUDE_MAKEFILES}
 # Core commands
 # The following commands are the basis of the development infrastructure.
 ##
-init: docker-rebuild wait-healthy composer-install init-drupal docker-status # Build environment
+init: composer-install docker-rebuild wait-healthy init-drupal docker-status # Build environment
 
-safe-update: docker-stop docker-rebuild wait-healthy clear-cache # Update without importing config
+safe-update: docker-stop composer-install docker-rebuild wait-healthy clear-cache # Update without importing config
 
 # Use this if you would like a target to require that the project containers
 # are running before executing the target contents. Note this doesn't test if
@@ -79,7 +79,7 @@ composer-install: # Installs Composer packages from composer.lock file
 
 composer-update: # Update all composer managed libraries
 	$(CURDIR)/bin/composer update \
-		--ignore-platform-reqs -vvv
+		--ignore-platform-reqs
 
 composer-update-lock:
 	$(CURDIR)/bin/composer update \
@@ -96,12 +96,12 @@ docker-destroy:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
 
 composer-purge:
-	$(CURDIR)/bin/tool rm -rf /var/www/webroot/core/*
-	$(CURDIR)/bin/tool rm -rf /var/www/webroot/libraries/*
-	$(CURDIR)/bin/tool rm -rf /var/www/webroot/modules/contrib/*
-	$(CURDIR)/bin/tool rm -rf /var/www/webroot/profiles/contrib/*
-	$(CURDIR)/bin/tool rm -rf /var/www/webroot/themes/contrib/*
-	$(CURDIR)/bin/tool rm -rf /var/www/vendor/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/core/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/libraries/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/modules/contrib/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/profiles/contrib/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/themes/contrib/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/vendor/*
 
 clean: destroy # Removes all artifacts built via make or docker
 	@echo "Removing production tarball"
@@ -143,7 +143,7 @@ export-prod: # Export production tarball
 ##
 init-drupal: drupal-install config-init config-import clear-cache
 
-update: docker-stop docker-rebuild config-import clear-cache # Run the 'rebuild' task then import configuration and clear Drupal's cache
+update: docker-stop composer-install docker-rebuild config-import clear-cache # Run the 'rebuild' task then import configuration and clear Drupal's cache
 
 drupal-install: docker-running
 	$(CURDIR)/bin/drush \
