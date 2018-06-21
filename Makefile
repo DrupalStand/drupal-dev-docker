@@ -32,23 +32,16 @@ help: # Show this help
 
 include ${INCLUDE_MAKEFILES}
 
-## Removes "No rule to make target" message which allows us to pass an argument
-## without having to specify the name when running the make command.
-## https://stackoverflow.com/questions/6273608/how-to-pass-argument-to-makefile-from-command-line/6273809
 ##
-## Please see the drush target below for an example.
-%:
-	@:
-
-
-
-
+# Core commands
+# The following commands are the basis of the development infrastructure.
+##
 init: docker-start wait-healthy composer-install init-drupal docker-status # Build environment
 
 safe-update: docker-stop docker-rebuild wait-healthy clear-cache # Update without importing config
 
 # Use this if you would like a target to require that the project containers
-# are running before executing the target contents. Not this doesn't test if
+# are running before executing the target contents. Note this doesn't test if
 # the containers are healthy.
 docker-running:
 	@docker inspect -f '{{.State.Running}}' ${PROJECT}-{db,php,web} &>/dev/null \
@@ -58,7 +51,7 @@ wait-healthy:
 	@echo "Wait for all containers to become healthy"
 	@python $(CURDIR)/bin/docker-compose-wait.py
 
-docker-rebuild: docker-stop # Update docker images if there has been changes to Dockerfiles
+docker-rebuild: docker-stop # Update docker images if there have been changes to Dockerfiles
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
 
@@ -78,25 +71,24 @@ docker-stop: # Stop containers for this project
 restart: docker-restart # Alias to docker-restart
 docker-restart: docker-stop docker-start # Restart containers for this project
 
-composer-install: # Installs composer packages from composer.lock file
+composer-install: # Installs Composer packages from composer.lock file
 	$(CURDIR)/bin/composer install \
 		  --ignore-platform-reqs \
 		  --no-interaction \
 		  --no-progress
 
-
-composer-update: # Update lock file from composer.json and rebuild images
+composer-update: # Update composer managed libraries
 	$(CURDIR)/bin/composer update \
 		  --lock \
 		  --no-scripts \
 		  --no-autoloader
 
-drupal-upgrade: # Update drupal core
+drupal-upgrade: # Update Drupal Core
 	$(CURDIR)/bin/composer update drupal/core \
 		  --lock \
 		  --with-all-dependencies
 
-destroy: composer-purge docker-destroy # Take town and remove all data related to this project's current state
+destroy: composer-purge docker-destroy # Take down and remove all data related to this project's current state
 
 docker-destroy:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
@@ -116,9 +108,9 @@ clean: destroy # Removes all artifacts built via make or docker
 	docker rmi ${LABLE_BASE}{,-prod}-{db,php,web}:latest \
 	  || true
 
-rebuild: destroy init # Destroy and Init the environment
+rebuild: destroy init # Destroy and rebuild the environment
 
-fix-permissions: # Permissions all buggered up? Run this
+fix-permissions: # Fix issues with permissions by taking ownership of all files
 	sudo chown $(USER) ./
 	sudo chmod u=rwx,g=rwxs,o=rx ./
 	sudo find ./ -not -path "webroot/sites/default/files*" -exec chown $(USER) {} \;
@@ -126,7 +118,7 @@ fix-permissions: # Permissions all buggered up? Run this
 	sudo find ./ -type d -not -path "webroot/sites/default/files*" -exec chmod g+s {} \;
 	sudo chmod -R u=rwx,g=rwxs,o=rwx ./webroot/sites/default/files;
 
-export-prod: # Export prod tar ball
+export-prod: # Export production tarball
 	docker build \
 	  --target php-prod \
 	  -t ${LABLE_BASE}-prod-php:latest \
@@ -145,7 +137,7 @@ export-prod: # Export prod tar ball
 
 ##
 # Drupal specific commands
-# The following commands woudl change based on the version of drupal
+# The following commands are used to strap and control Drupal.
 ##
 init-drupal: drupal-install config-init config-import clear-cache
 
@@ -192,11 +184,10 @@ config-refresh: config-init config-import
 clear-cache:
 	$(CURDIR)/bin/drush cr
 
-
 ##
-# DEVELOPMENT TOOLS
+# Development commands
+# The following commands are used for development purposes.
 ##
-
 lint: # Check code for formatting or syntax errors
 	$(CURDIR)/bin/tool parallel-lint \
 	  -e php,module,inc,install,test,profile,theme \
@@ -215,6 +206,17 @@ code-fix: # Fix minor errors using Drupal standards
 	$(CURDIR)/bin/tool phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
 	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
 	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/themes/custom
+
+##
+# Removes "No rule to make target" message which allows us to pass an argument
+# without having to specify the name when running the make command.
+#
+# https://stackoverflow.com/questions/6273608/how-to-pass-argument-to-makefile-from-command-line/6273809
+#
+# Please see the shell or logs targets below for an example.
+##
+%:
+	@:
 
 shell: # This command will open a shell in the specified container as root. Usage: make shell <container type>
 	docker exec -it --user root ${PROJECT}-$(filter-out $@,$(MAKECMDGOALS)) /bin/sh
