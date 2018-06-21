@@ -17,16 +17,16 @@
     ],
     "require": {
         "composer/installers": "^1.2",
-        "drupal-composer/drupal-scaffold": "^2.2",
+        "drupal-composer/drupal-scaffold": "^2.4",
         "cweagans/composer-patches": "^1.6",
         "drupal/core": "~8.0",
         "drush/drush": "~8.0",
         "drupal/console": "~1.0",
-        "drupal/coder": "^8.2",
-        "drupal/devel": "^1.0",
         "drupal/admin_toolbar": "^1.0"
     },
     "require-dev": {
+        "drupal/coder": "^8.2",
+        "drupal/devel": "^1.0",
         "behat/mink": "~1.7",
         "behat/mink-goutte-driver": "~1.2",
         "jcalderonzumba/gastonjs": "~1.0.2",
@@ -64,12 +64,12 @@
     },
     "extra": {
         "installer-paths": {
-            "web/core": ["type:drupal-core"],
-            "web/libraries/{$name}": ["type:drupal-library"],
-            "web/modules/contrib/{$name}": ["type:drupal-module"],
-            "web/profiles/contrib/{$name}": ["type:drupal-profile"],
-            "web/themes/contrib/{$name}": ["type:drupal-theme"],
-            "drush/contrib/{$name}": ["type:drupal-drush"]
+            "webroot/core": ["type:drupal-core"],
+            "webroot/libraries/{$name}": ["type:drupal-library"],
+            "webroot/modules/contrib/{$name}": ["type:drupal-module"],
+            "webroot/profiles/contrib/{$name}": ["type:drupal-profile"],
+            "webroot/themes/contrib/{$name}": ["type:drupal-theme"],
+            "webroot/sites/all/drush/contrib/{$name}": ["type:drupal-drush"]
         }
     }
 }

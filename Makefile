@@ -1,152 +1,227 @@
 # Grab environment information (OSX vs Linux)
 UNAME := $(shell uname)
 DOCKER_COMPOSE_FILE := docker-compose.yml
-ifeq ($(UNAME), Linux)
-DOCKER_COMPOSE_FILE := docker-compose.yml -f docker-compose.linux.yml
-endif
+
 export PROJECT := $(shell basename $(CURDIR))
+export IMAGE_MAINTAINER := $(shell grep '^IMAGE_MAINTAINER' ./environment | sed 's/^.*=//g')
+LABLE_BASE := ${IMAGE_MAINTAINER}/${PROJECT}
+
+ifeq ($(UNAME), Linux)
+  DOCKER_COMPOSE_FILE += -f docker-compose.linux.yml
+endif
+
+INCLUDE_MAKEFILES=
 
 # This should always be the first target so that we know running make without any
 # arguments is going to be nondestructive. The @ is to silence the normal make
 # behavior of echo'ing commands before running them.
-faketarget:
+help: # Show this help
 	@echo "Please specify a target. See README for information about targets."
 	@echo ""
-	@grep Makefile -oe '^[a-z-]*:' | \
-		tr -d ':' | \
-		grep -v 'fake' | \
-		tr '\n' '|' | \
-		awk 'BEGIN{print "\\*\\*`("}{print}END{print ")"}' | \
-		tr -d '\n' | \
-		grep -E -f - README.md | \
-		sed 's/\* \*\*`/\o033[32m/' | \
-		sed 's/`\*\*/\o033[0m*/' | \
-		sort | \
-		column -N "Target,Description" -t -s "*"
+	@cat Makefile ${INCLUDE_MAKEFILES} | \
+	   grep -E '^[a-zA-Z_-]+:.*?#' | \
+	   sed 's/:.*# /,/' | \
+	   sort | \
+	   sed 's/^/\o033[32m/' | # Start Green color on first column \
+	   sed 's/,/\o033[0m,/' | # End Green color on first colum \
+	   column -N "Target,Description" -t -s ","
 	@echo ""
 	@echo "Example Usage"
 	@echo "make <target>"
 	@echo "make clear-cache"
 
-init: salt composer-install docker-start ready init-drupal docker-status
+include ${INCLUDE_MAKEFILES}
 
-init-drupal: drupal-install config-init config-import clear-cache
+##
+# Core commands
+# The following commands are the basis of the development infrastructure.
+##
+init: composer-install docker-rebuild wait-healthy init-drupal docker-status # Build environment
 
-update: docker-stop composer-install docker-rebuild ready config-import clear-cache
+safe-update: docker-stop composer-install docker-rebuild wait-healthy clear-cache # Update without importing config
 
-safe-update: docker-stop composer-install docker-rebuild ready clear-cache
+# Use this if you would like a target to require that the project containers
+# are running before executing the target contents. Note this doesn't test if
+# the containers are healthy.
+docker-running:
+	@docker inspect -f '{{.State.Running}}' ${PROJECT}-{db,php,web} &>/dev/null \
+	  || (echo "Containers are not running" && exit 1)
 
-docker-rebuild:
+wait-healthy:
+	@echo "Wait for all containers to become healthy"
+	@python $(CURDIR)/scripts/docker-compose-wait.py
+
+docker-rebuild: # Update docker images if there have been changes to Dockerfiles
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
-	@sleep 10
 
-docker-status:
+status: docker-status # Alias to docker-status
+docker-status: # Display status of containers related to this project
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
 
-docker-start:
+start: docker-start # Alias to docker-start
+docker-start: # Start containers for this project
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
-	@sleep 10
 
-docker-stop:
+stop: docker-stop # Alias to docker-stop
+docker-stop: # Stop containers for this project
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down
 
-docker-restart: docker-stop docker-start
+restart: docker-restart # Alias to docker-restart
+docker-restart: docker-stop docker-start # Restart containers for this project
 
-composer-install:
-	composer install --ignore-platform-reqs --no-interaction --no-progress
+composer-install: # Installs Composer packages from composer.lock file
+	$(CURDIR)/bin/composer install \
+		  --ignore-platform-reqs \
+		  --no-interaction \
+		  --no-progress
 
-composer-update:
-	composer update --ignore-platform-reqs --no-interaction --no-progress --prefer-dist
+composer-update: # Update all composer managed libraries
+	$(CURDIR)/bin/composer update \
+		--ignore-platform-reqs
 
-drupal-upgrade:
-	composer update drupal/core --with-dependencies
+composer-update-lock:
+	$(CURDIR)/bin/composer update \
+		--lock
 
-drupal-install:
-	./bin/drush --root=/var/www/web site-install minimal -vv --yes \
-		--account-name=admin \
-		--account-pass=admin \
-		--site-name="Drupal Dev Docker" \
-		install_configure_form.enable_update_status_module=NULL \
-		install_configure_form.enable_update_status_emails=NULL
+drupal-upgrade: # Update Drupal Core
+	$(CURDIR)/bin/composer update drupal/core \
+		--with-all-dependencies \
+		--ignore-platform-reqs
 
-config-init:
+destroy: composer-purge docker-destroy # Take down and remove all data related to this project's current state
+
+docker-destroy:
+	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
+
+composer-purge:
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/core/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/libraries/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/modules/contrib/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/profiles/contrib/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/themes/contrib/*
+	$(CURDIR)/bin/host-tool rm -rf /var/www/vendor/*
+
+clean: destroy # Removes all artifacts built via make or docker
+	@echo "Removing production tarball"
+	rm $(CURDIR)/${PROJECT}-prod.tar || true
+	@echo "Removing docker images"
+	docker rmi ${LABLE_BASE}{,-prod}-{db,php,web}:latest \
+	  || true
+
+rebuild: destroy init # Destroy and rebuild the environment
+
+fix-permissions: # Fix issues with permissions by taking ownership of all files
+	sudo chown $(USER) ./
+	sudo chmod u=rwx,g=rwxs,o=rx ./
+	sudo find ./ -not -path "webroot/sites/default/files*" -exec chown $(USER) {} \;
+	sudo find ./ -not -path "webroot/sites/default/files*" -exec chmod u=rwX,g=rwX,o=rX {} \;
+	sudo find ./ -type d -not -path "webroot/sites/default/files*" -exec chmod g+s {} \;
+	sudo chmod -R u=rwx,g=rwxs,o=rwx ./webroot/sites/default/files;
+
+export-prod: # Export production tarball
+	docker build \
+	  --target php-prod \
+	  -t ${LABLE_BASE}-prod-php:latest \
+	  -f docker-src/cms/Dockerfile .
+	docker build \
+	  --target web-prod \
+	  -t ${LABLE_BASE}-prod-web:latest \
+	  -f docker-src/cms/Dockerfile .
+	docker build \
+	  -t ${LABLE_BASE}-prod-db:latest \
+	  docker-src/db
+	docker save \
+	  -o ${PROJECT}-prod.tar \
+	  ${LABLE_BASE}-{php,web,db}:latest \
+	  memcached:1.5-alpine
+
+##
+# Drupal specific commands
+# The following commands are used to strap and control Drupal.
+##
+init-drupal: drupal-install config-init config-import clear-cache
+
+update: docker-stop composer-install docker-rebuild config-import clear-cache # Run the 'rebuild' task then import configuration and clear Drupal's cache
+
+drupal-install: docker-running
+	$(CURDIR)/bin/drush \
+	  site-install minimal \
+	    -vv \
+	    --yes \
+	    --account-name=admin \
+	    --account-pass=admin \
+	    install_configure_form.enable_update_status_module=NULL \
+	    install_configure_form.enable_update_status_emails=NULL
+	$(CURDIR)/bin/tool chmod 777 /var/www/webroot/sites/default/files
+
+config-init: docker-running
 	@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Processing setting uuid..."; \
 		cat ./config/system.site.yml | \
 		grep uuid | tail -c +7 | head -c 36 | \
-		docker exec -i cms-${PROJECT} sh -c "/var/www/vendor/bin/drush \
-		--root=/var/www/web config-set -y system.site uuid - ";\
+		$(CURDIR)/bin/drush config-set -y system.site uuid - ;\
 	else \
 		echo "Config is empty. Skipping uuid init..."; \
 	fi;
 
-config-import:
+config-import: docker-running
 	@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Importing config..."; \
-		./bin/drush config-import sync --yes ;\
-		./bin/drush config-import sync --yes ;\
+		$(CURDIR)/bin/drush config-import sync --yes ;\
+		$(CURDIR)/bin/drush config-import sync --yes ;\
 	else \
 		echo "Config is empty. Skipping import..."; \
 	fi;
 
-config-export:
-	./bin/drush config-export sync --yes
+config-export: docker-running
+	$(CURDIR)/bin/drush config-export sync --yes
 
-config-validate:
-	./bin/drush config-export sync --no
+config-validate: docker-running
+	$(CURDIR)/bin/drush config-export sync --no
 
 config-refresh: config-init config-import
 
-salt:
-	cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1 > salt.txt
-
 clear-cache:
-	./bin/drush cr
+	$(CURDIR)/bin/drush cr
 
-destroy:
-	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
-	sudo rm -rf ./web/sites/default/files/*
-	sudo rm -rf ./web/core/*
-	sudo rm -rf ./web/libraries/*
-	sudo rm -rf ./web/modules/contrib/*
-	sudo rm -rf ./web/profiles/contrib/*
-	sudo rm -rf ./web/themes/contrib/*
-	sudo rm -rf ./drush/contrib/*
-	sudo rm -rf ./vendor/*
+##
+# Development commands
+# The following commands are used for development purposes.
+##
+lint: # Check code for formatting or syntax errors
+	$(CURDIR)/bin/tool parallel-lint \
+	  -e php,module,inc,install,test,profile,theme \
+	  /var/www/drupal/modules/custom \
+	  /var/www/drupal/themes/custom
 
-rebuild: destroy init
-
-ready:
-	@echo "Waiting for files to sync between host and Docker...";
-	@bash ./docker-src/cms/ready.sh;
-
-lint:
-	./vendor/bin/parallel-lint -e php,module,inc,install,test,profile,theme ./web/modules/custom ./web/themes/custom
-
-sniff:
-	./vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
-	./vendor/bin/phpcs -n --standard=Drupal,DrupalPractice \
+sniff: # Drupal standards checking
+	$(CURDIR)/bin/tool phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+	$(CURDIR)/bin/tool phpcs -n --standard=Drupal,DrupalPractice \
 		--extensions=php,module,inc,install,test,profile,theme,info \
-		--ignore=*/node_modules/* web/modules/custom web/themes/custom
+		web/modules/custom web/themes/custom
 
-code-test: lint sniff
+code-test: lint sniff # Executes PHP linting and Drupal standards checking
 
-code-fix:
-	vendor/bin/phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
-	-vendor/bin/phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
-	-vendor/bin/phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info --ignore=*/node_modules/* web/themes/custom
+code-fix: # Fix minor errors using Drupal standards
+	$(CURDIR)/bin/tool phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
+	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/themes/custom
 
-fix-permissions:
-	sudo chown $(USER) ./
-	sudo chmod u=rwx,g=rwxs,o=rx ./
-	sudo find ./ -not -path "web/sites/default/files*" -exec chown $(USER) {} \;
-	sudo find ./ -not -path "web/sites/default/files*" -exec chmod u=rwX,g=rwX,o=rX {} \;
-	sudo find ./ -type d -not -path "web/sites/default/files*" -exec chmod g+s {} \;
-	sudo chmod -R u=rwx,g=rwxs,o=rwx ./web/sites/default/files;
+##
+# Removes "No rule to make target" message which allows us to pass an argument
+# without having to specify the name when running the make command.
+#
+# https://stackoverflow.com/questions/6273608/how-to-pass-argument-to-makefile-from-command-line/6273809
+#
+# Please see the shell or logs targets below for an example.
+##
+%:
+	@:
 
-# This command will open a shell in the specified container as root
-# usage: make shell cn=<container name>
-shell:
-	docker exec -it --user root ${cn} /bin/bash
+shell: # This command will open a shell in the specified container as root. Usage: make shell <container type>
+	docker exec -it --user root ${PROJECT}-$(filter-out $@,$(MAKECMDGOALS)) /bin/sh
+
+logs: # This command will watch the logs in the specified container. Usage: make logs <container type>
+	docker logs -f ${PROJECT}-$(filter-out $@,$(MAKECMDGOALS)) 
