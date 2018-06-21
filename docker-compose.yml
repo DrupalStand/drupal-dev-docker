@@ -1,46 +1,70 @@
-version: '2'
+version: '3.4'
 services:
-  cms:
+  php:
     build:
-      context: ./docker-src/cms
-    container_name: cms-${PROJECT}
-    mem_limit: 512M
-    ports:
-      - 8080:80
-      - 8443:443
-    volumes:
-      - .:/var/www
+      context: .
+      dockerfile: ./docker-src/cms/Dockerfile
+      target: php-dev
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-php
+    container_name: ${PROJECT}-php
     env_file: environment
     environment:
       - CONNECTBACK=off
-      - DRUPAL_MYSQL_HOST=db-${PROJECT}
+      - DRUPAL_MYSQL_HOST=${PROJECT}-db
     links:
+      - db
+      - memcache
+    depends_on:
       - db
       - memcache
     networks:
       - connector
+    volumes:
+      - "./webroot:/var/www/webroot"
+      - "./config:/var/www/config"
+      - "./vendor:/var/www/vendor"
+      - "./test:/var/www/test"
+
+  web:
+    build:
+      context: .
+      dockerfile: ./docker-src/cms/Dockerfile
+      target: web-prod
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-web
+    container_name: ${PROJECT}-web
+    ports:
+      - 8080:80
+      - 8443:443
+    networks:
+      - connector
+    links:
+      - php
+    depends_on:
+      - php
+    volumes:
+      - "./webroot:/var/www/webroot:ro"
 
   db:
-    image: mariadb:latest
-    container_name: db-${PROJECT}
-    mem_limit: 512M
+    build:
+      context: ./docker-src/db
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-db
+    container_name: ${PROJECT}-db
     env_file: environment
-    ports:
-      - 3306:3306
     volumes:
-      - ./docker-src/db/conf:/etc/mysql/conf.d
       - database:/var/lib/mysql
     networks:
       - connector
+    healthcheck:
+       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+       interval: 15s
+       timeout: 5s
+       retries: 5
 
   memcache:
-    image: memcached:latest
-    container_name: memcached-${PROJECT}
-    mem_limit: 128M
+    image: memcached:1.5-alpine
+    container_name: ${PROJECT}-memcached
     environment:
-      - MEMCACHED_SERVER=memcached-${PROJECT}:11211
-    ports:
-      - 11211:11211
+      - MEMCACHED_SERVER=${PROJECT}-memcached:11211
     networks:
       - connector
 
