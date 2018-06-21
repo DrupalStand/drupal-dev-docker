@@ -49,7 +49,7 @@ docker-running:
 
 wait-healthy:
 	@echo "Wait for all containers to become healthy"
-	@python $(CURDIR)/bin/docker-compose-wait.py
+	@python $(CURDIR)/scripts/docker-compose-wait.py
 
 docker-rebuild: docker-stop # Update docker images if there have been changes to Dockerfiles
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
