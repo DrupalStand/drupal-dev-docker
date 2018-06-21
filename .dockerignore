@@ -1,0 +1,9 @@
+webroot/core
+webroot/libraries
+webroot/modules/contrib
+webroot/profiles/contrib
+webroot/themes/contrib
+webroot/sites/all/drush/contrib
+# @TODO might not need this to be commented in the future.
+# scripts
+vendor

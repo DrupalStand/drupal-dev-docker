@@ -96,7 +96,7 @@ volume is not deleted manually or with the "-v" option on `docker-compose down`.
 * This repository *does* track a composer.lock file meaning that versions of software 
 installed are the ones that match the lock file. Currently this repository tracks 
 the base installation provided by the [drupal-composer/drupal-project](https://github.com/drupal-composer/drupal-project) 
-with Drupal 8.5.1. You can upgrade with `make drupal-upgrade` or wait until this 
+with Drupal 8.5.4. You can upgrade with `make drupal-upgrade` or wait until this 
 repository is updated. Certain files such as those provided by the Drupal scaffolding 
 project may be subject to manipulation and may or may not upgrade cleanly.
 * The Drupal site installed by default is configured with the "minimal" profile 

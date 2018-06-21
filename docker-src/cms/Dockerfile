@@ -1,52 +1,7 @@
 #------------------------------------------------------------------------------
-# Composer PROD
+# PHP BASE
 #------------------------------------------------------------------------------
-FROM composer:latest as composer-prod
-
-
-# instlal tool to make composer download packages in parallel
-RUN  composer global require hirak/prestissimo
-#RUN  composer global require hirak/prestissimo \
-#  # Get the drush and script directories from docker-composer
-#  && composer create-project \
-#       drupal-composer/drupal-project:8.x-dev \
-#       /var/www \
-#       --ignore-platform-reqs \
-#       --prefer-dist \
-#       --remove-vcs \
-#  && rm -rf \
-#       /var/www/web \
-#       /var/www/vendor \
-#       /var/www/composer.json \
-#       /var/www/composer.lock
-
-RUN mkdir -p /var/www/webroot/core \
-      /var/www/webroot/libraries \
-      /var/www/webroot/modules/contrib \
-      /var/www/webroot/profiles/contrib \
-      /var/www/webroot/themes/contrib \
-      /var/www/webroot/sites/all/drush/contrib \
-      /var/www/vendor
-
-COPY composer.json composer.lock /var/www/
-COPY scripts /var/www/scripts
-
-WORKDIR /var/www
-
-# The following flag breaks drupal --classmap-authoritative
-RUN  composer install \
-       --ignore-platform-reqs \
-       --optimize-autoloader \
-       --no-interaction \
-       --no-progress \
-       --prefer-dist \
-       --no-scripts \
-       --no-ansi \
-       --no-dev
-#------------------------------------------------------------------------------
-# PHP PROD
-#------------------------------------------------------------------------------
-FROM php:7.1-fpm-alpine as php-prod
+FROM php:7.1-fpm-alpine as php-base
 
 # Set timezone.
 ENV PHP_TIMEZONE America/New_York
@@ -132,38 +87,14 @@ RUN set -ex \
 
 COPY docker-src/cms/php-conf.d/* /usr/local/etc/php/conf.d/
 
-COPY webroot /var/www/webroot
-
-RUN  rm -rf \
-       webroot/core/* \
-       webroot/libraries/* \
-       webroot/modules/contrib/* \
-       webroot/profiles/contrib/* \
-       webroot/themes/contrib/* \
-       webroot/sites/all/drush/contrib/*
-
-COPY --from=composer-prod /var/www/webroot/core webroot/core
-COPY --from=composer-prod /var/www/webroot/libraries webroot/libraries
-COPY --from=composer-prod /var/www/webroot/modules/contrib webroot/modules/contrib
-COPY --from=composer-prod /var/www/webroot/profiles/contrib webroot/profiles/contrib
-COPY --from=composer-prod /var/www/webroot/themes/contrib webroot/themes/contrib
-COPY --from=composer-prod /var/www/webroot/sites/all/drush/contrib webroot/sites/all/drush/contrib
-COPY --from=composer-prod /var/www/scripts scripts
-COPY --from=composer-prod /var/www/vendor vendor
-COPY phpunit.xml.dist /var/www/
-
-WORKDIR /var/www/webroot
-
-RUN ln -s /var/www/vendor/bin/* /bin/
-
 #------------------------------------------------------------------------------
-# WEB PROD
+# WEB DEV
 #------------------------------------------------------------------------------
-FROM nginx:stable-alpine as web-prod
-
-COPY --from=php-prod /var/www/webroot /var/www/webroot
+FROM nginx:stable-alpine as web-dev
 
 RUN rm /etc/nginx/conf.d/default.conf
+COPY ./docker-src/cms/nginx/ssl-cert-snakeoil.key /etc/nginx/private.key
+COPY ./docker-src/cms/nginx/ssl-cert-snakeoil.pem /etc/nginx/public.pem
 COPY ./docker-src/cms/nginx/drupal.conf /etc/nginx/conf.d/drupal.conf
 
 WORKDIR /var/www/webroot
@@ -172,7 +103,10 @@ WORKDIR /var/www/webroot
 # PHP DEV
 #------------------------------------------------------------------------------
 FROM scratch as php-dev
-COPY --from=php-prod . /
+COPY --from=php-base . /
+
+RUN  mkdir -p /var/www/vendor/bin \
+  && touch /var/www/vendor/bin/.keep
 
 COPY docker-src/cms/entrypoint /usr/local/bin/drupalstand-entrypoint
 ENTRYPOINT ["drupalstand-entrypoint"]
@@ -205,8 +139,91 @@ RUN  apk add --no-cache --virtual \
 
 COPY docker-src/cms/php-conf.d.dev/* /usr/local/etc/php/conf.d/
 
-RUN ln -sf /var/www/vendor/bin/* /bin/
-
 WORKDIR /var/www/webroot
 
 CMD ["php-fpm"]
+
+#------------------------------------------------------------------------------
+# Composer PROD
+#------------------------------------------------------------------------------
+FROM composer:latest as composer-prod
+
+# Install tool to make Composer download packages in parallel
+RUN composer global require hirak/prestissimo
+#RUN  composer global require hirak/prestissimo \
+#  # Get the drush and script directories from docker-composer
+#  && composer create-project \
+#       drupal-composer/drupal-project:8.x-dev \
+#       /var/www \
+#       --ignore-platform-reqs \
+#       --prefer-dist \
+#       --remove-vcs \
+#  && rm -rf \
+#       /var/www/web \
+#       /var/www/vendor \
+#       /var/www/composer.json \
+#       /var/www/composer.lock
+
+RUN mkdir -p /var/www/webroot/core \
+      /var/www/webroot/libraries \
+      /var/www/webroot/modules/contrib \
+      /var/www/webroot/profiles/contrib \
+      /var/www/webroot/themes/contrib \
+      /var/www/webroot/sites/all/drush/contrib \
+      /var/www/vendor
+
+COPY composer.json composer.lock /var/www/
+COPY scripts /var/www/scripts
+
+WORKDIR /var/www
+
+# The following flag breaks drupal --classmap-authoritative
+RUN  composer install \
+       --ignore-platform-reqs \
+       --optimize-autoloader \
+       --no-interaction \
+       --no-progress \
+       --prefer-dist \
+       --no-scripts \
+       --no-ansi \
+       --no-dev
+
+#------------------------------------------------------------------------------
+# PHP PROD
+#------------------------------------------------------------------------------
+FROM scratch as php-prod
+COPY --from=php-base . /
+
+COPY webroot /var/www/webroot
+COPY config /var/www/config
+
+RUN  rm -rf \
+       webroot/core/* \
+       webroot/libraries/* \
+       webroot/modules/contrib/* \
+       webroot/profiles/contrib/* \
+       webroot/themes/contrib/* \
+       webroot/sites/all/drush/contrib/*
+
+COPY --from=composer-prod /var/www/webroot/core webroot/core
+COPY --from=composer-prod /var/www/webroot/libraries webroot/libraries
+COPY --from=composer-prod /var/www/webroot/modules/contrib webroot/modules/contrib
+COPY --from=composer-prod /var/www/webroot/profiles/contrib webroot/profiles/contrib
+COPY --from=composer-prod /var/www/webroot/themes/contrib webroot/themes/contrib
+COPY --from=composer-prod /var/www/webroot/sites/all/drush/contrib webroot/sites/all/drush/contrib
+COPY --from=composer-prod /var/www/scripts scripts
+COPY --from=composer-prod /var/www/vendor vendor
+
+WORKDIR /var/www/webroot
+
+RUN ln -s /var/www/vendor/bin/* /bin/
+
+#------------------------------------------------------------------------------
+# WEB PROD
+#------------------------------------------------------------------------------
+FROM scratch as web-prod
+COPY --from=web-dev . /
+
+COPY --from=php-prod /var/www/webroot /var/www/webroot
+
+WORKDIR /var/www/webroot
