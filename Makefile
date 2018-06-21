@@ -36,7 +36,7 @@ include ${INCLUDE_MAKEFILES}
 # Core commands
 # The following commands are the basis of the development infrastructure.
 ##
-init: docker-start wait-healthy composer-install init-drupal docker-status # Build environment
+init: docker-rebuild wait-healthy composer-install init-drupal docker-status # Build environment
 
 safe-update: docker-stop docker-rebuild wait-healthy clear-cache # Update without importing config
 
@@ -51,7 +51,7 @@ wait-healthy:
 	@echo "Wait for all containers to become healthy"
 	@python $(CURDIR)/scripts/docker-compose-wait.py
 
-docker-rebuild: docker-stop # Update docker images if there have been changes to Dockerfiles
+docker-rebuild: # Update docker images if there have been changes to Dockerfiles
 	docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --build
 	docker-compose -f ${DOCKER_COMPOSE_FILE} ps
 
@@ -77,16 +77,18 @@ composer-install: # Installs Composer packages from composer.lock file
 		  --no-interaction \
 		  --no-progress
 
-composer-update: # Update composer managed libraries
+composer-update: # Update all composer managed libraries
 	$(CURDIR)/bin/composer update \
-		  --lock \
-		  --no-scripts \
-		  --no-autoloader
+		--ignore-platform-reqs -vvv
+
+composer-update-lock:
+	$(CURDIR)/bin/composer update \
+		--lock
 
 drupal-upgrade: # Update Drupal Core
 	$(CURDIR)/bin/composer update drupal/core \
-		  --lock \
-		  --with-all-dependencies
+		--with-all-dependencies \
+		--ignore-platform-reqs
 
 destroy: composer-purge docker-destroy # Take down and remove all data related to this project's current state
 
@@ -94,12 +96,12 @@ docker-destroy:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
 
 composer-purge:
-	docker exec -i ${PROJECT}-php rm -rf /var/www/webroot/core/*
-	docker exec -i ${PROJECT}-php rm -rf /var/www/webroot/libraries/*
-	docker exec -i ${PROJECT}-php rm -rf /var/www/webroot/modules/contrib/*
-	docker exec -i ${PROJECT}-php rm -rf /var/www/webroot/profiles/contrib/*
-	docker exec -i ${PROJECT}-php rm -rf /var/www/webroot/themes/contrib/*
-	docker exec -i ${PROJECT}-php rm -rf /var/www/vendor/*
+	$(CURDIR)/bin/tool rm -rf /var/www/webroot/core/*
+	$(CURDIR)/bin/tool rm -rf /var/www/webroot/libraries/*
+	$(CURDIR)/bin/tool rm -rf /var/www/webroot/modules/contrib/*
+	$(CURDIR)/bin/tool rm -rf /var/www/webroot/profiles/contrib/*
+	$(CURDIR)/bin/tool rm -rf /var/www/webroot/themes/contrib/*
+	$(CURDIR)/bin/tool rm -rf /var/www/vendor/*
 
 clean: destroy # Removes all artifacts built via make or docker
 	@echo "Removing production tarball"
