@@ -3,9 +3,8 @@
 #------------------------------------------------------------------------------
 FROM composer:latest as composer-prod
 
-
-# instlal tool to make composer download packages in parallel
-RUN  composer global require hirak/prestissimo
+# install tool to make Composer download packages in parallel
+RUN composer global require hirak/prestissimo
 #RUN  composer global require hirak/prestissimo \
 #  # Get the drush and script directories from docker-composer
 #  && composer create-project \
@@ -43,6 +42,7 @@ RUN  composer install \
        --no-scripts \
        --no-ansi \
        --no-dev
+
 #------------------------------------------------------------------------------
 # PHP PROD
 #------------------------------------------------------------------------------
@@ -164,6 +164,8 @@ FROM nginx:stable-alpine as web-prod
 COPY --from=php-prod /var/www/webroot /var/www/webroot
 
 RUN rm /etc/nginx/conf.d/default.conf
+COPY ./docker-src/cms/ssl-cert-snakeoil.key /etc/nginx/ssl-cert-snakeoil.key
+COPY ./docker-src/cms/ssl-cert-snakeoil.pem /etc/nginx/ssl-cert-snakeoil.pem
 COPY ./docker-src/cms/nginx/drupal.conf /etc/nginx/conf.d/drupal.conf
 
 WORKDIR /var/www/webroot
