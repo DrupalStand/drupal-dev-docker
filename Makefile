@@ -158,9 +158,9 @@ drupal-install: docker-running
 	    --yes \
 	    --account-name=admin \
 	    --account-pass=admin \
-	    --site-name="Drupal Stand" \
 	    install_configure_form.enable_update_status_module=NULL \
 	    install_configure_form.enable_update_status_emails=NULL
+	$(CURDIR)/bin/tool chmod 777 /var/www/webroot/sites/default/files
 
 config-init: docker-running
 	@if [ -e ./config/system.site.yml ]; then \
