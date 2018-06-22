@@ -97,12 +97,17 @@ docker-destroy:
 
 composer-purge:
 	$(CURDIR)/bin/host-tool \
-		rm -rf /var/www/webroot/core/* && \
-		rm -rf /var/www/webroot/libraries/* && \
-		rm -rf /var/www/webroot/modules/contrib/* && \
-		rm -rf /var/www/webroot/profiles/contrib/* && \
-		rm -rf /var/www/webroot/themes/contrib/* && \
-		rm -rf /var/www/vendor/*
+		rm -rf webroot/core/*
+	$(CURDIR)/bin/host-tool \
+		rm -rf webroot/libraries/*
+	$(CURDIR)/bin/host-tool \
+		rm -rf webroot/modules/contrib/*
+	$(CURDIR)/bin/host-tool \
+		rm -rf webroot/profiles/contrib/*
+	$(CURDIR)/bin/host-tool \
+		rm -rf webroot/themes/contrib/*
+	$(CURDIR)/bin/host-tool \
+		rm -rf vendor/*
 
 clean: destroy # Removes all artifacts built via make or docker
 	@echo "Removing production tarball"
@@ -114,12 +119,18 @@ clean: destroy # Removes all artifacts built via make or docker
 rebuild: destroy init # Destroy and rebuild the environment
 
 fix-permissions: # Fix issues with permissions by taking ownership of all files
-	sudo chown $(USER) ./
-	sudo chmod u=rwx,g=rwxs,o=rx ./
-	sudo find ./ -not -path "webroot/sites/default/files*" -exec chown $(USER) {} \;
-	sudo find ./ -not -path "webroot/sites/default/files*" -exec chmod u=rwX,g=rwX,o=rX {} \;
-	sudo find ./ -type d -not -path "webroot/sites/default/files*" -exec chmod g+s {} \;
-	sudo chmod -R u=rwx,g=rwxs,o=rwx ./webroot/sites/default/files;
+	$(CURDIR)/bin/host-tool \
+		chown $(shell id -u) ./
+	$(CURDIR)/bin/host-tool \
+		chmod u=rwx,g=rwxs,o=rx ./
+	$(CURDIR)/bin/host-tool \
+		find ./ -not -path "webroot/sites/default/files*" -exec chown $(shell id -u) {} \;
+	$(CURDIR)/bin/host-tool \
+		find ./ -not -path "webroot/sites/default/files*" -exec chmod u=rwX,g=rwX,o=rX {} \;
+	$(CURDIR)/bin/host-tool \
+		find ./ -type d -not -path "webroot/sites/default/files*" -exec chmod g+s {} \;
+	$(CURDIR)/bin/host-tool \
+		chmod -R u=rwx,g=rwxs,o=rwx ./webroot/sites/default/files
 
 export-prod: # Export production tarball
 	docker build \

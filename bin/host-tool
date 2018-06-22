@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
-readonly ARGS="$@"
 readonly PROJECT="$(basename "$(dirname "$PROGDIR")")"
 readonly PROJECT_DIR="$(dirname "$PROGDIR")"
 
@@ -13,9 +12,13 @@ if [ ! -t 0 ] ; then USING_STDIN=""; fi
 # allow dynamic variables like columns
 shopt -s checkwinsize
 
+for PARAM in "$@"
+do
+  PARAMS="${PARAMS} \"${PARAM}\""
+done
 
 docker run -i$USING_STDIN \
            -e COLUMNS=$COLUMNS \
            -v "${PROJECT_DIR}:/mnt" \
            -w "/mnt" \
-           alpine:latest sh -c "${ARGS}"
+           alpine:latest sh -c "${PARAMS}"
