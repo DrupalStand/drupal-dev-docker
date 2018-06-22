@@ -149,22 +149,8 @@ CMD ["php-fpm"]
 FROM composer:latest as composer-prod
 
 # Install tool to make Composer download packages in parallel
-RUN composer global require hirak/prestissimo
-#RUN  composer global require hirak/prestissimo \
-#  # Get the drush and script directories from docker-composer
-#  && composer create-project \
-#       drupal-composer/drupal-project:8.x-dev \
-#       /var/www \
-#       --ignore-platform-reqs \
-#       --prefer-dist \
-#       --remove-vcs \
-#  && rm -rf \
-#       /var/www/web \
-#       /var/www/vendor \
-#       /var/www/composer.json \
-#       /var/www/composer.lock
-
-RUN mkdir -p /var/www/webroot/core \
+RUN  composer global require hirak/prestissimo \
+  && mkdir -p /var/www/webroot/core \
       /var/www/webroot/libraries \
       /var/www/webroot/modules/contrib \
       /var/www/webroot/profiles/contrib \
