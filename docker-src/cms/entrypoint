@@ -1,12 +1,6 @@
 #!/bin/sh
 set -e
 
-# Wait until this file is gone
-while [ -f /var/www/vendor/bin/.keep ]
-do
-  sleep 1
-done
-
 ln -sf /var/www/vendor/bin/* /bin/
 
 # Source file
