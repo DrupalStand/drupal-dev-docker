@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
+readonly ARGS="$@"
+
+if [ "$(uname)" == "Linux" ]; then
+  OPTIONS="XDEBUG_CONFIG=\"remote_host=172.17.0.1\" PHP_IDE_CONFIG=\"serverName=drupalstand\""
+else
+  OPTIONS="PHP_IDE_CONFIG=\"serverName=drupalstand\""
+fi
+
+$PROGDIR/tool $OPTIONS drupal --root=/var/www/webroot $ARGS
