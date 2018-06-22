@@ -96,12 +96,13 @@ docker-destroy:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
 
 composer-purge:
-	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/core/*
-	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/libraries/*
-	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/modules/contrib/*
-	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/profiles/contrib/*
-	$(CURDIR)/bin/host-tool rm -rf /var/www/webroot/themes/contrib/*
-	$(CURDIR)/bin/host-tool rm -rf /var/www/vendor/*
+	$(CURDIR)/bin/host-tool \
+		rm -rf /var/www/webroot/core/* && \
+		rm -rf /var/www/webroot/libraries/* && \
+		rm -rf /var/www/webroot/modules/contrib/* && \
+		rm -rf /var/www/webroot/profiles/contrib/* && \
+		rm -rf /var/www/webroot/themes/contrib/* && \
+		rm -rf /var/www/vendor/*
 
 clean: destroy # Removes all artifacts built via make or docker
 	@echo "Removing production tarball"
