@@ -60,7 +60,7 @@ make [command]
 * **`init-drupal`** Meta command to execute `drupal-install config-init config-import clear-cache`.
 * **`update`** Meta command to execute `docker-stop composer-install docker-rebuild config-import clear-cache`.
 Use this command after a git pull has been performed to ensure that infrastructure 
-and configuration match the repository. This will destroy any uncommited Drupal configuration.
+and configuration match the repository. This will destroy any uncommitted Drupal configuration.
 * **`safe-update`** Meta command to execute `docker-stop composer-install docker-rebuild clear-cache`.
 Use this command after a git pull has been performed to ensure that infrastructure 
 matches the repository. This will not overwrite Drupal configuration.
@@ -76,7 +76,7 @@ core, use `drupal-upgrade`.
 * **`drupal-upgrade`** Updates Drupal core.
 * **`drupal-install`** Executes a drush based site install.
 * **`config-init`** Sets UUID of the system config to the UUID of the newly created 
-Drupal site. This is nescessary to bring configuration data between environments 
+Drupal site. This is necessary to bring configuration data between environments 
 without bringing the database along at the same time. Configuration should be in ./config.
 * **`config-import`** Imports the configuration data into Drupal. This will fail 
 if `config-init` has not been run first. Configuration should be in ./config.
@@ -162,6 +162,49 @@ passed to it in a _new_ container that has the entire project folder mounted int
 The former is useful for debugging a live environment, the latter for manipulation while
 an environment is offline. In practice, neither of these will be directly used very often
 by developers.
+
+### Production Export
+
+#### Standard Production
+
+In order to bring a site developed in this project to production, the entire code base
+can be cloned down to the production server. Ensure the following steps are met:
+
+1. Point the web server (apache, nginx, etc) to `webroot` in your project
+    * This directory contains Drupal and everything the web server needs -- do not 
+    serve the entire project directory!
+2. Set environment variables or modify settings.php for the database
+    * Environment variables required to work are `MYSQL_DATABASE`, `MYSQL_USER`, 
+    `MYSQL_PASSWORD`, and `DRUPAL_MYSQL_HOST`
+3. If necessary, remove settings.local.php
+    * It is recommended that additional, programmatic logic is setup to ensure this is
+     removed automatically -- leaving this file in your production environment is a 
+     liability at worst and a performance hit at minimum
+
+#### Docker Production
+
+If your production environment is based on docker, you can prepare an image of the
+current codebase:
+
+1. `make export-prod`
+
+In the process that follows the running of the command, docker will create new images
+based on a similar base to the development images with a few exceptions:
+
+* Composer-managed files such as vendor, core, and modules will be pulled in from
+a sterile environment. This is to ensure that no hacking of these libraries accidentally
+makes it into the environment. Permanent hacks to libraries managed by Composer should
+be managed using Composer Patches.
+* Composer installs without development dependencies. It is essential that Drupal's configuration
+is expecting this. If modules, such as Devel, are tracked as a Composer development
+dependency, Drupal will throw errors about not being able to find the Devel files if it
+still expects, because of configuration, for the module to be there. The [Configuration
+Split](https://www.drupal.org/project/config_split) module is excellent for this purpose.
+* Debugging tools such as XDebug are not available
+
+Tarball images for each of the PHP, Web, and Database containers will be saved into the
+root of the project directory. These images can be deployed using standard orchestration
+layers or manually if the environment is configured for it.
 
 ## Development Workflow
 
