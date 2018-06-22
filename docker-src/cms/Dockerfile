@@ -105,9 +105,6 @@ WORKDIR /var/www/webroot
 FROM scratch as php-dev
 COPY --from=php-base . /
 
-RUN  mkdir -p /var/www/vendor/bin \
-  && touch /var/www/vendor/bin/.keep
-
 COPY docker-src/cms/entrypoint /usr/local/bin/drupalstand-entrypoint
 ENTRYPOINT ["drupalstand-entrypoint"]
 
