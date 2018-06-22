@@ -1,4 +1,4 @@
-# DrupalStand Docker/Drupal Development Environment
+# DrupalStand Development Environment
 
 The DrupalStand project is an opinionated local development environment built around
 the concept of simplicity, transparency, expandability, and an _exceptionally_ low
