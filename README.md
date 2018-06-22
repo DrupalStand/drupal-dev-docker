@@ -1,32 +1,48 @@
-# Docker/Drupal Development Environment
+# DrupalStand Docker/Drupal Development Environment
 
-This project is the start of a highly opinionated development environment using 
-a combination of ideas and strategies from many other opinions across the community.
+The DrupalStand project is an opinionated local development environment built around
+the concept of simplicity, transparency, expandability, and an _exceptionally_ low
+barrier to entry. Built on docker, the DrupalStand project should function identically
+on all* host systems capable of running docker images.
 
 Cloning this repository will give you a stock Drupal development site running in 
-docker containers. GNU Make commands assist in setup, management, and cleanup.
+docker containers. GNU Make commands assist in setup, management, and cleanup. Additional
+commands can be easily added into the system to satisfy independent project needs.
 
-Files are synced locally allowing you to do local development work and work with 
-Composer without having to be in the server instance.
+Files are synced locally allowing you to do local development work using the tools and
+functionality you and your developers are most comfortable with. A single codebase houses
+all of the code needed to replicate an entire Drupal environment identically on multiple
+machines with no configuration needed.
+
+While focused on development tasks, the project also offers some production deployment
+tools to ease the transition of a local codebase into a production ready deployment. These
+tools prepare specially formulated containers with production in mind and export them into
+standalone images that can be deployed into orchestration environments or spun up as 
+standalone servers.
 
 ## Requirements
 
-Composer: [install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
+MacOS, Linux, or Windows with Docker ToolBox
 
-> Note: The Makefile requires a [global composer installation](https://getcomposer.org/doc/00-intro.md#globally).
+> Support for native Windows systems is coming soon.
 
-Docker: [install docker](https://www.docker.com/products/overview).
+Docker (https://www.docker.com/products/overview)
+
+> On systems that don't ship with docker-compose (Linux), it should also be installed.
+
+GNU Make (https://www.gnu.org/software/make/)
 
 ## Usage
 
-Assuming the requirements are installed and setup (that is, Composer is in your path 
-and the Docker service is running), then you can jump right into it:
+Once docker has been installed, the environment can be brought right up:
 
 ```
 make init
 ```
 
-This command will take a long time if this is the first time you're running it.
+This command could take a long time if this is the first time you're running it. Multiple
+versions of this environment on the same machine (or repeat builds) will utilize image
+caching to build faster subsequent times.
 
 The init command runs through almost all of the available individual commands and 
 will result in an environment ready to work with. The environment can be accessed via 
@@ -40,10 +56,11 @@ to perform certain actions on a case by case basis:
 make [command]
 ```
 
+* **`help`** Show available commands in the make file along with descriptions.
 * **`init-drupal`** Meta command to execute `drupal-install config-init config-import clear-cache`.
 * **`update`** Meta command to execute `docker-stop composer-install docker-rebuild config-import clear-cache`.
 Use this command after a git pull has been performed to ensure that infrastructure 
-and configuration match the repository. This will destroy any uncommited Drupal configuration.
+and configuration match the repository. This will destroy any uncommitted Drupal configuration.
 * **`safe-update`** Meta command to execute `docker-stop composer-install docker-rebuild clear-cache`.
 Use this command after a git pull has been performed to ensure that infrastructure 
 matches the repository. This will not overwrite Drupal configuration.
@@ -59,14 +76,13 @@ core, use `drupal-upgrade`.
 * **`drupal-upgrade`** Updates Drupal core.
 * **`drupal-install`** Executes a drush based site install.
 * **`config-init`** Sets UUID of the system config to the UUID of the newly created 
-Drupal site. This is nescessary to bring configuration data between environments 
+Drupal site. This is necessary to bring configuration data between environments 
 without bringing the database along at the same time. Configuration should be in ./config.
 * **`config-import`** Imports the configuration data into Drupal. This will fail 
 if `config-init` has not been run first. Configuration should be in ./config.
 * **`config-export`** Exports config out of Drupal into ./config.
 * **`config-validate`** Verifies config before import.
 * **`config-refresh`** Meta command to execute `config-init config-import`.
-* **`salt`** Generates a random 64 digit salt for Drupal to utilize.
 * **`clear-cache`** Executes a drush based cache rebuild.
 * **`destroy`** Brings down the docker environment, removes the database, and deletes 
 Drupal's files. Depending on configuration, this command may need to be executed as root.
@@ -85,12 +101,9 @@ that the current user is able to edit files.
 ## Details
 
 * Docker-compose is building the environment with off the shelf components. The 
-official images from the PHP, MySQL, and memcache teams are used. The PHP image 
-is slightly modified at build time to accound for where the code is hosted inside 
-of the image (/var/www/web instead of /var/www/html).
-* Docker for OSX doesn't do well with file sharing so we utilize the [bg-sync](https://github.com/cweagans/docker-bg-sync) 
-container to help. This means that occasionally files may take a little bit to sync 
-between the host and the docker instance.
+official images from the PHP, MySQL, and memcache teams are used. Some modifications
+are made to the base images to enable things such as out of the box SSL encryption
+and XDebug configuration.
 * Data for databases will be maintained through docker reboots as long as the "database"
 volume is not deleted manually or with the "-v" option on `docker-compose down`.
 * This repository *does* track a composer.lock file meaning that versions of software 
@@ -98,30 +111,100 @@ installed are the ones that match the lock file. Currently this repository track
 the base installation provided by the [drupal-composer/drupal-project](https://github.com/drupal-composer/drupal-project) 
 with Drupal 8.5.4. You can upgrade with `make drupal-upgrade` or wait until this 
 repository is updated. Certain files such as those provided by the Drupal scaffolding 
-project may be subject to manipulation and may or may not upgrade cleanly.
+project may be subject to manipulation and may or may not upgrade cleanly. The default
+location for the hosted content in this project was moved from the default of `/web`
+to `/webroot` to make this directories purpose more clear.
 * The Drupal site installed by default is configured with the "minimal" profile 
 which has absolutely zero configuration out of the box. This environment, however,
 ships with a small amount of configuration that sets up blocks and themes similar to
 a "standard" Drupal installation. If you want to start with less (which might be
 preferable if a project is planning on building an entire theme from scratch), delete
-the entire configuration found in `/config`. If you do not import config, the site
+all of the configuration files found in `/config`. If you do not import config, the site
 will be setup with the "Stark" theme. The installation profile used can be set in the
 Makefile under the `drupal-install` target, however, if you use any configuration, it's
-recommended that you leave it "minimal".
-* This repository tracks a local development file. It is included automatically 
+recommended that you leave it "minimal" to avoid conflicts in the future.
+* This repository uses a local.settings.php development file. It is included automatically 
 if the file exists. If this code base is used in production, ensure that there 
-is a deployment process in place to remove this file before going live.
+is a deployment process in place to remove this file before going live. This could be
+an outright removal or it could be something like a switch to determine your environment.
 
-## Drush/Drupal Console
+### Drush/Drupal Console
 
 Custom implementations for drush and the Drupal Console have been created to allow 
 communication with these tools inside the running instances. You can execute commands 
 using `bin/drush` and `bin/drupal`. These commands are special scripts that work 
-with the `drush` and `drupal` installed by composer but from the inside of your docker 
+with the `drush` and `drupal` installed by Composer but from the inside of your docker 
 container so that they can access your environments running resources.
 
-If you want to do management while docker is not running (which is not recommended), 
-then you can use `vendor/bin/drush` or `vendor/bin/drupal`.
+Additional scripts exist in the event that you want to use XDebug with drush or Drupal
+Console. To execute these, place breakpoints in your local code and run your commands
+with `bin/drush-debug` or `bin/drupal-debug`. Some additional configuration in your IDE
+or debugging environment may be required.
+
+### Composer
+
+Similar to the drush and Drupal scripts, this project provides a custom implementation
+of Composer that can be executed with `bin/composer`. This is done to eliminate the
+need for a local Composer (and further PHP) install as well as to ensure that the same
+versions is used consistently between environments.
+
+If installed and configured, a local Composer installation could continue to be used
+to manage the environment, but any files created by `bin/composer` (including the original
+system initialization), will be permission locked and might require running 
+`make fix-permissions` to rectify the problem.
+
+### Additional Tools
+
+Lastly, this project ships with `bin/tool` and `bin/host-tool`. These are scripts that
+exist to forward your input commands into docker space. Explicitly, `bin/tool` executes
+any command passed to it on the running PHP container. `bin/host-tool` executes commands
+passed to it in a _new_ container that has the entire project folder mounted into it.
+The former is useful for debugging a live environment, the latter for manipulation while
+an environment is offline. In practice, neither of these will be directly used very often
+by developers.
+
+### Production Export
+
+#### Standard Production
+
+In order to bring a site developed in this project to production, the entire code base
+can be cloned down to the production server. Ensure the following steps are met:
+
+1. Point the web server (apache, nginx, etc) to `webroot` in your project
+    * This directory contains Drupal and everything the web server needs -- do not 
+    serve the entire project directory!
+2. Set environment variables or modify settings.php for the database
+    * Environment variables required to work are `MYSQL_DATABASE`, `MYSQL_USER`, 
+    `MYSQL_PASSWORD`, and `DRUPAL_MYSQL_HOST`
+3. If necessary, remove settings.local.php
+    * It is recommended that additional, programmatic logic is setup to ensure this is
+     removed automatically -- leaving this file in your production environment is a 
+     liability at worst and a performance hit at minimum
+
+#### Docker Production
+
+If your production environment is based on docker, you can prepare an image of the
+current codebase:
+
+1. `make export-prod`
+
+In the process that follows the running of the command, docker will create new images
+based on a similar base to the development images with a few exceptions:
+
+* Composer-managed files such as vendor, core, and modules will be pulled in from
+a sterile environment. This is to ensure that no hacking of these libraries accidentally
+makes it into the environment. Permanent hacks to libraries managed by Composer should
+be managed using Composer Patches.
+* Composer installs without development dependencies. It is essential that Drupal's configuration
+is expecting this. If modules, such as Devel, are tracked as a Composer development
+dependency, Drupal will throw errors about not being able to find the Devel files if it
+still expects, because of configuration, for the module to be there. The [Configuration
+Split](https://www.drupal.org/project/config_split) module is excellent for this purpose.
+* Debugging tools such as XDebug are not available
+
+Tarball images for each of the PHP, Web, and Database containers will be saved into the
+root of the project directory. These images can be deployed using standard orchestration
+layers or manually if the environment is configured for it.
 
 ## Development Workflow
 
@@ -132,7 +215,7 @@ common use cases and how the environment can be used to satisfy them.
 ### Initialization
 
 To begin work, clone the repository. Once the repository is cloned and the 
-prerequisites are met (composer and docker installed locally), a single command 
+prerequisites are met (Composer and docker installed locally), a single command 
 can be used to initialize the environment:
 
 1. `make init`
@@ -149,9 +232,9 @@ configuration items or content assets you wish to preserve.
 
 1. `make destroy`
 
-The destruction command will ask you to confirm your password to ensure it has 
-proper permissions to remove all files. Once performed, the environment can be 
-setup again with the initialization step.
+A more advanced target, `clean`, will run a `destroy` _plus_ remove any created
+or cached docker images. This effectively reverts your environment to a pre-development
+environment state.
 
 ### Rebuild
 
@@ -180,22 +263,21 @@ commands will be rarely used in day-to-day development.
 ### Installing A Composer Library
 
 Composer is used to manage all PHP packages tracked by the environment. It is 
-used for libraries as well as other PHP packages. By default, installed composer 
+used for libraries as well as other PHP packages. By default, installed Composer 
 packages install to the `/vendor` directory. Special packages (such as Drupal 
-modules) may be installed to different directories. These directories are not 
-tracked in git and should not be added to your SCM.
+modules) may be installed to different directories.
 
 This is an example adding [PHP Code Sniffer](https://packagist.org/packages/squizlabs/php_codesniffer) 
 to your environment.
 
-1. `composer require squizlabs/php_codesniffer`
+1. `bin/composer require squizlabs/php_codesniffer`
 2. `git add composer.json composer.lock`
 3. `git commit -m "Added PHP_CodeSniffer to environment."`
 
 Note that the files downloaded by Composer and placed in `/vendor` are not 
-tracked. The composer.json and composer.lock files contain enough information 
-for other environments to obtain the same code the next time their environments 
-are built.
+tracked in your SCM and shouldn't be added manually. The composer.json and composer.lock 
+files contain enough information for other environments to obtain the exact same code the 
+next time their environments are built.
 
 ### Installing A Drupal Module
 
@@ -207,13 +289,13 @@ directories are ignored in git and should not be added to your SCM.
 This is an example adding [Webform](https://www.drupal.org/project/webform) to 
 your environment and activating it.
 
-1. `composer require drupal/webform`
+1. `bin/composer require drupal/webform`
 2. `bin/drush en webform`
 3. `make config-export`
 4. `git add composer.json composer.lock config/core.extension.yml`
 5. `git commit -m "Added Drupal Webform to environment."`
 
-These steps are similar to a normal composer package, but the environment needs 
+These steps are similar to a normal Composer package, but the environment needs 
 to be aware that Drupal has a module to enable. After it's installed, it is 
 enabled using drush. After it has been enabled, Drupal's configuration is 
 exported. In this example, there was no configuration of the module after the 
@@ -237,7 +319,7 @@ This is an example creating a module called "Example Module":
 
 The code that comes out of this generation will be owned by the root user which 
 often means it will not be editable. Consider running the `make fix-permissions` 
-command after creation to rectify this.
+command after creation to rectify this and edit locally.
 
 ### Exporting Configuration
 
@@ -268,14 +350,14 @@ This is an example changing the theme of the site:
 
 In this example, the configuration modified was done from drush, but almost all 
 configuration done in the interface will also be tracked this way. Keep the 
-configuration commits simple and often otherwise the quantity of files can 
+configuration commits simple and often. Be mindful the quantity of files can 
 become very large very quickly.
 
 Note that all configuration that does not match what is in the `/config` 
 directory will be exported. This does not mean that all of it needs to be 
 committed. In the example above, the `/config` directory is blanket added to git 
 but this might not always be the case. Take care to only commit what is 
-nescessary to the work at hand.
+necessary to the work at hand.
 
 The cleanest and most effective way to modify configuration for the site is to 
 commit each configuration change as it is performed:
@@ -291,7 +373,7 @@ When working with a team, upstream code will often be newer than local code. In
 order to keep the environment up to date, there are a few commands to facilitate 
 this depending on the situation and the current state of the environment.
 
-If an environmnet has no uncommitted configuration or code changes in it, the 
+If an environment has no uncommitted configuration or code changes in it, the 
 `make update` command should be used:
 
 1. `git status`
@@ -314,7 +396,7 @@ will not touch Drupal's configuration. This will help preserve any work
 currently being done in the environment.
 
 When possible, update during a state of clean development. Between the two 
-commands, `make update` should be used more often.
+commands, `make update` should be used _much_ more often.
 
 ### Problems With Permissions
 

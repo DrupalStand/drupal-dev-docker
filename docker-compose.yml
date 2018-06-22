@@ -20,6 +20,7 @@ services:
     networks:
       - connector
     volumes:
+      - "./composer.json:/var/www/composer.json"
       - "./webroot:/var/www/webroot"
       - "./config:/var/www/config"
       - "./vendor:/var/www/vendor"
