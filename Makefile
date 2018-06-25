@@ -195,7 +195,7 @@ config-validate: docker-running
 
 config-refresh: config-init config-import
 
-clear-cache:
+clear-cache: docker-running # Clear Drupal cache
 	$(CURDIR)/bin/drush cr
 
 ##
