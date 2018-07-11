@@ -70,6 +70,7 @@ matches the repository. This will not overwrite Drupal configuration.
 * **`docker-stop`** Brings down the docker environment.
 * **`docker-restart`** Meta command to run `docker-stop` and `docker-start`.
 * **`composer-install`** Runs composer install against root composer.json.
+* **`composer-require`** Runs composer require to install dependencies into root composer.json and composer.lock.
 * **`composer-upgrade`** Runs composer upgrade against root composer.json. This 
 will upgrade all files tracked by composer. Use with caution. To only upgrade Drupal 
 core, use `drupal-upgrade`.
@@ -289,7 +290,7 @@ directories are ignored in git and should not be added to your SCM.
 This is an example adding [Webform](https://www.drupal.org/project/webform) to 
 your environment and activating it.
 
-1. `bin/composer require drupal/webform`
+1. `make composer-require drupal/webform`
 2. `bin/drush en webform`
 3. `make config-export`
 4. `git add composer.json composer.lock config/core.extension.yml`

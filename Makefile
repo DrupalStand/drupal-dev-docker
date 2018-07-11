@@ -81,6 +81,11 @@ composer-update: # Update all composer managed libraries
 	$(CURDIR)/bin/composer update \
 		--ignore-platform-reqs
 
+composer-require: # Enables installing various files via composer
+	$(CURDIR)/bin/composer require \
+		--ignore-platform-reqs \
+	       $(filter-out $@,$(MAKECMDGOALS))
+
 composer-update-lock:
 	$(CURDIR)/bin/composer update \
 		--lock
