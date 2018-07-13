@@ -71,5 +71,11 @@
             "webroot/themes/contrib/{$name}": ["type:drupal-theme"],
             "webroot/sites/all/drush/contrib/{$name}": ["type:drupal-drush"]
         }
+    },
+    "config": {
+        "platform": {
+            "php": "7.1.18",
+            "ext-gd": "1"
+        }
     }
 }
