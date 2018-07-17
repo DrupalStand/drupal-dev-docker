@@ -205,21 +205,22 @@ clear-cache:
 lint: # Check code for formatting or syntax errors
 	$(CURDIR)/bin/tool parallel-lint \
 	  -e php,module,inc,install,test,profile,theme \
-	  /var/www/drupal/modules/custom \
-	  /var/www/drupal/themes/custom
+	  /var/www/webroot/modules/custom \
+	  /var/www/webroot/themes/custom
 
 sniff: # Drupal standards checking
 	$(CURDIR)/bin/tool phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
 	$(CURDIR)/bin/tool phpcs -n --standard=Drupal,DrupalPractice \
 		--extensions=php,module,inc,install,test,profile,theme,info \
-		web/modules/custom web/themes/custom
+		/var/www/webroot/modules/custom \
+		/var/www/webroot/themes/custom
 
 code-test: lint sniff # Executes PHP linting and Drupal standards checking
 
 code-fix: # Fix minor errors using Drupal standards
 	$(CURDIR)/bin/tool phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
-	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/modules/custom
-	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info web/themes/custom
+	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info /var/www/webroot/modules/custom
+	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info /var/www/webroot/themes/custom
 
 ##
 # Removes "No rule to make target" message which allows us to pass an argument
