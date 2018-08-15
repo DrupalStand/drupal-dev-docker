@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 # PHP BASE
 #------------------------------------------------------------------------------
-FROM php:7.1-fpm-alpine as php-base
+FROM php:7.2-fpm-alpine as php-base
 
 # Set timezone.
 ENV PHP_TIMEZONE America/New_York
