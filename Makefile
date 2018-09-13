@@ -209,7 +209,7 @@ lint: # Check code for formatting or syntax errors
 	  /var/www/webroot/themes/custom
 
 sniff: # Drupal standards checking
-	$(CURDIR)/bin/tool phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+	$(CURDIR)/bin/tool phpcs --config-set installed_paths ../../../vendor/drupal/coder/coder_sniffer
 	$(CURDIR)/bin/tool phpcs -n --standard=Drupal,DrupalPractice \
 		--extensions=php,module,inc,install,test,profile,theme,info \
 		/var/www/webroot/modules/custom \
@@ -218,7 +218,7 @@ sniff: # Drupal standards checking
 code-test: lint sniff # Executes PHP linting and Drupal standards checking
 
 code-fix: # Fix minor errors using Drupal standards
-	$(CURDIR)/bin/tool phpcs --config-set installed_paths vendor/drupal/coder/coder_sniffer
+	$(CURDIR)/bin/tool phpcs --config-set installed_paths ../../../vendor/drupal/coder/coder_sniffer
 	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info /var/www/webroot/modules/custom
 	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info /var/www/webroot/themes/custom
 
