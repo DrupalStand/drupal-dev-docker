@@ -49,12 +49,9 @@ RUN set -ex \
              freetype-dev \
              libjpeg-turbo-dev \
              libpng-dev \
-             # mcrypt depends
-             libmcrypt-dev \
              # xmlrpc depends
              libxml2-dev \
              libxslt-dev \
-             postgresql-dev \
   # Configure and Install PHP extensions
   && docker-php-ext-configure gd  \
        --with-freetype-dir=/usr/include/ \
@@ -63,11 +60,9 @@ RUN set -ex \
   && docker-php-ext-install -j "$(nproc)" \
              gd \
              iconv \
-             mcrypt \
              mysqli \
              opcache \
              pdo_mysql \
-             pdo_pgsql \
              xmlrpc \
              xsl \
              zip \
