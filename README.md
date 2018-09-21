@@ -22,11 +22,11 @@ standalone servers.
 
 ## Requirements
 
-MacOS, Linux, or Windows with Docker ToolBox
+MacOS, Linux, or Windows
 
-> Support for native Windows systems is coming soon.
+> Support for native Windows systems is coming soon. For now, use Toolbox on Windows.
 
-Docker (https://www.docker.com/products/overview)
+Docker (https://www.docker.com/products/overview) or Docker Toolbox
 
 > On systems that don't ship with docker-compose (Linux), it should also be installed.
 
