@@ -90,7 +90,11 @@ drupal-upgrade: # Update Drupal Core
 		--with-all-dependencies \
 		--ignore-platform-reqs
 
-destroy: composer-purge docker-destroy # Take down and remove all data related to this project's current state
+destroy: files-purge composer-purge docker-destroy # Take down and remove all data related to this project's current state
+
+files-purge:
+	$(CURDIR)/bin/host-tool \
+		rm -rf webroot/sites/default/files/*
 
 docker-destroy:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down -v
