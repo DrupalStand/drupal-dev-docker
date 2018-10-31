@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
-readonly PROJECT="$(basename "$(dirname "$PROGDIR")")"
 readonly PROJECT_DIR="$(dirname "$PROGDIR")"
 
 USING_STDIN="t"
