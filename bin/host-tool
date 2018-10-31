@@ -21,4 +21,5 @@ docker run -i$USING_STDIN \
            -e COLUMNS=$COLUMNS \
            -v "${PROJECT_DIR}:/mnt" \
            -w "/mnt" \
+	   --rm \
            alpine:latest sh -c "${PARAMS}"
