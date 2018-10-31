@@ -3,6 +3,7 @@
 readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
 readonly PROJECTDIR="$(dirname "$PROGDIR")"
 readonly ARGS="$@"
+readonly IMAGE_MAINTAINER="$(cat $PROJECTDIR/environment | grep "IMAGE" | sed 's/.*=//')"
 
 docker run \
    --rm \
@@ -12,4 +13,4 @@ docker run \
    -v ${PROJECTDIR}/vendor:/app/vendor \
    -v ${PROJECTDIR}/scripts:/app/scripts \
    -v composer-cache:/tmp/cache \
-   mobomo/composer $ARGS
+   ${IMAGE_MAINTAINER}/composer $ARGS
