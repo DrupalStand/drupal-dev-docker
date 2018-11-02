@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
+readonly PROGDIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd)"
 readonly PROJECT="$(basename "$(dirname "$PROGDIR")")"
 
 USING_STDIN="t"

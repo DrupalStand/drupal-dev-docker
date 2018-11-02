@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-readonly PROGDIR="$(readlink -m "$(dirname "$0")")"
+readonly PROGDIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd)"
 readonly PROJECT="$(basename "$(dirname "$PROGDIR")")"
 readonly PROJECT_DIR="$(dirname "$PROGDIR")"
 
@@ -21,5 +21,5 @@ docker run -i$USING_STDIN \
            -e COLUMNS=$COLUMNS \
            -v "${PROJECT_DIR}:/mnt" \
            -w "/mnt" \
-	   --rm \
+           --rm \
            alpine:latest sh -c "${PARAMS}"
