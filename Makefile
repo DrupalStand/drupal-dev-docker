@@ -150,7 +150,7 @@ export-prod: # Export production tarball
 	  docker-src/db
 	docker save \
 	  -o ${PROJECT}-prod.tar \
-	  ${LABLE_BASE}-{php,web,db}:latest \
+	  ${LABLE_BASE}-prod-{php,web,db}:latest \
 	  memcached:1.5-alpine
 
 ##
