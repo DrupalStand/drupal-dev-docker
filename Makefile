@@ -1,6 +1,7 @@
 # Grab environment information (OSX vs Linux)
 UNAME := $(shell uname)
 DOCKER_COMPOSE_FILE := docker-compose.yml
+DOCKER_COMPOSE_PROD_FILE := docker-compose.prod.yml
 
 export PROJECT := $(shell basename $(CURDIR))
 export IMAGE_MAINTAINER := $(shell grep '^IMAGE_MAINTAINER' ./environment | sed 's/^.*=//g')
@@ -136,7 +137,7 @@ fix-permissions: # Fix issues with permissions by taking ownership of all files
 	$(CURDIR)/bin/host-tool \
 		chmod -R u=rwx,g=rwxs,o=rwx ./webroot/sites/default/files
 
-export-prod: # Export production tarball
+prod-export: # Export production tarball
 	docker build \
 	  --target php-prod \
 	  -t ${LABLE_BASE}-prod-php:latest \
@@ -150,8 +151,14 @@ export-prod: # Export production tarball
 	  docker-src/db
 	docker save \
 	  -o ${PROJECT}-prod.tar \
-	  ${LABLE_BASE}-prod-{php,web,db}:latest \
-	  memcached:1.5-alpine
+	  ${LABLE_BASE}-prod-{php,web,db}:latest
+
+prod-start: # Start containers for this project from prod images
+	docker-compose -f ${DOCKER_COMPOSE_PROD_FILE} up -d
+	docker-compose -f ${DOCKER_COMPOSE_PROD_FILE} ps
+
+prod-stop: # Stop prod containers for this project
+	docker-compose -f ${DOCKER_COMPOSE_PROD_FILE} down
 
 ##
 # Drupal specific commands

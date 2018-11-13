@@ -768,6 +768,13 @@ $settings['entity_update_batch_size'] = 50;
  *
  * Keep this code block at the end of this file to take full effect.
  */
-if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
+if (file_exists($app_root . '/' . $site_path . '/settings.local.php')
+      && $_ENV["ENVIRONMENT"] !== "PROD") {
   include $app_root . '/' . $site_path . '/settings.local.php';
+}
+
+// Prod Settings
+if (file_exists($app_root . '/' . $site_path . '/settings.prod.php')
+      && $_ENV["ENVIRONMENT"] === "PROD") {
+  include $app_root . '/' . $site_path . '/settings.prod.php';
 }

@@ -1,0 +1,57 @@
+version: '3.4'
+services:
+  php:
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-prod-php
+    container_name: ${PROJECT}-php
+    restart: unless-stopped
+    env_file: environment
+    environment:
+      - CONNECTBACK=off
+      - DRUPAL_MYSQL_HOST=${PROJECT}-db
+    links:
+      - db
+    depends_on:
+      - db
+    networks:
+      - connector
+    volumes:
+      - files:/var/www/webroot/sites/default/files:rw
+
+  web:
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-prod-web
+    container_name: ${PROJECT}-web
+    restart: unless-stopped
+    env_file: environment
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - connector
+    links:
+      - php
+    depends_on:
+      - php
+    volumes:
+      - files:/var/www/webroot/sites/default/files:ro
+
+  db:
+    image: ${IMAGE_MAINTAINER}/${PROJECT}-prod-db
+    container_name: ${PROJECT}-db
+    restart: unless-stopped
+    env_file: environment
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - connector
+    healthcheck:
+       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+       interval: 15s
+       timeout: 5s
+       retries: 5
+
+networks:
+  connector:
+
+volumes:
+  database: {}
+  files: {}

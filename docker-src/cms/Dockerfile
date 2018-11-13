@@ -100,6 +100,8 @@ WORKDIR /var/www/webroot
 FROM scratch as php-dev
 COPY --from=php-base . /
 
+ENV ENVIRONMENT DEV
+
 COPY docker-src/cms/entrypoint /usr/local/bin/drupalstand-entrypoint
 ENTRYPOINT ["drupalstand-entrypoint"]
 
@@ -172,8 +174,12 @@ RUN  composer install \
 FROM scratch as php-prod
 COPY --from=php-base . /
 
+ENV ENVIRONMENT PROD
+
 COPY webroot /var/www/webroot
 COPY config /var/www/config
+
+WORKDIR /var/www
 
 RUN  rm -rf \
        webroot/core/* \
@@ -196,6 +202,8 @@ WORKDIR /var/www/webroot
 
 RUN ln -s /var/www/vendor/bin/* /bin/
 
+CMD ["php-fpm"]
+
 #------------------------------------------------------------------------------
 # WEB PROD
 #------------------------------------------------------------------------------
@@ -205,3 +213,5 @@ COPY --from=web-dev . /
 COPY --from=php-prod /var/www/webroot /var/www/webroot
 
 WORKDIR /var/www/webroot
+
+CMD ["nginx", "-g", "daemon off;"]
