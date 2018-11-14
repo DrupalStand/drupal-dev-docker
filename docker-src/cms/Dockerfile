@@ -105,12 +105,14 @@ ENTRYPOINT ["drupalstand-entrypoint"]
 
 WORKDIR /var/www
 
-RUN  apk add --no-cache --virtual \
+RUN  apk add --no-cache \
              git \
              curl \
              vim \
              unzip \
              wget \
+             ncurses \
+             ncurses-terminfo \
   && apk add --no-cache --virtual .build-deps \
              # unknown needed
              autoconf \
@@ -128,6 +130,9 @@ RUN  apk add --no-cache --virtual \
   && echo 'xdebug.remote_connect_back="${CONNECTBACK}"' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && echo "xdebug.remote_host=192.168.65.1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && apk del .build-deps
+
+# color avaiable thanks to ncurses packages above
+ENV TERM xterm-256color
 
 COPY docker-src/cms/php-conf.d.dev/* /usr/local/etc/php/conf.d/
 
