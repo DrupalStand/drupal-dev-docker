@@ -6,6 +6,7 @@ readonly ARGS="$@"
 
 docker run \
    --rm \
+   -t \
    -v ${PROJECTDIR}/composer.json:/app/composer.json \
    -v ${PROJECTDIR}/composer.lock:/app/composer.lock \
    -v ${PROJECTDIR}/webroot:/app/webroot \
