@@ -100,6 +100,13 @@ WORKDIR /var/www/webroot
 FROM scratch as php-dev
 COPY --from=php-base . /
 
+ENV PHP_INI_DIR /usr/local/etc/php
+ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --disable-cgi
+ENV PHP_TIMEZONE America/New_York
+ENV PHP_LDFLAGS -Wl,-O1 -Wl,--hash-style=both -pie
+ENV PHP_CFLAGS -fstack-protector-strong -fpic -fpie -O2
+ENV PHP_CPPFLAGS -fstack-protector-strong -fpic -fpie -O2
+
 COPY docker-src/cms/entrypoint /usr/local/bin/drupalstand-entrypoint
 ENTRYPOINT ["drupalstand-entrypoint"]
 
