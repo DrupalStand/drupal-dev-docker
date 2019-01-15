@@ -24,7 +24,7 @@ services:
       - "./webroot:/var/www/webroot"
       - "./config:/var/www/config"
       - "./vendor:/var/www/vendor"
-      - "./test:/var/www/test"
+      - "./tests:/var/www/tests"
 
   web:
     build:
