@@ -46,9 +46,7 @@ services:
       - "./webroot:/var/www/webroot:ro"
 
   db:
-    build:
-      context: ./docker-src/db
-    image: ${IMAGE_MAINTAINER}/${PROJECT}-db
+    image: yobasystems/alpine-mariadb
     container_name: ${PROJECT}-db
     env_file: environment
     volumes:
