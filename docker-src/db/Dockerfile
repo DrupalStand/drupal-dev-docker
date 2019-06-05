@@ -7,7 +7,7 @@ ADD files/run.sh /scripts/run.sh
 ADD conf/map.cnf /etc/my.cnf.d/map.cnf
 
 # Comment out skip-networking
-RUN sed -e '/skip-networking/ s/^#*/#/' -i /etc/my.cnf.d/mariadb-server.cnf && \
+RUN sed -e '/skip-networking/ s/^#*/#/' -i /etc/my.cnf.d/map.cnf && \
     mkdir /scripts/pre-exec.d && \
     mkdir /scripts/pre-init.d && \
     chmod -R 755 /scripts
