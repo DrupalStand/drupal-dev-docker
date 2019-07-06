@@ -46,20 +46,19 @@ services:
       - "./webroot:/var/www/webroot:ro"
 
   db:
-    build:
-      context: ./docker-src/db
-    image: ${IMAGE_MAINTAINER}/${PROJECT}-db
+    image: mariadb:10.4
     container_name: ${PROJECT}-db
     env_file: environment
     volumes:
-      - database:/var/lib/mysql
+      - "./docker-src/db/conf:/etc/mysql/conf.d"
+      - "database:/var/lib/mysql"
     networks:
       - connector
     healthcheck:
-       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-       interval: 15s
-       timeout: 5s
-       retries: 5
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
 
   memcache:
     image: memcached:1.5-alpine
