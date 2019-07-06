@@ -157,11 +157,9 @@ export-prod: # Export production tarball
 ##
 init-drupal: drupal-install config-init config-import clear-cache
 
-# Run the 'rebuild' task then import configuration and clear Drupal's cache.
-update: docker-stop composer-install docker-rebuild wait-healthy clear-cache config-import updb clear-cache
+update: docker-stop composer-install docker-rebuild wait-healthy clear-cache config-import updb clear-cache # Run the 'rebuild' task then import configuration and clear Drupal's cache.
 
-# Update without importing config.
-safe-update: docker-stop composer-install docker-rebuild wait-healthy clear-cache updb clear-cache
+safe-update: docker-stop composer-install docker-rebuild wait-healthy clear-cache updb clear-cache # Update without importing config.
 
 drupal-install: docker-running
 	$(CURDIR)/bin/drush \
