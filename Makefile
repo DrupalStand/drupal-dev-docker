@@ -2,8 +2,8 @@
 UNAME := $(shell uname)
 DOCKER_COMPOSE_FILE := docker-compose.yml
 
-export PROJECT := $(shell basename $(CURDIR))
-export IMAGE_MAINTAINER := $(shell grep '^IMAGE_MAINTAINER' ./environment | sed 's/^.*=//g')
+export PROJECT := $(shell basename $(CURDIR) | tr '[:upper:]' '[:lower:]')
+export IMAGE_MAINTAINER := $(shell grep '^IMAGE_MAINTAINER' ./environment | sed 's/^.*=//g' | tr '[:upper:]' '[:lower:]')
 LABLE_BASE := ${IMAGE_MAINTAINER}/${PROJECT}
 
 ifeq ($(UNAME), Linux)
