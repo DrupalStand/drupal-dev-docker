@@ -38,8 +38,6 @@ include ${INCLUDE_MAKEFILES}
 ##
 init: composer-install docker-rebuild wait-healthy init-drupal docker-status # Build environment
 
-safe-update: docker-stop composer-install docker-rebuild wait-healthy clear-cache # Update without importing config
-
 # Use this if you would like a target to require that the project containers
 # are running before executing the target contents. Note this doesn't test if
 # the containers are healthy.
@@ -159,7 +157,11 @@ export-prod: # Export production tarball
 ##
 init-drupal: drupal-install config-init config-import clear-cache
 
-update: docker-stop composer-install docker-rebuild config-import clear-cache # Run the 'rebuild' task then import configuration and clear Drupal's cache
+# Run the 'rebuild' task then import configuration and clear Drupal's cache.
+update: docker-stop composer-install docker-rebuild wait-healthy clear-cache config-import updb clear-cache
+
+# Update without importing config.
+safe-update: docker-stop composer-install docker-rebuild wait-healthy clear-cache updb clear-cache
 
 drupal-install: docker-running
 	$(CURDIR)/bin/drush \
@@ -171,6 +173,9 @@ drupal-install: docker-running
 	    install_configure_form.enable_update_status_module=NULL \
 	    install_configure_form.enable_update_status_emails=NULL
 	$(CURDIR)/bin/tool chmod 777 /var/www/webroot/sites/default/files
+
+updb:
+	$(CURDIR)/bin/drush updatedb --yes
 
 config-init: docker-running
 	@if [ -e ./config/system.site.yml ]; then \
