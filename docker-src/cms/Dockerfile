@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 # PHP BASE
 #------------------------------------------------------------------------------
-FROM php:7.2-fpm-alpine as php-base
+FROM php:7.3-fpm-alpine as php-base
 
 # Set timezone.
 ENV PHP_TIMEZONE America/New_York
@@ -12,7 +12,7 @@ RUN cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1 > 
 WORKDIR /var/www
 
 RUN apk add --no-cache --virtual .build-deps \
-             # unknown needed
+             # Misc dependencies
              autoconf \
              g++ \
              pcre-dev \
@@ -23,28 +23,25 @@ RUN apk add --no-cache --virtual .build-deps \
              # Needed base depend
              coreutils
 
+RUN apk add --no-cache --update mysql-client
+
 # Install PHP memcached extension
 # look at following for PHP 7.2 https://stackoverflow.com/a/41575677
 RUN set -xe \
-    && apk add --no-cache --update libmemcached-libs zlib mysql-client \
+    && apk add --no-cache --update libmemcached-libs zlib \
     && apk add --no-cache --update --virtual .memcached-build-deps \
                zlib-dev \
                libmemcached-dev \
-               cyrus-sasl-dev \
-    && git clone -b php7 https://github.com/php-memcached-dev/php-memcached /usr/src/php/ext/memcached \
-    && docker-php-ext-configure /usr/src/php/ext/memcached \
-        --disable-memcached-sasl \
-    && docker-php-ext-install /usr/src/php/ext/memcached \
-    && rm -rf /usr/src/php/ext/memcached \
+    && pecl install memcached \
+    && docker-php-ext-enable memcached \
     # Cleanup
     && rm -rf /tmp/* ~/.pearrc /usr/share/php7 \
     && docker-php-source delete \
     && apk del .memcached-build-deps
 
 # install the PHP extensions we need
-# postgresql-dev is needed for https://bugs.alpinelinux.org/issues/3642
 RUN set -ex \
-  && apk add --no-cache --virtual .build-deps2 \
+  && apk add --no-cache --virtual .build-php-exts \
              # GD depends
              freetype-dev \
              libjpeg-turbo-dev \
@@ -52,6 +49,7 @@ RUN set -ex \
              # xmlrpc depends
              libxml2-dev \
              libxslt-dev \
+             libzip-dev \
   # Configure and Install PHP extensions
   && docker-php-ext-configure gd  \
        --with-freetype-dir=/usr/include/ \
@@ -77,7 +75,7 @@ RUN set -ex \
   && rm -rf /tmp/pear ~/.pearrc \
   && chown -R www-data:www-data /usr/local/var/log \
   && docker-php-source delete \
-  && apk del .build-deps .build-deps2 \
+  && apk del .build-deps .build-php-exts \
   && rm -rf /tmp/* /var/cache/apk/*
 
 COPY docker-src/cms/php-conf.d/* /usr/local/etc/php/conf.d/
