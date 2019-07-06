@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+readonly PROGDIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd)"
+readonly PROJECT="$(basename "$(dirname "$PROGDIR")" | tr '[:upper:]' '[:lower:]')"
+
+PARAMS=""
+
+for PARAM in "$@"
+do
+  PARAMS="${PARAMS} \"${PARAM}\""
+done
+docker exec -it ${PROJECT}-php sh -c "cd /var/www/tests/behat && ../../vendor/bin/behat --config /var/www/tests/behat/behat.yml ${PARAMS}"

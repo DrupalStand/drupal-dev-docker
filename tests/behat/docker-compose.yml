@@ -1,0 +1,46 @@
+version: '2'
+services:
+  hub:
+    container_name: hub
+    image: selenium/hub:2.53.0
+    ports:
+      - "4444:4444"
+
+  firefox:
+    container_name: firefox
+    image: selenium/node-firefox-debug:2.53.0
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    ports:
+      - 5900:5900
+    external_links:
+      - cms
+
+  chrome:
+    container_name: chrome
+    image: selenium/node-chrome-debug:2.53.0
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+    environment:
+        - HUB_PORT_4444_TCP_ADDR=hub
+        - HUB_PORT_4444_TCP_PORT=4444
+    ports:
+      - 5901:5900
+    external_links:
+      - cms
+
+networks:
+  default:
+    external:
+      name: ${PROJECT}_connector

@@ -398,6 +398,32 @@ currently being done in the environment.
 When possible, update during a state of clean development. Between the two 
 commands, `make update` should be used _much_ more often.
 
+### Running Behat Tests
+
+Some tests require the use of a browser, real or headless. This environment
+has Behat installed as a dependency and runs Selenium with drivers for Chrome
+and Firefox preconfigured. These browsers are run in a self-contained docker
+environment.
+
+Feature yaml files can be placed in tests/behat/features. These features can
+be run with `make behat`. By default, the Firefox browser is used. If Chrome
+is preferred, call the handler script with the option: `bin/behat -p chrome`.
+
+For debugging purposes, the processes around bring the testing environment up,
+running the tests, and finally bringing the environment down are isolated into
+separate make targets:
+
+* `make behat-start`
+* `make behat-run`
+* `make behat-stop`
+
+While the environment is running, it can be accessed via a VNC connection:
+
+* [Firefox (localhost:5900)](vnc://localhost:5900)
+* [Chrome (localhost:5901)](vnc://localhost:5901)
+
+The password to the VNC environment is "secret". 
+
 ### Problems With Permissions
 
 The environment runs in two different fashions concurrently: locally and in 

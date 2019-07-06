@@ -1,0 +1,55 @@
+default:
+  suites:
+    default:
+      contexts:
+      - FeatureContext
+      - Drupal\DrupalExtension\Context\DrupalContext
+      - Drupal\DrupalExtension\Context\MinkContext
+      - Drupal\DrupalExtension\Context\MessageContext
+      - Drupal\DrupalExtension\Context\DrushContext
+      paths:
+        - %paths.base%/features
+  formatters:
+    pretty: true
+    junit: true
+    html:
+      output_path: %paths.base%/artifacts/html
+  extensions:
+    Behat\MinkExtension:
+      selenium2:
+        wd_host: 'http://hub:4444/wd/hub'
+      browser_name: firefox
+      base_url: 'https://web'
+      goutte: ~
+      files_path: "%paths.base%/media"
+      sessions:
+        default:
+          goutte:
+            guzzle_parameters:
+              verify: false
+    Drupal\DrupalExtension:
+      blackbox: ~
+      api_driver: "drupal"
+      drush:
+        root: '../../webroot'
+      drupal:
+        drupal_root: '../../webroot'
+    jarnaiz\JUnitFormatter\JUnitFormatterExtension:
+        filename: report.xml
+        outputDir: %paths.base%/artifacts/reports
+    Bex\Behat\ScreenshotExtension:
+      screenshot_taking_mode: failed_steps
+      image_drivers:
+        local:
+          screenshot_directory: /var/www/tests/behat/artifacts/screenshots
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+      name: html
+      renderer: Twig
+      print_args: true
+      print_outp: true
+      loop_break: true
+
+chrome:
+  extensions:
+    Behat\MinkExtension:
+      browser_name: "chrome"

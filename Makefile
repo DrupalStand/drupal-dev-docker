@@ -231,6 +231,17 @@ code-fix: # Fix minor errors using Drupal standards
 	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info /var/www/webroot/modules/custom
 	-$(CURDIR)/bin/tool phpcbf --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info /var/www/webroot/themes/custom
 
+behat-start:
+	docker-compose -f tests/behat/docker-compose.yml up -d
+
+behat-run:
+	-./bin/behat
+
+behat-stop:
+	docker-compose -f tests/behat/docker-compose.yml down -v
+
+behat: behat-start behat-run behat-stop
+
 ##
 # Removes "No rule to make target" message which allows us to pass an argument
 # without having to specify the name when running the make command.
