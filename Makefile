@@ -163,7 +163,7 @@ update: docker-stop composer-install docker-rebuild config-import clear-cache # 
 
 drupal-install: docker-running
 	$(CURDIR)/bin/drush \
-	  site-install minimal \
+	  site:install minimal \
 	    -vv \
 	    --yes \
 	    --account-name=admin \
@@ -177,7 +177,7 @@ config-init: docker-running
 		echo "Config found. Processing setting uuid..."; \
 		cat ./config/system.site.yml | \
 		grep uuid | tail -c +7 | head -c 36 | \
-		$(CURDIR)/bin/drush config-set -y system.site uuid - ;\
+		$(CURDIR)/bin/drush config:set -y system.site uuid - ;\
 	else \
 		echo "Config is empty. Skipping uuid init..."; \
 	fi;
@@ -185,22 +185,22 @@ config-init: docker-running
 config-import: docker-running
 	@if [ -e ./config/system.site.yml ]; then \
 		echo "Config found. Importing config..."; \
-		$(CURDIR)/bin/drush config-import sync --yes ;\
-		$(CURDIR)/bin/drush config-import sync --yes ;\
+		$(CURDIR)/bin/drush config:import --yes ;\
+		$(CURDIR)/bin/drush config:import --yes ;\
 	else \
 		echo "Config is empty. Skipping import..."; \
 	fi;
 
 config-export: docker-running
-	$(CURDIR)/bin/drush config-export sync --yes
+	$(CURDIR)/bin/drush config:export --yes
 
 config-validate: docker-running
-	$(CURDIR)/bin/drush config-export sync --no
+	$(CURDIR)/bin/drush config:status
 
 config-refresh: config-init config-import
 
 clear-cache: docker-running # Clear Drupal cache
-	$(CURDIR)/bin/drush cr
+	$(CURDIR)/bin/drush cache:rebuild
 
 ##
 # Development commands
