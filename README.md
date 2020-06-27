@@ -24,9 +24,39 @@ standalone servers.
 
 MacOS, Linux, or Windows
 
-> Support for native Windows systems is coming soon. For now, use Toolbox on Windows.
+> Windows support can be achieved with WSL or WSL2 natively in this repository.
+> We recommend WSL2 due to the excellent speed and support using `make` commands to manage Docker natively.
 
-Docker (https://www.docker.com/products/overview) or Docker Toolbox
+### Windows Setup
+Docker for Windows (https://www.docker.com/products/overview) will detect and use WSL2. Hypervisor is required for WSL **while it is not for WSL2**. For now, Windows 10 version 2004 and above are the only versions that have WSL2 available. Updates for Windows are being rolled out over the coming months, but to get it now, run the Update Assistant (see https://support.microsoft.com/en-us/help/3159635/windows-10-update-assistant)
+
+For native-like speeds, add your code to a folder under the WSL2 OS you have set up. You may experience significant slowdown if you do not set up your project this way due to the fact that filesystem mounts in WSL2 are implemented as NFS. (see https://github.com/microsoft/WSL/issues/4197#issuecomment-650205399)
+
+1. Install WSL (https://docs.microsoft.com/en-us/windows/wsl/install-win10)
+2. Run Docker for Windows (https://docs.docker.com/docker-for-windows/install/)
+3. Get the Linux distro you want (Debian in my case) from Windows Store.
+4. If using WSL1,
+   1. Use `docker-compose` for now to start and stop the project. You may need to read through the Makefile to find out what all is needed to run in order for the project to work correctly.
+5. If using WSL2,
+   1. Clone the repo from within WSL (e.g. Debian) but do NOT use the `/mnt/` folders. (https://github.com/microsoft/WSL/issues/4197)
+   2. Configure your IDE as normal, but open the source under your `\\wsl$\` directory within Windows.
+6. Run the native `make` commands per normal in the following section of this document.
+
+> Do you have PHPStorm support?
+
+PHPStorm will work fine out of box with xdebug and detect paths automatically, but in order to get PHP interpretation (and thus error detection), PHPStorm has support for Docker containers.
+
+To enable it, open this project and then hit `File > Settings > Languages & Frameworks > PHP`. Under this dialog, add a "CLI Interpreter" (`...` button, then `+` button on the next dialog) - Docker will be an option, and it will automatically pull the available Docker containers. Select the one marked `drupal-dev-docker-php`.
+
+> PHPStorm wants to open the Windows Command Prompt instead of WSL.
+
+You can select WSL to run instead of the default DOS prompt. Open this project and then hit `File > Tools > Terminal` and under `Application settings`, enter `C:\Windows\System32\wsl.exe` as the `Shell path`.
+
+> PHPStorm's terminal opens the home directory, `$`
+
+Attempting to use a drive letter mapping will not work correctly. Open the project in PHPStorm using the path at `\\wsl$\`
+
+##
 
 > On systems that don't ship with docker-compose (Linux), it should also be installed.
 

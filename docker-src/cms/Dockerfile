@@ -133,8 +133,7 @@ RUN  apk add --no-cache \
   && echo "xdebug.remote_autostart=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   # Remote connect_back only works on Linux systems because OSX abstracts it away into a VM
   && echo 'xdebug.remote_connect_back="${CONNECTBACK}"' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  # TODO: debug this solution on Windows
-  && echo "xdebug.remote_host=docker.for.mac.localhost" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.remote_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && apk del .build-deps
 
 # color avaiable thanks to ncurses packages above

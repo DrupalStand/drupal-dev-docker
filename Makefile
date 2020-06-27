@@ -1,13 +1,23 @@
 # Grab environment information (OSX vs Linux)
 UNAME := $(shell uname)
 DOCKER_COMPOSE_FILE := docker-compose.yml
+WSL := $(shell grep -q -i microsoft /proc/version && echo 1 || echo 0)
+DOCKER_HOST_IP := $(shell ping host.docker.internal -W 0 -c 1 | grep -Eo '([0-9]+\.){3}[0-9]+' | tail -1)
 
 export PROJECT := $(shell basename $(CURDIR) | tr '[:upper:]' '[:lower:]')
 export IMAGE_MAINTAINER := $(shell grep '^IMAGE_MAINTAINER' ./environment | sed 's/^.*=//g' | tr '[:upper:]' '[:lower:]')
 LABLE_BASE := ${IMAGE_MAINTAINER}/${PROJECT}
 
+ifeq ($(DOCKER_HOST_IP), )
+  export DOCKER_INTERNAL_IP=$(shell ip route | grep -E '(default|docker0)' | grep -Eo '([0-9]+\.){3}[0-9]+' | tail -1)
+else
+  export DOCKER_INTERNAL_IP=host.docker.internal
+endif
+
 ifeq ($(UNAME), Linux)
-  DOCKER_COMPOSE_FILE += -f docker-compose.linux.yml
+  ifeq ($(WSL), 0)
+    DOCKER_COMPOSE_FILE += -f docker-compose.linux.yml
+  endif
 endif
 
 INCLUDE_MAKEFILES=
@@ -24,7 +34,7 @@ help: # Show this help
 	   sort | \
 	   sed 's/^/\o033[32m/' | # Start Green color on first column \
 	   sed 's/,/\o033[0m,/' | # End Green color on first colum \
-	   column -N "Target,Description" -t -s ","
+	   column -c "Target,Description" -t -s ","
 	@echo ""
 	@echo "Example Usage"
 	@echo "make <target>"
