@@ -3,3 +3,5 @@ services:
   php:
     environment:
       - CONNECTBACK=on
+    extra_hosts:
+      - "host.docker.internal:${DOCKER_INTERNAL_IP}"
