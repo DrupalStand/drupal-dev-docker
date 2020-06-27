@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
 readonly PROGDIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd)"
-readonly ARGS="$@"
+readonly ARGS=( "$@" )
 
-$PROGDIR/tool drush --root=/var/www/webroot $ARGS
+$PROGDIR/tool drush --root=/var/www/docroot "${ARGS[@]}"
