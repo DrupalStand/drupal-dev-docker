@@ -3,4 +3,4 @@
 readonly PROGDIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd)"
 readonly ARGS=( "$@" )
 
-$PROGDIR/tool drush --root=/var/www/docroot "${ARGS[@]}"
+$PROGDIR/tool drush --root=/var/www/webroot "${ARGS[@]}"
