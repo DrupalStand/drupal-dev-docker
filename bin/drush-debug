@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 readonly PROGDIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd)"
-readonly ARGS="$@"
+readonly ARGS=( "$@" )
 
 if [ "$(uname)" == "Linux" ]; then
   OPTIONS="XDEBUG_CONFIG=\"remote_host=172.17.0.1\" PHP_IDE_CONFIG=\"serverName=drupalstand\""
@@ -9,4 +9,4 @@ else
   OPTIONS="PHP_IDE_CONFIG=\"serverName=drupalstand\""
 fi
 
-$PROGDIR/tool $OPTIONS /var/www/vendor/drush/drush/drush.launcher --root=/var/www/webroot $ARGS
+$PROGDIR/tool $OPTIONS /var/www/vendor/drush/drush/drush.launcher --root=/var/www/webroot "${ARGS[@]}"
