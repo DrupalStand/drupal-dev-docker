@@ -1,7 +1,5 @@
 # DrupalStand Development Environment
 
-[![Known Vulnerabilities](https://snyk.io/test/github/DrupalStand/drupal-dev-docker/badge.svg?targetFile=composer.lock)](https://snyk.io/test/github/DrupalStand/drupal-dev-docker?targetFile=composer.lock)
-
 The DrupalStand project is an opinionated local development environment built around
 the concept of simplicity, transparency, expandability, and an _exceptionally_ low
 barrier to entry. Built on docker, the DrupalStand project should function identically
