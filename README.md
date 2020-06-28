@@ -22,12 +22,16 @@ standalone servers.
 
 ## Requirements
 
-MacOS, Linux, or Windows
+* MacOS, Linux, or Windows
+
+> On systems that don't ship with docker-compose (Linux), it should also be installed.
+
+* GNU Make (https://www.gnu.org/software/make/)
 
 > Windows support can be achieved with WSL or WSL2 natively in this repository.
 > We recommend WSL2 due to the excellent speed and support using `make` commands to manage Docker natively.
 
-### Windows Setup
+#### Windows Setup
 Docker for Windows (https://www.docker.com/products/overview) will detect and use WSL2. Hypervisor is required for WSL **while it is not for WSL2**. For now, Windows 10 version 2004 and above are the only versions that have WSL2 available. Updates for Windows are being rolled out over the coming months, but to get it now, run the Update Assistant (see https://support.microsoft.com/en-us/help/3159635/windows-10-update-assistant)
 
 For native-like speeds, add your code to a folder under the WSL2 OS you have set up. You may experience significant slowdown if you do not set up your project this way due to the fact that filesystem mounts in WSL2 are implemented as NFS. (see https://github.com/microsoft/WSL/issues/4197#issuecomment-650205399)
@@ -56,15 +60,9 @@ You can select WSL to run instead of the default DOS prompt. Open this project a
 
 Attempting to use a drive letter mapping will not work correctly. Open the project in PHPStorm using the path at `\\wsl$\`
 
-##
-
-> On systems that don't ship with docker-compose (Linux), it should also be installed.
-
-GNU Make (https://www.gnu.org/software/make/)
-
 ## Usage
 
-Once docker has been installed, the environment can be brought right up:
+Once Docker is installed, the environment can be brought right up:
 
 ```
 make init
@@ -138,8 +136,8 @@ and XDebug configuration.
 volume is not deleted manually or with the "-v" option on `docker-compose down`.
 * This repository *does* track a composer.lock file meaning that versions of software 
 installed are the ones that match the lock file. Currently this repository tracks 
-the base installation provided by the [drupal-composer/drupal-project](https://github.com/drupal-composer/drupal-project) 
-with Drupal 8.8.1. You can upgrade with `make drupal-upgrade` or wait until this 
+the base installation provided by the [drupal/recommended-project](https://github.com/drupal/recommended-project) 
+with Drupal 9.0.1. You can upgrade with `make drupal-upgrade` or wait until this 
 repository is updated. Certain files such as those provided by the Drupal scaffolding 
 project may be subject to manipulation and may or may not upgrade cleanly. The default
 location for the hosted content in this project was moved from the default of `/web`

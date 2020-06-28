@@ -165,7 +165,7 @@ export-prod: # Export production tarball
 # Drupal specific commands
 # The following commands are used to strap and control Drupal.
 ##
-init-drupal: drupal-install config-init config-import clear-cache
+init-drupal: drupal-install clear-cache
 
 update: docker-stop composer-install docker-rebuild wait-healthy clear-cache config-import updb clear-cache # Run the 'rebuild' task then import configuration and clear Drupal's cache.
 
@@ -178,6 +178,7 @@ drupal-install: docker-running
 	    --yes \
 	    --account-name=admin \
 	    --account-pass=admin \
+	    --existing-config \
 	    install_configure_form.enable_update_status_module=NULL \
 	    install_configure_form.enable_update_status_emails=NULL
 	$(CURDIR)/bin/tool chmod 777 /var/www/webroot/sites/default/files
