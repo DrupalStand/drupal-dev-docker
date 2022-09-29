@@ -11,7 +11,7 @@ LABLE_BASE := ${IMAGE_MAINTAINER}/${PROJECT}
 ifeq ($(DOCKER_HOST_IP), )
   export DOCKER_INTERNAL_IP=$(shell ip route | grep -E '(default|docker0)' | grep -Eo '([0-9]+\.){3}[0-9]+' | tail -1)
 else
-  export DOCKER_INTERNAL_IP=host.docker.internal
+  export DOCKER_INTERNAL_IP=$(DOCKER_HOST_IP)
 endif
 
 ifeq ($(UNAME), Linux)
