@@ -13,4 +13,5 @@ docker run \
    -v ${PROJECTDIR}/vendor:/app/vendor \
    -v ${PROJECTDIR}/scripts:/app/scripts \
    -v composer-cache:/tmp/cache \
-   mobomo/composer $ARGS
+   --user $(id -u):$(id -g) \
+   composer:2 composer $ARGS
