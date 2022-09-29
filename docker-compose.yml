@@ -61,7 +61,7 @@ services:
       retries: 5
 
   memcache:
-    image: memcached:1.5-alpine
+    image: memcached:1.6-alpine
     container_name: ${PROJECT}-memcached
     environment:
       - MEMCACHED_SERVER=${PROJECT}-memcached:11211
