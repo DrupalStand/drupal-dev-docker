@@ -4,14 +4,21 @@ readonly PROGDIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd)"
 readonly PROJECTDIR="$(dirname "$PROGDIR")"
 readonly ARGS="$@"
 
+# Some dependencies try to place things in the root of the project.
+# Because we want to control that space we will connect the application root to
+# a temporary directory with tmpfs
+#
+# example .editorconfig .gitattributes
+
 docker run \
    --rm \
    -t \
-   -v ${PROJECTDIR}/composer.json:/app/composer.json \
-   -v ${PROJECTDIR}/composer.lock:/app/composer.lock \
-   -v ${PROJECTDIR}/webroot:/app/webroot \
-   -v ${PROJECTDIR}/vendor:/app/vendor \
-   -v ${PROJECTDIR}/scripts:/app/scripts \
-   -v composer-cache:/tmp/cache \
    --user $(id -u):$(id -g) \
-   composer:2 composer $ARGS
+   --mount type=tmpfs,destination=/app/workingdir,tmpfs-mode=1777 \
+   -v ${PROJECTDIR}/composer.json:/app/workingdir/composer.json \
+   -v ${PROJECTDIR}/composer.lock:/app/workingdir/composer.lock \
+   -v ${PROJECTDIR}/webroot:/app/workingdir/webroot \
+   -v ${PROJECTDIR}/vendor:/app/workingdir/vendor \
+   -v ${PROJECTDIR}/scripts:/app/workingdir/scripts \
+   -v composer-cache:/tmp/cache \
+   composer:2 composer --working-dir=/app/workingdir $ARGS
