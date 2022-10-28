@@ -22,7 +22,9 @@ standalone servers.
 
 ## Requirements
 
+
 * MacOS, Linux, or Windows
+* Docker (https://www.docker.com/)
 
 > On systems that don't ship with docker-compose (Linux), it should also be installed.
 
@@ -30,6 +32,8 @@ standalone servers.
 
 > Windows support can be achieved with WSL or WSL2 natively in this repository.
 > We recommend WSL2 due to the excellent speed and support using `make` commands to manage Docker natively.
+
+* Python3
 
 #### Windows Setup
 Docker for Windows (https://www.docker.com/products/overview) will detect and use WSL2. Hypervisor is required for WSL **while it is not for WSL2**. For now, Windows 10 version 2004 and above are the only versions that have WSL2 available. Updates for Windows are being rolled out over the coming months, but to get it now, run the Update Assistant (see https://support.microsoft.com/en-us/help/3159635/windows-10-update-assistant)
@@ -477,6 +481,14 @@ single command:
 
 If the environment contains a large amount of files, this command could take a 
 while, but when it's done, there should be no more problems.
+
+## Nix / NixOS
+
+The project has a shell which provides all the required host dependencies.
+To use the provided shell run `nix develop`.
+
+If using direnv (https://direnv.net/) you can run the shell automatically in
+this directory with `direnv allow`
 
 ## TODO
 
