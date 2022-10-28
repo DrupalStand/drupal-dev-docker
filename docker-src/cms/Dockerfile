@@ -57,7 +57,6 @@ RUN set -ex \
        --with-png-dir=/usr/include/ \
   && docker-php-ext-install -j "$(nproc)" \
              gd \
-             iconv \
              mysqli \
              opcache \
              pdo_mysql \
