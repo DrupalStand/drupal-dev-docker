@@ -1,3 +1,9 @@
+FROM alpine:edge as alpine-edge
+RUN set -ex \
+  && apk add --no-cache --virtual .build-bindfs \
+                --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
+                bindfs
+
 #------------------------------------------------------------------------------
 # PHP BASE
 #------------------------------------------------------------------------------
@@ -85,6 +91,13 @@ COPY docker-src/cms/php-conf.d/* /usr/local/etc/php/conf.d/
 #------------------------------------------------------------------------------
 FROM nginx:stable-alpine as web-dev
 
+RUN set -ex \
+  && apk add --no-cache --virtual .build-bindfs \
+                fuse3-libs fuse
+COPY --from=alpine-edge /usr/bin/bindfs /usr/bin/bindfs
+COPY docker-src/cms/90-bindfs-webroot.sh /docker-entrypoint.d/90-bindfs-webroot.sh
+RUN chmod 774 /docker-entrypoint.d/90-bindfs-webroot.sh
+
 RUN rm /etc/nginx/conf.d/default.conf
 COPY ./docker-src/cms/nginx/ssl-cert-snakeoil.key /etc/nginx/private.key
 COPY ./docker-src/cms/nginx/ssl-cert-snakeoil.pem /etc/nginx/public.pem
@@ -97,6 +110,11 @@ WORKDIR /var/www/webroot
 #------------------------------------------------------------------------------
 FROM scratch as php-dev
 COPY --from=php-base . /
+
+RUN set -ex \
+  && apk add --no-cache --virtual .build-bindfs \
+                fuse3-libs fuse
+COPY --from=alpine-edge /usr/bin/bindfs /usr/bin/bindfs
 
 ENV PHP_INI_DIR /usr/local/etc/php
 ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --disable-cgi
