@@ -1,7 +1,7 @@
 #------------------------------------------------------------------------------
 # PHP BASE
 #------------------------------------------------------------------------------
-FROM php:7.3-fpm-alpine as php-base
+FROM php:8.1-fpm-alpine as php-base
 
 # Set timezone.
 ENV PHP_TIMEZONE America/New_York
@@ -46,21 +46,25 @@ RUN set -ex \
              freetype-dev \
              libjpeg-turbo-dev \
              libpng-dev \
+             libwebp-dev \
              # xmlrpc depends
              libxml2-dev \
              libxslt-dev \
              libzip-dev \
+  # must specify version due to it being in beta status
+  && pecl install xmlrpc-1.0.0RC3 \
+  && docker-php-ext-enable xmlrpc \
   # Configure and Install PHP extensions
   && docker-php-ext-configure gd  \
-       --with-freetype-dir=/usr/include/ \
-       --with-jpeg-dir=/usr/include/ \
-       --with-png-dir=/usr/include/ \
+        --enable-gd \
+        --with-freetype=/usr/include/ \
+        --with-jpeg=/usr/include/ \
+        --with-webp=/usr/include/ \
   && docker-php-ext-install -j "$(nproc)" \
              gd \
              mysqli \
              opcache \
              pdo_mysql \
-             xmlrpc \
              xsl \
              zip \
   && runDeps="$( \
@@ -128,11 +132,11 @@ RUN  apk add --no-cache \
              coreutils \
   && pecl install xdebug \
   && docker-php-ext-enable xdebug \
-  && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  && echo "xdebug.remote_autostart=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   # Remote connect_back only works on Linux systems because OSX abstracts it away into a VM
-  && echo 'xdebug.remote_connect_back="${CONNECTBACK}"' >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-  && echo "xdebug.remote_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.discover_client_host=true" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+  && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
   && apk del .build-deps
 
 # color avaiable thanks to ncurses packages above
