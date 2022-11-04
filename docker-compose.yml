@@ -46,7 +46,7 @@ services:
       - "./webroot:/var/www/webroot:ro"
 
   db:
-    image: percona:5
+    image: mariadb:10
     container_name: ${PROJECT}-db
     env_file: environment
     volumes:
