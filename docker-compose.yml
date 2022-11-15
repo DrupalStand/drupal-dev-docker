@@ -21,10 +21,11 @@ services:
       - connector
     volumes:
       - "./composer.json:/var/www/composer.json"
-      - "./webroot:/var/www/webroot"
-      - "./config:/var/www/config"
-      - "./vendor:/var/www/vendor"
-      - "./tests:/var/www/tests"
+      - "./webroot:/var/www-host/webroot"
+      - "./config:/var/www-host/config"
+      - "./vendor:/var/www-host/vendor"
+      - "./tests:/var/www-host/tests"
+    privileged: true
 
   web:
     build:
@@ -43,7 +44,8 @@ services:
     depends_on:
       - php
     volumes:
-      - "./webroot:/var/www/webroot:ro"
+      - "./webroot:/var/www/webroot-host:ro"
+    privileged: true
 
   db:
     image: percona:5

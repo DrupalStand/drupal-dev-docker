@@ -1,6 +1,19 @@
 #!/bin/sh
 set -e
 
+# make directories to mount against
+# webroot already exists
+mkdir /var/www/config
+mkdir /var/www/vendor
+mkdir /var/www/tests
+
+# use bindfs to map host user to www-data. This way any files created in the
+# container or outside are the correct permissions in their respective locations
+bindfs --force-user=www-data --force-group=www-data --create-for-user=1000 --create-for-group=1000 --chown-ignore --chgrp-ignore /var/www-host/webroot /var/www/webroot
+bindfs --force-user=www-data --force-group=www-data --create-for-user=1000 --create-for-group=1000 --chown-ignore --chgrp-ignore /var/www-host/config /var/www/config
+bindfs --force-user=www-data --force-group=www-data --create-for-user=1000 --create-for-group=1000 --chown-ignore --chgrp-ignore /var/www-host/vendor /var/www/vendor
+bindfs --force-user=www-data --force-group=www-data --create-for-user=1000 --create-for-group=1000 --chown-ignore --chgrp-ignore /var/www-host/tests /var/www/tests
+
 ln -sf /var/www/vendor/bin/* /bin/
 
 # Source file
