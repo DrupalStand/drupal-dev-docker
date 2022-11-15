@@ -124,9 +124,11 @@ composer-purge:
 clean: destroy # Removes all artifacts built via make or docker
 	@echo "Removing production tarball"
 	rm $(CURDIR)/${PROJECT}-prod.tar || true
-	@echo "Removing docker images"
+	@echo "Removing this projects docker images"
 	docker rmi ${LABLE_BASE}{,-prod}-{db,php,web}:latest \
 	  || true
+	@echo "Remove drupalstand's shared composer cache"
+	docker volume rm composer-cache || true
 
 rebuild: destroy init # Destroy and rebuild the environment
 
