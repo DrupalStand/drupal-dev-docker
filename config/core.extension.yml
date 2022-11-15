@@ -1,4 +1,5 @@
 module:
+  mysql: 0
   admin_toolbar: 0
   admin_toolbar_tools: 0
   block: 0
